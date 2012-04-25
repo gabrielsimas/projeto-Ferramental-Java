@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://java.sun.com/jsf/html" 
+     xmlns:p="http://primefaces.prime.com.tr/ui"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:f="http://java.sun.com/jsf/core">  
+   
+    <h:head>
+        <title>:.Medral Tecnologia Penha.:</title>
+    </h:head>
+    
+     <h:body style="background-color: paleturquoise">
+         <ui:include src="/paginas/menu.xhtml"/>
+        
+    <p:growl id="avisos" showDetail="true" life="3000" />  
+
+    <p:fieldset legend="RELATÓRIO INDIVIDUAL DO COLABORADOR:" toggleable="true"></p:fieldset> 
+    <p:fieldset legend="HISTÓRICO GERAL:" toggleable="true">
+    <h:form> 
+       <h:panelGrid columns="8">
+            <h:outputText value="Data do Cadastro:" />  
+            <p:calendar value="#{testeBean.dataCadastro}" maxlength="8" size="10"/>
+            
+            <h:outputText value="Matrícula:"/>
+            <p:inputText id="descricao" value="#{testeBean.matricula}" maxlength="5" size="6"/>
+            <p:commandButton value="CONSULTAR" actionListener="#{testeBean.consultar}" type="submit" />
+        </h:panelGrid>
+    </h:form>  
+  </p:fieldset> 
+  
+    </h:body>  
+ </html> 
+

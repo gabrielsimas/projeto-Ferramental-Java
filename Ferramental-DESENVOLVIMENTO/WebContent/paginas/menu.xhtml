@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <link type="text/css" rel="stylesheet" href="../css/theme.css"/>
+        <title>:.Medral Tecnologia Penha.:</title>
+    </h:head>
+
+    <h:body style="background-image:url('../imagem/BemVindo.jpg');
+                   background-position: 50% 0%;background-repeat: no-repeat">
+            
+        <img src="../imagem/TopoSCFP.jpg" width="1347" height='155'/>
+
+        <h:form>
+            <p:menubar autoSubmenuDisplay="true"> 
+                <p:submenu label="INÍCIO" >
+                    <p:menuitem value="Home" ajax="false" action="/paginas/menu.xhtml" />
+                </p:submenu>
+                
+                <p:submenu label="CADASTRAR" >
+                    <p:menuitem value="Funcionário"     ajax="false" action="/paginas/formCadastroFuncionarios.xhtml" />
+                    <p:menuitem value="Fornecedor"      ajax="false" action="/paginas/formCadastroFornecedores.xhtml"/>
+                    <p:menuitem value="Produto"         ajax="false" action="/paginas/formCadastroProdutos.xhtml"/>
+                    <p:menuitem value="Veículo"         ajax="false" action="/paginas/formCadastroVeiculos.xhtml" />
+                    <p:menuitem value="Rastreabilidade" ajax="false" action="/paginas/formCadastroRastreabilidade.xhtml"/>
+                    <p:menuitem value="Moto Serra"      ajax="false" action="/paginas/formCadastroMotoSerra.xhtml"/>
+                </p:submenu>
+
+                <p:submenu label="MOVIMENTAÇÃO">
+                    <p:menuitem value="Individual"    ajax="false" action="/paginas/formMovimentacaoIndividual.xhtml"/>
+                    <p:menuitem value="Veículos"      ajax="false" action="/paginas/formMovimentacaoVeiculos.xhtml"/>
+                    <p:menuitem value="Transferência" ajax="false" action="/paginas/formMovimentacaoTransfer.xhtml"/>
+                </p:submenu>
+
+                <p:submenu label="ESTOQUE" >
+                    <p:menuitem value="Entrada"  ajax="false" action="/paginas/formEstoqueEntrada.xhtml"/>
+                    <p:menuitem value="Produtos" ajax="false" action="/paginas/formEstoqueProduto.xhtml"/>
+                </p:submenu>
+
+                <p:submenu label="RELATÓRIO ADMINISTRATIVO">
+                    <p:menuitem value="Entrada"        ajax="false" action="/paginas/relatorioAdministrativoEntrada.xhtml"/>
+                    <p:menuitem value="Individual"     ajax="false" action="/paginas/relatorioAdministrativoIndividual.xhtml"/>
+                    <p:menuitem value="Veículos"       ajax="false" action="/paginas/relatorioAdministrativoVeiculos.xhtml"/>
+                    <p:menuitem value="Movimentação"   ajax="false" action="/paginas/relatorioAdministrativoMovimentacao.xhtml"/>
+                    <p:menuitem value="Teste Elétrico" ajax="false" action="/paginas/relatorioAdministrativoTesteEletrico.xhtml"/>
+                    <p:menuitem value="Vales"          ajax="false" action="/paginas/relatorioAdministrativoVales.xhtml"/>
+                    <p:menuitem value="Reforma"        ajax="false" action="/paginas/relatorioAdministrativoReforma.xhtml"/>
+                </p:submenu>
+
+                <p:submenu label="RELATÓRIO GERENCIAL">
+                    <p:menuitem value="Material"        ajax="false" action="/paginas/relatorioGerencialMaterial.xhtml"/>
+                    <p:menuitem value="Compra"          ajax="false" action="/paginas/relatorioGerencialCompras.xhtml"/>
+                    <p:menuitem value="Sucata"          ajax="false" action="/paginas/relatorioGerencialSucata.xhtml"/>
+                    <p:menuitem value="Rastreabilidade" ajax="false" action="/paginas/relatorioGerencialRastreabilidade.xhtml"/>
+                    <p:menuitem value="Produto"         ajax="false" action="/paginas/relatorioGerencialProduto.xhtml"/>
+                </p:submenu>
+                <p:menuitem value="TROCAR SENHA" ajax="false" />
+                
+                <p:menuitem value="SAIR" ajax="false" url="http://www.medralservicosrio.com.br"/>
+
+            </p:menubar>
+            
+            
+
+
+        </h:form>
+    </h:body>
+</html>

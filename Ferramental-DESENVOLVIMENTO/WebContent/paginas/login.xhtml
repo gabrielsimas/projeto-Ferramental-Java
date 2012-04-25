@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+      <!-- xmlns:p="http://primefaces.prime.com.tr/ui" -->
+    
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>:.Medral Tecnologia Penha.:</title>
+        <link type="text/css" rel="stylesheet" href="../css/login.css"/>
+     </h:head>
+    
+    <h:body style="background-image:url('../imagem/login.jpg'); background-position: 50% 0%; background-repeat: no-repeat">
+        
+        <center>
+        <p:dialog  id="dialog" 
+                   widgetVar="dlg" 
+                   header="ACESSO AO SISTEMA:" 
+                   visible="true" 
+                   closable="false"
+                   draggable="false" 
+                   modal = "true"
+                   resizable="false" width="350" height="155" align="center">
+            <h:form>  
+                
+                <h:panelGrid columns="2">    
+                    <h:outputLabel for="username" value="LOGIN: *" />  
+                    <p:inputText value="#{usuarioBean.usuario.login}" id="login" required="true" label="login" />
+                    <h:outputLabel for="password" value="SENHA: * " />  
+                    <p:inputText value="#{usuarioBean.usuario.senha}" id="senha" required="true" label="senha" />
+                    <f:facet name="footer">
+                    	<p:commandButton action="#{usuarioBean.efetuaLogin}" value="AUTENTICAR USUÁRIO" />
+                    </f:facet>
+                </h:panelGrid>
+                      
+            </h:form> 
+        </p:dialog>
+        </center>
+    </h:body>
+</html>
+
+
+

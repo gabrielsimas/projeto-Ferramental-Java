@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://java.sun.com/jsf/html" 
+     xmlns:p="http://primefaces.prime.com.tr/ui"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:f="http://java.sun.com/jsf/core">  
+   
+    <h:head>
+        <title>:.Medral Tecnologia Penha.:</title>
+    </h:head>
+    
+     <h:body style="background-color: paleturquoise">
+         <ui:include src="/paginas/menu.xhtml"/>
+        
+    <p:growl id="avisos" showDetail="true" life="3000" />  
+
+    <p:fieldset legend="MOVIMENTAÇÃO DE MATERIAIS DE VEÍCULOS :" toggleable="true"></p:fieldset> 
+    <p:fieldset legend="VEÍCULOS C/DEFEITO:" toggleable="true">
+    <h:form> 
+        <h:panelGrid columns="6"> 
+            <h:outputText value="PLACA:"/>
+            <p:inputMask mask="aaa-9999" value="#{testeBean.placa}" maxlength="5" size="8"/>
+            
+            <h:outputText value="NOME DO ENCARREGADO:" />  
+            <p:inputText id="nome" value="#{testeBean.nome}" maxlength="30" size="35"/>
+            <p:commandButton value="LISTAR" actionListener="#{testeBean.listar}" type="submit" />
+            <p:commandButton value="LIMPAR CAMPOS" actionListener="#{testeBean.limpar}" type="reset" />
+        </h:panelGrid>
+    </h:form>  
+    </p:fieldset>
+    
+    <p:fieldset legend="LISTA DE MATERIAIS VEÍCULO C/DEFEITO:" toggleable="true">  
+        <h:form id="form">
+           <p:growl id="msgs" />
+                 <p:outputPanel id="books">
+                    <p:dataTable id="booksTable" value="#{bookBean.books}" var="book">
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="NOME DO ENCARREGADO" />
+                            </f:facet>
+                            <h:outputText value="#{book.nomeEnc}" />
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="PLACA" />
+                            </f:facet>
+                            <h:outputText value="#{book.placa}" />
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="MATERIAIS DO VÉICULO C/DEFEITO" />
+                            </f:facet>
+                            <h:outputText value="#{book.produto}" />
+                        </p:column>
+                     
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="OPERAÇÃO" />
+                            </f:facet>
+                            <p:commandLink value="EXCLUIR" update=":form:books" process=":form:books">
+                                <p:collector value="#{book}"
+                                             removeFrom="#{bookBean.books}" />
+                            </p:commandLink>
+                        </p:column>
+                        
+                    </p:dataTable>
+                </p:outputPanel>
+            </h:form>  
+        </p:fieldset>  
+     
+     <p:fieldset legend="VEÍCULOS NOVO:" toggleable="true">
+     <h:form> 
+         <h:panelGrid columns="6">
+            <h:outputText value="PLACA:"/>
+            <p:inputMask mask="aaa-9999" value="#{testeBean.placa2}" maxlength="5" size="8"/>
+            
+            <h:outputText value="NOME DO ENCARREGADO:" />  
+            <p:inputText id="nome2" value="#{testeBean.nome2}" maxlength="30" size="35"/>
+            <p:commandButton value="LISTAR" actionListener="#{testeBean.listar2}" type="submit" />
+            <p:commandButton value="LIMPAR CAMPOS" actionListener="#{testeBean.limpar2}" type="reset" />
+       </h:panelGrid>
+      </h:form>  
+      </p:fieldset> 
+    
+    <p:fieldset legend="LISTA DE MATERIAIS VEÍCULO NOVO:" toggleable="true">  
+        <h:form id="form2">
+           <p:growl id="msgs2" />
+                 <p:outputPanel id="books2">
+                    <p:dataTable id="booksTable2" value="#{bookBean.books2}" var="book">
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="NOME DO ENCARREGADO" />
+                            </f:facet>
+                            <h:outputText value="#{book.nomeEnc2}" />
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="PLACA" />
+                            </f:facet>
+                            <h:outputText value="#{book.placa2}" />
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="MATERIAIS DO VEICULO NOVO" />
+                            </f:facet>
+                            <h:outputText value="#{book.produto2}" />
+                        </p:column>
+                                  
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="OPERAÇÃO" />
+                            </f:facet>
+                            <p:commandLink value="EXCLUIR" update=":form:books" process=":form:books">
+                                <p:collector value="#{book}"
+                                             removeFrom="#{bookBean.books}" />
+                            </p:commandLink>
+                        </p:column>
+                        
+                    </p:dataTable>
+                </p:outputPanel>
+            </h:form>  
+        </p:fieldset>   
+  
+    </h:body>  
+
+ </html> 
+

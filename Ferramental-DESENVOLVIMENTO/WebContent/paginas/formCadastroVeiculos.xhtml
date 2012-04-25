@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://java.sun.com/jsf/html" 
+     xmlns:p="http://primefaces.prime.com.tr/ui"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:f="http://java.sun.com/jsf/core">  
+   
+    <h:head>
+        <title>:.Medral Tecnologia Penha.:</title>
+    </h:head>
+    
+     <h:body style="background-color: paleturquoise">
+         <ui:include src="/paginas/menu.xhtml"/> 
+  
+    <p:fieldset legend="CADASTRO DE VEÍCULOS:" toggleable="true">  
+    <h:form> 
+        <h:panelGrid columns="4">
+        <h:outputText value="MATRÍCULA ENCARREGADO:" />  
+        <p:inputMask mask="99.999" value="#{VeiculosBean.veiculos.matricula}" maxlength="5" size="7"/> 
+        
+        <h:outputText value="SETOR:"/>
+        <p:inputText id="setor" value="#{VeiculosBean.veiculos.setor}" maxlength="25" size="32"/>
+        </h:panelGrid>
+        
+        <h:panelGrid columns="8">
+        <h:outputText value="PLACA:" />  
+        <p:inputMask mask="aaa-9999" value="#{VeiculosBean.veiculos.placa}" maxlength="7" size="8"/>
+       
+        <h:outputText value="MARCA:" />  
+        <p:inputText id="marca" value="#{VeiculosBean.veiculos.marca}" maxlength="7" size="8"/>
+        
+        <h:outputText value="MODELO:"/>
+        <p:inputText id="modelo" value="#{VeiculosBean.veiculos.modelo}" maxlength="7" size="8"/>
+       
+        <h:outputText value="STATUS:"/>
+        <p:inputText id="status" value="#{VeiculosBean.veiculos.status}" maxlength="7" size="7"/>
+        </h:panelGrid>
+       
+        
+        <p:separator style="width: 100%; height: 3px" />  
+
+        <p:commandButton value="CADASTRAR" actionListener="#{VeiculosBean.veiculos.cadastrar}" type="submit" update="display" oncomplete="dlg.show()"/>
+        <p:commandButton value="LIMPAR CAMPOS" actionListener="#{VeiculosBean.veiculos.limpar}" type="reset" /> 
+        
+        </h:form>  
+        </p:fieldset>  
+    
+   <p:fieldset legend="LISTA GERAL:" toggleable="true">  
+   <h:form id="form">
+
+                <p:growl id="msgs" />
+
+                 <p:outputPanel id="books">
+                    <p:dataTable id="booksTable" value="#{bookBean.books}" var="book">
+
+                         <p:column>
+                            <f:facet name="header">
+                             <h:outputText value="MATRÍCULA ENCARREGADO" />
+                            </f:facet>
+                            <h:outputText value="#{book.matrícula}" />
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="SETOR" />
+                            </f:facet>
+                            <h:outputText value="#{book.setor}" />
+                        </p:column>
+                                                
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="PLACA" />
+                            </f:facet>
+                            <h:outputText value="#{book.placa}" />
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="MARCA" />
+                            </f:facet>
+                            <h:outputText value="#{book.marca}" />
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="MODELO" />
+                            </f:facet>
+                            <h:outputText value="#{book.modelo}" />
+                        </p:column>
+                       
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="STATUS" />
+                            </f:facet>
+                            <h:outputText value="#{book.status}" />
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="OPERAÇÃO" />
+                            </f:facet>
+                            
+                            <p:commandLink value="EXLUIR" update=":form:books" process=":form:books">
+                                <p:collector value="#{book}"
+                                             removeFrom="#{bookBean.books}" />
+                            </p:commandLink>
+                        </p:column>
+
+                    </p:dataTable>
+                </p:outputPanel>
+
+            </h:form>  
+        </p:fieldset>    
+
+    </h:body>  
+
+ </html> 
+
+ 

@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://java.sun.com/jsf/html" 
+     xmlns:p="http://primefaces.prime.com.tr/ui"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:f="http://java.sun.com/jsf/core">  
+   
+    <h:head>
+        <title>:.Medral Tecnologia Penha.:</title>
+    </h:head>
+    
+     <h:body style="background-color: paleturquoise">
+         <ui:include src="/paginas/menu.xhtml"/>
+        
+    <p:growl id="avisos" showDetail="true" life="3000" />  
+
+    <p:fieldset legend="RELATÓRIO DE MOVIMENTAÇÃO GERAL:" toggleable="true"></p:fieldset> 
+    <p:fieldset legend="HISTÓRICO GERAL:" toggleable="true">
+    <h:form> 
+       <h:panelGrid columns="5">
+            <h:outputText value="DATA DO CADASTRO:" />  
+            <p:calendar value="#{testeBean.dataCadastro}" maxlength="8" size="10"/>
+            
+            <h:outputText value="MATRÍCULA:"/>
+            <p:inputMask mask="99.999" value="#{testeBean.matricula}" maxlength="6" size="7" />
+            <p:commandButton value="BUSCAR" actionListener="#{testeBean.buscar}" type="submit" />
+      </h:panelGrid> 
+        
+      <h:panelGrid columns="5">
+            <h:outputText value="DATA DO CADASTRO:" />  
+            <p:calendar value="#{testeBean.dataCadastro2}" maxlength="8" size="10"/>
+            
+            <h:outputText value="PLACA:"/>
+            <p:inputMask mask="aaa-9999" value="#{testeBean.placa}" maxlength="6" size="12" />
+            <p:commandButton value="BUSCAR" actionListener="#{testeBean.buscar2}" type="submit" />
+      </h:panelGrid>   
+        
+      <h:panelGrid columns="3">  
+            <h:outputText value="PRODUTO:"/>
+            <p:inputText id="produto" value="#{testeBean.produto}" maxlength="20" size="46"/>
+            <p:commandButton value="CONSULTAR" actionListener="#{testeBean.consultar}" type="submit" />
+     </h:panelGrid>
+    </h:form>  
+  </p:fieldset> 
+    
+    <p:fieldset legend="LISTA GERAL:" toggleable="true">  
+       <h:form id="form">
+
+                 <p:outputPanel id="books">
+                    <p:dataTable id="booksTable" value="#{bookBean.books}" var="book">
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="DATA" />
+                            </f:facet>
+                            <h:outputText value="#{book.data}" />
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="MATRÍCULA" />
+                            </f:facet>
+                            <h:outputText value="#{book.matricula}" />
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="PRODUTO" />
+                            </f:facet>
+                            <h:outputText value="#{book.produto}" />
+                        </p:column>
+                       
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="OPERAÇÃO" />
+                            </f:facet>
+                            
+                            <p:commandLink value="EXCLUIR" update=":form:books" process=":form:books">
+                                <p:collector value="#{book}"
+                                             removeFrom="#{bookBean.books}" />
+                            </p:commandLink>
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="DATA" />
+                            </f:facet>
+                            <h:outputText value="#{book.data2}" />
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="PLACA" />
+                            </f:facet>
+                            <h:outputText value="#{book.placa}" />
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="PRODUTO" />
+                            </f:facet>
+                            <h:outputText value="#{book.produto}" />
+                        </p:column>
+                       
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="OPERAÇÃO" />
+                            </f:facet>
+                            
+                            <p:commandLink value="EXCLUIR" update=":form:books" process=":form:books">
+                                <p:collector value="#{book}"
+                                             removeFrom="#{bookBean.books}" />
+                            </p:commandLink>
+                        </p:column>
+
+                    </p:dataTable>
+                </p:outputPanel>
+
+            </h:form>  
+        </p:fieldset> 
+    
+    
+  
+    </h:body>  
+ </html> 
+

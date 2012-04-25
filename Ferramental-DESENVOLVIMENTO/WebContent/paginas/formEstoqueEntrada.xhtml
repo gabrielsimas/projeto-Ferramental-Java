@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://java.sun.com/jsf/html" 
+     xmlns:p="http://primefaces.prime.com.tr/ui"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:f="http://java.sun.com/jsf/core">  
+   
+    <h:head>
+        <title>:.Medral Tecnologia Penha.:</title>
+    </h:head>
+    
+     <h:body style="background-color: paleturquoise">
+         <ui:include src="/paginas/menu.xhtml"/>
+        
+    <p:growl id="avisos" showDetail="true" life="3000" />  
+
+    <p:fieldset legend="ENTRADA DE PRODUTOS VIA NOTA FISCAL:" toggleable="true">  
+    <h:form> 
+        
+        <h:panelGrid columns="2">
+            <h:outputText value="Nº NOTA FISCAL:"/>
+            <p:inputMask mask="99.999" value="#{testeBean.notafiscal}" maxlength="6" size="8"/>
+        </h:panelGrid>
+        
+        <h:panelGrid columns="5">
+            <h:outputText value="FORNECEDOR:" />
+            <p:inputText id="fornecedor" value="#{testeBean.fornecedor}" maxlength="25" size="25"/>
+                   
+            <h:outputText value="PRODUTO:" />
+            <p:inputText id="produto" value="#{testeBean.produto}" maxlength="25" size="25"/>
+            
+            <p:commandButton value="ADICIONAR" actionListener="#{testeBean.enviar}" type="submit" />
+        </h:panelGrid> 
+        
+        <h:panelGrid columns="6">
+            <h:outputText value="QUANTIDADE:" />
+            <p:inputText id="quantidade" value="#{testeBean.quantidade}" maxlength="4" size="12"/>
+            
+            <h:outputText value="VALOR TOTAL:" />  
+            <p:inputMask mask="R$ 9.999,99" value="#{testeBean.valor}" maxlength="10" size="13"/>
+            
+            <p:commandButton value="ATUALIZAR" actionListener="#{testeBean.limpar}" type="reset" />
+            <p:commandButton value="LIMPAR CAMPOS" actionListener="#{testeBean.limpar}" type="reset" />
+       </h:panelGrid>              
+    </h:form>  
+  </p:fieldset> 
+    
+        <p:fieldset legend="LISTA GERAL:" toggleable="true">  
+        <h:form id="form">
+           <p:growl id="msgs" />
+
+                 <p:outputPanel id="books">
+                    <p:dataTable id="booksTable" value="#{bookBean.books}" var="book">
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Nº NOTA FISCAL" />
+                            </f:facet>
+                            <h:outputText value="#{book.notafiscal}" />
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                             <h:outputText value="FORNECEDOR" />
+                            </f:facet>
+                            <h:outputText value="#{book.fornecedor}"/>
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="PRODUTO" />
+                            </f:facet>
+                            <h:outputText value="#{book.poduto}" />
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="QUANTIDADE" />
+                            </f:facet>
+                            <h:outputText value="#{book.quantidade}" />
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="VALOR TOTAL" />
+                            </f:facet>
+                            <h:outputText value="#{book.valortot}" />
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="OPERAÇÃO" />
+                            </f:facet>
+                            
+                            <p:commandLink value="EXCLUIR" update=":form:books" process=":form:books">
+                                <p:collector value="#{book}" removeFrom="#{bookBean.books}" />
+                            </p:commandLink>
+                            
+                            <p:commandLink value="GRAVAR" update=":form:books" process=":form:books">
+                                <p:collector value="#{book}" removeFrom="#{bookBean.books2}" />
+                            </p:commandLink>
+                        </p:column>
+
+                    </p:dataTable>
+                </p:outputPanel>
+
+            </h:form>  
+        </p:fieldset>    
+
+    </h:body>  
+
+ </html> 
+

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:mysql://mysql.medralservicosrio.com.br:3306/medralservicosrio_com_br_10</property>
+		<property name="hibernate.connection.username">medralservic10</property>
+		<property name="hibernate.connection.password">medral@banco10</property>
+		
+		<!-- Classes Mapeadas -->
+		<!-- <mapping class="com.jamacedo.tutorial.livro.modelo.Livro"/>
+		-->
+</session-factory>
+</hibernate-configuration>
