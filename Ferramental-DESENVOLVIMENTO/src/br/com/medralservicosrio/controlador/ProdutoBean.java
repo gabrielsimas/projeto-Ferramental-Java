@@ -4,11 +4,10 @@
  */
 package br.com.medralservicosrio.controlador;
 
-import java.sql.SQLException;
+import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
-
-import br.com.medralservicosrio.modelo.Produto;
+import javax.faces.bean.SessionScoped;
 
 
 /**
@@ -17,26 +16,11 @@ import br.com.medralservicosrio.modelo.Produto;
  */
 
 @ManagedBean
-public class ProdutoBean {
+@SessionScoped
+public class ProdutoBean implements Serializable{
+
+	private static final long serialVersionUID = -3949946652394939040L;
+	
     
-    private Produto produto = new Produto();
-    //private ProdutoDAO produtodao = new ProdutoDAO();
     
-    public Produto getproduto(){
-        return produto; 
-    }  
-    public void setProduto(Produto produto) {
-        this.produto = produto;
-    }
-    
-    public String efetuaLogin() throws SQLException{
-        boolean loginvalido = produto.validar(produto);
-        if (loginvalido){
-            return "/paginas/index?faces-redirect=true";
-        }
-        else{
-           produto = new Produto();
-            return "login";
-        }
-    }
 }
