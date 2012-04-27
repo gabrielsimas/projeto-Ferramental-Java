@@ -21,7 +21,11 @@ import javax.persistence.Table;
 @Entity(name="Estoque")
 @Table(name="estoque")
 @NamedQueries({
-	@NamedQuery(name="",query="")
+	@NamedQuery(name="estoque.listar",query="FROM Estoque e"),
+	@NamedQuery(name="estoque.totalPorProduto",query="SELECT SUM(e.quantidade) FROM Estoque e" +
+														" JOIN e.produtos p " +
+														"WHERE p.idProduto = :p1"
+				)
 })
 public class Estoque implements Serializable{
 	
@@ -91,7 +95,7 @@ public class Estoque implements Serializable{
 		if (obj instanceof Estoque){
 			Estoque estoque = (Estoque) obj;
 			
-			if (estoque.getId() != null){
+			if (estoque.getId()!= null){
 				return estoque.getId().equals(this.idEstoque);
 			}
 		}
