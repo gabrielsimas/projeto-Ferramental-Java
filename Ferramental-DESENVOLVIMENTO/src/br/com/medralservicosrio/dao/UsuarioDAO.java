@@ -4,6 +4,8 @@
  */
 package br.com.medralservicosrio.dao;
 
+import org.hibernate.Query;
+
 import br.com.medralservicosrio.generics.DAO;
 import br.com.medralservicosrio.modelo.Usuario;
 
@@ -18,23 +20,30 @@ public class UsuarioDAO extends DAO<Usuario,Integer> {
 	 * 
 	 */
 	
-   /* private Connection connection;
-    
-    *//**
-     * 
-     * @param usuario
-     * @return valido
-     * @throws SQLException
-     *//*
-    public boolean validar(Usuario usuario) throws SQLException {
-        boolean valido = false;
-        connection = ConnectionFactory.getConnection();
-        
-        CallableStatement cs = this.connection.prepareCall("{call validar_login(?,?)}");
-
-        cs.setString(1, usuario.getLogin().trim());
-        cs.setString(2, usuario.getSenha().trim());
-        valido  = cs.executeQuery().first();
-        return valido;
-    }*/
+   public boolean autenticar(String usuario, String senha){
+	   
+	   String query = "SELECT u FROM Usuario u WHERE u.id = :p1 AND u.senha = :p2";
+	   
+	   try{
+		   
+		   Query consulta = getSessao().createQuery(query);
+		   
+		   //Recebe os parametros
+		   consulta.setString("p1", usuario);
+		   consulta.setString("p2", senha);
+		   
+		   //Verifica o resultado
+		   Usuario user = (Usuario) consulta.uniqueResult();
+			
+		   if (user != null){
+			   return true;
+		   }
+		   
+		   
+	   } catch (Exception ex){
+		   System.out.println(ex.getMessage());
+	   }
+	   
+	   return false;
+   }
 }

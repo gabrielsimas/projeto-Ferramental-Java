@@ -31,14 +31,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="usuarios")
-@NamedQueries(
+/*@NamedQueries(
 		{
 			@NamedQuery(name="usuario.listar",query="SELECT u FROM Usuario AS u"),
 			@NamedQuery(name="usuario.listarPorId",query="SELECT u FROM Usuario AS u " +
 					" WHERE id = :p1"),
 			@NamedQuery(name="usuario.autenticar",
 						query="SELECT u FROM Usuario AS u WHERE id = :p1 AND senha = :p2")
-		})
+		})*/
 public class Usuario implements Serializable{
 	
 	private static final long serialVersionUID = 186592017755553602L;
