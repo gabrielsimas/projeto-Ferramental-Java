@@ -4,12 +4,12 @@
 	<session-factory>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="hibernate.connection.url">jdbc:mysql://mysql.medralservicosrio.com.br:3306/medralservicosrio_com_br_10</property>
-		<property name="hibernate.connection.username">medralservic10</property>
-		<property name="hibernate.connection.password">medral@banco10</property>
+		<property name="hibernate.connection.url">jdbc:mysql://mysql.medralservicosrio.com.br:3306/medralservicosrio_com_br_9</property>
+		<property name="hibernate.connection.username">medralservic9</property>
+		<property name="hibernate.connection.password">medral@2012fera</property>
 		
 		<!-- Classes Mapeadas -->
-		<!-- <mapping class="com.jamacedo.tutorial.livro.modelo.Livro"/>
+		<!-- <mapping class=""/>
 		-->
 </session-factory>
 </hibernate-configuration>

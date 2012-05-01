@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.medralservicosrio.modelo;
 
 import java.io.Serializable;
@@ -11,19 +7,29 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
- *	
- * @author Luis Gabriel Nascimento Simas
- * @since  11/04/2012 até 12/04/2012
- * Classe de Persistência para Funcionario
+ * Classe de Persistência Funcionário
+ * 
+ * @author 		Luis Gabriel Nascimento Simas
+ * @category 	Classe Persistente
+ * @since		12/04/2012	
+ * 
+ * Padrão de Classe JavaBean contendo:
+ * Serialização
+ * Construtor Vazio
+ * Construtor com parâmetro
+ * Getters
+ * Setters
+ * Override de Métodos toString, hashCode e equals
+ * 
+ *  Este padrão serve para qualquer projeto Java até EJB
  */
 @Entity
 @Table(name="funcionarios")
-@NamedQueries(
+/*@NamedQueries(
+		
 		{
 			@NamedQuery(name="funcionario.listar",query="SELECT f FROM Funcionario f"),
 			@NamedQuery(name="funcionario.listarPorMatricula",
@@ -31,7 +37,7 @@ import javax.persistence.Table;
 			@NamedQuery(name="funcionario.listarPorId",
 					query="SELECT f FROM Funcionario f WHERE f.id = :p1")
 		}
-		)
+		)*/
 public class Funcionario implements Serializable{
     
 	private static final long serialVersionUID = 2940772491105983478L;

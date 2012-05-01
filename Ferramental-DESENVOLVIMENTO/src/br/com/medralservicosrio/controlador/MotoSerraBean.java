@@ -4,11 +4,7 @@
  */
 package br.com.medralservicosrio.controlador;
 
-import java.sql.SQLException;
-
 import javax.faces.bean.ManagedBean;
-
-import br.com.medralservicosrio.modelo.MotoSerra;
 
 
 /**
@@ -19,7 +15,7 @@ import br.com.medralservicosrio.modelo.MotoSerra;
 @ManagedBean
 public class MotoSerraBean {
     
-    private MotoSerra motoserra = new MotoSerra();
+    /*private MotoSerra motoserra = new MotoSerra();
     //private MotoSerraDAO motoserradao = new MotoSerraDAO();
     
     public MotoSerra getMotoSerra(){
@@ -38,5 +34,5 @@ public class MotoSerraBean {
             motoserra = new MotoSerra();
             return "login";
         }
-    }
+    }*/
 }

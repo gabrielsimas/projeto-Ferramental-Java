@@ -84,7 +84,7 @@ public abstract class DAO<E, ID extends Serializable> implements GenericDAO<E, I
 	}
 
 	@Override
-	public List listarTudo(Class<E> entidade, String namedQuery)  {
+	public List listarTudo(Class<E> entidade)  {
 		//Inicia uma Lista para os resultados
 		List resultado = null;
 		
@@ -92,7 +92,7 @@ public abstract class DAO<E, ID extends Serializable> implements GenericDAO<E, I
 			conexaoInicial();
 			//Pega o nome de forma recursiva o nome da Classe
 			//resultado = sessao.createCriteria(entidade).list();
-			resultado = sessao.getNamedQuery(namedQuery).list();
+			resultado = sessao.createQuery("FROM " + entidade.getClass().toString()).list();
 		} catch (HibernateException ex) {
 			System.err.println("Erro ao Listar todos os registro de " + entidade.getClass().toString()
 					+ "efetuando o Rollback!!" 

@@ -20,7 +20,7 @@ import br.com.medralservicosrio.modelo.Rastreabilidade;
 
 public class RastreabilidadeBean {
     
-    private Rastreabilidade rastreabilidade = new Rastreabilidade();
+/*    private Rastreabilidade rastreabilidade = new Rastreabilidade();
     //private RastreabilidadeDAO rastreabilidadedao = new RastreabilidadeDAO();
     
     public Rastreabilidade getrastreabilidade(){
@@ -39,5 +39,5 @@ public class RastreabilidadeBean {
             rastreabilidade = new Rastreabilidade();
             return "login";
         }
-    }
+    }*/
 }

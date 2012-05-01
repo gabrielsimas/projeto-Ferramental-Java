@@ -9,7 +9,7 @@ public interface GenericDAO<E, ID extends Serializable> {
 	void atualizar(E entidade);
 	void apagar(E entidade);
 	//List listarTudo(E entidade);
-	List listarTudo(Class<E> entidade,String namedQuery);
+	List listarTudo(Class<E> entidade);
 	E listarPorId(Class<E> entidade, ID key);
 	
 	

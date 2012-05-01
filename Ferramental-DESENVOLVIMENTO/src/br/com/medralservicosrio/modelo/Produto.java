@@ -9,24 +9,33 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
- *
- * @author Luis Gabriel Nascimento Simas
+ * Classe de Persistência Produto
+ * 
+ * @author 		Luis Gabriel Nascimento Simas
+ * @category 	Classe Persistente
+ * @since		12/04/2012	
+ * 
+ * Padrão de Classe JavaBean contendo:
+ * Serialização
+ * Construtor Vazio
+ * Construtor com parâmetro
+ * Getters
+ * Setters
+ * Override de Métodos toString, hashCode e equals
+ * 
+ *  Este padrão serve para qualquer projeto Java até EJB
  */
 @Entity(name="Produto")
 @Table(name="produtos")
-@NamedQueries(
+/*@NamedQueries(
 		{
 			@NamedQuery(name="produto.listar",query="FROM Produto p"),
 			@NamedQuery(name="produto.listarPorId",query="SELECT p FROM Produto p WHERE idProduto = :p1")
 		}
-)
+)*/
 
 public class Produto {
 	
@@ -44,65 +53,51 @@ public class Produto {
 	@Column(name="durabilidade",nullable=false)
     private Integer durabilidade;
 	
+	/*
 	@ManyToOne
 	@JoinColumn(name="idEstoque")
 	Estoque estoque;
+	*/
     
     public Produto(){
         
     }
 
-    public Produto(Integer idProduto, String produto, Double valor,
-			Integer durabilidade, Estoque estoque) {
+	public Produto(Integer idProduto, String produto, Double valor,
+			Integer durabilidade) {
 		this.idProduto = idProduto;
 		this.produto = produto;
 		this.valor = valor;
 		this.durabilidade = durabilidade;
-		this.estoque = estoque;
 	}
 
-	public int getDurabilidade() {
-        return durabilidade;
-    }
 
-    public void setDurabilidade(int durabilidade) {
-        this.durabilidade = durabilidade;
-    }
-
-    public Integer getIdProduto() {
-        return idProduto;
-    }
-
-    public void setIdProduto(int idProduto) {
-        this.idProduto = idProduto;
-    }
-
-    public String getProduto() {
-        return produto;
-    }
-
-    public void setProduto(String produto) {
-        this.produto = produto;
-    }
-
-    public Double getValor() {
-        return valor;
-    }
-
-    public void setValor(Double valor) {
-        this.valor = valor;
-    }
-    
-	public Estoque getEstoque() {
-		return estoque;
-	}
-
-	public void setEstoque(Estoque estoque) {
-		this.estoque = estoque;
+	public Integer getIdProduto() {
+		return idProduto;
 	}
 
 	public void setIdProduto(Integer idProduto) {
 		this.idProduto = idProduto;
+	}
+
+	public String getProduto() {
+		return produto;
+	}
+
+	public void setProduto(String produto) {
+		this.produto = produto;
+	}
+
+	public Double getValor() {
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
+	}
+
+	public Integer getDurabilidade() {
+		return durabilidade;
 	}
 
 	public void setDurabilidade(Integer durabilidade) {

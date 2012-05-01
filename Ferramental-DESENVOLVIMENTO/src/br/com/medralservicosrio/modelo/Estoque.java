@@ -14,19 +14,31 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
+ * Classe de Persistência Estoque
  * 
- * @author Gabriel
- *
+ * @author 		Luis Gabriel Nascimento Simas
+ * @category 	Classe Persistente
+ * @since		12/04/2012	
+ * 
+ * Padrão de Classe JavaBean contendo:
+ * Serialização
+ * Construtor Vazio
+ * Construtor com parâmetro
+ * Getters
+ * Setters
+ * Override de Métodos toString, hashCode e equals
+ * 
+ *  Este padrão serve para qualquer projeto Java até EJB
  */
 @Entity(name="Estoque")
 @Table(name="estoque")
+/*
 @NamedQueries({
 	@NamedQuery(name="estoque.listar",query="FROM Estoque e"),
-	@NamedQuery(name="estoque.totalPorProduto",query="SELECT SUM(e.quantidade) FROM Estoque e" +
-														" JOIN e.produtos p " +
-														"WHERE p.idProduto = :p1"
-				)
+	@NamedQuery(name="estoque.totalPorProduto",query="SELECT SUM(e.idProduto) FROM Estoque e " +
+			" WHERE e.idProduto")
 })
+*/
 public class Estoque implements Serializable{
 	
 	private static final long serialVersionUID = -4350667559400826807L;
@@ -36,8 +48,8 @@ public class Estoque implements Serializable{
 	@Column(name="id")
 	private Integer idEstoque;
 	
-	/*@Column(name="idproduto",nullable=false)
-	private Integer idProduto;*/
+	@Column(name="idproduto",nullable=false)
+	private Integer idProduto;
 	
 	@Column(name="qntd",nullable=false)
 	private Integer quantidade;
@@ -45,8 +57,8 @@ public class Estoque implements Serializable{
 	@Column(name="minimo",nullable=false)
 	private Integer minimo;
 	
-	@OneToMany(mappedBy="idProduto")
-	List<Produto> produtos;
+	/*@OneToMany(mappedBy="idProduto")
+	List<Produto> produtos;*/
 	
 		
 	public Estoque() {
@@ -69,12 +81,12 @@ public class Estoque implements Serializable{
 		this.idEstoque = id;
 	}
 	
-	/*public Integer getIdProduto() {
+	public Integer getIdProduto() {
 		return idProduto;
 	}
 	public void setIdProduto(Integer idProduto) {
 		this.idProduto = idProduto;
-	}*/
+	}
 	
 	public Integer getQuantidade() {
 		return quantidade;

@@ -1,97 +1,159 @@
 package br.com.medralservicosrio.modelo;
 
+import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 /**
- *
- * @author Eliane
+ * Classe de Persistência MotoSerra
+ * 
+ * @author 		Luis Gabriel Nascimento Simas
+ * @category 	Classe Persistente
+ * @since		12/04/2012	
+ * 
+ * Padrão de Classe JavaBean contendo:
+ * Serialização
+ * Construtor Vazio
+ * Construtor com parâmetro
+ * Getters
+ * Setters
+ * Override de Métodos toString, hashCode e equals
+ * 
+ *  Este padrão serve para qualquer projeto Java até EJB
  */
+@Entity(name="Motoserra")
+@Table(name="registro_moto_serra")
+public class MotoSerra implements Serializable{
 
-public class MotoSerra {
-    private int idMotoSerra;
-    private int idProduto;
+	private static final long serialVersionUID = 5848936204570582780L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="id",nullable=false,unique=true)
+    private Integer id;
+	
+	@Column(name="idProduto",nullable=false)
+    private Integer idProduto;
+	
+	@Column(name="gru",length=60,nullable=false)
     private String gru;
-    private int serie;
-    private int nota;
+	
+	@Column(name="serie",length=20,nullable=false)
+    private Integer serie;
+	
+	@Column(name="nota",length=60,nullable=false)
+    private String nota;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="data")
     private Date data;
-    private boolean status;
-    
-    public MotoSerra(){
-        
-    }
+	
+	@Column(name="status")
+    private String status;
 
-    public MotoSerra(int idMotoSerra, int idProduto, String gru, int serie, int nota, Date data, boolean status) {
-        this.idMotoSerra = idMotoSerra;
-        this.idProduto = idProduto;
-        this.gru = gru;
-        this.serie = serie;
-        this.nota = nota;
-        this.data = data;
-        this.status = status;
-    }
+	public MotoSerra() {
+		
+	}
 
-    public Date getData() {
-        return data;
-    }
+	public MotoSerra(Integer id, Integer idProduto, String gru, Integer serie,
+			String nota, Date data, String status) {
+		this.id = id;
+		this.idProduto = idProduto;
+		this.gru = gru;
+		this.serie = serie;
+		this.nota = nota;
+		this.data = data;
+		this.status = status;
+	}
 
-    public void setData(Date data) {
-        this.data = data;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public String getGru() {
-        return gru;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public void setGru(String gru) {
-        this.gru = gru;
-    }
+	public Integer getIdProduto() {
+		return idProduto;
+	}
 
-    public int getIdMotoSerra() {
-        return idMotoSerra;
-    }
+	public void setIdProduto(Integer idProduto) {
+		this.idProduto = idProduto;
+	}
 
-    public void setIdMotoSerra(int idMotoSerra) {
-        this.idMotoSerra = idMotoSerra;
-    }
+	public String getGru() {
+		return gru;
+	}
 
-    public int getIdProduto() {
-        return idProduto;
-    }
+	public void setGru(String gru) {
+		this.gru = gru;
+	}
 
-    public void setIdProduto(int idProduto) {
-        this.idProduto = idProduto;
-    }
+	public Integer getSerie() {
+		return serie;
+	}
 
-    public int getNota() {
-        return nota;
-    }
+	public void setSerie(Integer serie) {
+		this.serie = serie;
+	}
 
-    public void setNota(int nota) {
-        this.nota = nota;
-    }
+	public String getNota() {
+		return nota;
+	}
 
-    public int getSerie() {
-        return serie;
-    }
+	public void setNota(String nota) {
+		this.nota = nota;
+	}
 
-    public void setSerie(int serie) {
-        this.serie = serie;
-    }
+	public Date getData() {
+		return data;
+	}
 
-    public boolean isStatus() {
-        return status;
-    }
+	public void setData(Date data) {
+		this.data = data;
+	}
 
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
+	public String getStatus() {
+		return status;
+	}
 
-    public boolean validar(MotoSerra motoserra) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-    
-    
-    
-    
-    
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (obj instanceof MotoSerra){
+			MotoSerra motoserra = (MotoSerra) obj;
+			if (motoserra.getId() != null){
+				return motoserra.getId().equals(this.id);
+			}
+		}
+	
+		
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		
+		return this.id != null ? this.id.hashCode() : 0;
+	}
+
+	@Override
+	public String toString() {
+		
+		return this.id + ", " + this.gru;
+	}
+	
 }

@@ -14,19 +14,34 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+/**
+ * Classe de Persistência para Entradas no Estoque via Nota Fiscal
+ * 
+ * @author 		Luis Gabriel Nascimento Simas
+ * @category 	Classe Persistente
+ * @since		12/04/2012	
+ * 
+ * Padrão de Classe JavaBean contendo:
+ * Serialização
+ * Construtor Vazio
+ * Construtor com parâmetro
+ * Getters
+ * Setters
+ * Override de Métodos toString, hashCode e equals
+ * 
+ *  Este padrão serve para qualquer projeto Java até EJB
+ */
+
 @Entity(name="Entrada")
 @Table(name="entradas_via_nota")
+/*
 @NamedQueries(
 		{
 			@NamedQuery(name="entrada.listar",query="SELECT e FROM Entrada e"),
 			@NamedQuery(name="entrada.calculaLinha",query="SELECT (e.quantidade * e.valor) FROM Entrada e"),
-			@NamedQuery(
-					name="entrada.calculaTotal",
-					query="SELECT SUM(e.quantidade * e.valor) AS Total_Nota FROM Entrada e" +
-						  " WHERE e.nota = :p1"
-					)
 		}
 		)
+*/
 public class EntradaViaNota implements Serializable{
 	
 	private static final long serialVersionUID = 4737383045805984990L;
