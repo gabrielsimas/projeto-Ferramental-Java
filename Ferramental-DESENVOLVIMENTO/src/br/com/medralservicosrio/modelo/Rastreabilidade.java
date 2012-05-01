@@ -47,8 +47,76 @@ public class Rastreabilidade implements Serializable{
 	private Integer idRastreabilidade;
     
     @Temporal(TemporalType.DATE)
+    @Column(name="data",nullable=false)
 	private Date data;
 
-	
+	public Rastreabilidade() {
+		// TODO Auto-generated constructor stub
+	}
 
+	public Rastreabilidade(Integer id, Integer idProduto,
+			Integer idRastreabilidade, Date data) {
+		this.id = id;
+		this.idProduto = idProduto;
+		this.idRastreabilidade = idRastreabilidade;
+		this.data = data;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Integer getIdProduto() {
+		return idProduto;
+	}
+
+	public void setIdProduto(Integer idProduto) {
+		this.idProduto = idProduto;
+	}
+
+	public Integer getIdRastreabilidade() {
+		return idRastreabilidade;
+	}
+
+	public void setIdRastreabilidade(Integer idRastreabilidade) {
+		this.idRastreabilidade = idRastreabilidade;
+	}
+
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (obj instanceof Rastreabilidade){
+			Rastreabilidade rastreabilidade = (Rastreabilidade) obj;
+			
+			if (rastreabilidade.getId() != null){
+				return rastreabilidade.getId().equals(this.id);
+			}
+		}
+		
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		
+		return super.hashCode();
+	}
+
+	@Override
+	public String toString() {
+		
+		return super.toString();
+	}
 }
