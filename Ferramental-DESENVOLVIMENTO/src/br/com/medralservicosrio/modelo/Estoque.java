@@ -60,11 +60,19 @@ public class Estoque implements Serializable{
 	/*@OneToMany(mappedBy="idProduto")
 	List<Produto> produtos;*/
 	
-		
+	/**
+	 * 	
+	 */
 	public Estoque() {
 		
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @param quantidade
+	 * @param minimo
+	 */
 	public Estoque(Integer id,Integer quantidade,
 			Integer minimo) {
 		this.idEstoque = id;
@@ -72,7 +80,6 @@ public class Estoque implements Serializable{
 		this.quantidade = quantidade;
 		this.minimo = minimo;
 	}
-	
 	
 	public Integer getId() {
 		return idEstoque;
