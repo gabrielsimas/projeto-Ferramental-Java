@@ -31,7 +31,7 @@
                     <h:outputLabel for="password" value="SENHA: * " />  
                     <p:inputText value="#{usuarioBean.usuario.senha}" id="senha" required="true" label="senha" />
                     <f:facet name="footer">
-                    	<p:commandButton action="#{usuarioBean.efetuaLogin}" value="AUTENTICAR USUÁRIO" />
+                    	<p:commandButton action="#{usuarioBean.autenticar}" value="AUTENTICAR USUÁRIO" />
                     </f:facet>
                 </h:panelGrid>
                       

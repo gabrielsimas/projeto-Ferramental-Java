@@ -4,11 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.event.ActionEvent;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 import br.com.medralservicosrio.dao.UsuarioDAO;
 import br.com.medralservicosrio.modelo.Usuario;
 
+@ManagedBean
+@SessionScoped
 public class UsuarioBean implements Serializable{
 	
 	private static final long serialVersionUID = 1249564889274195799L;
@@ -25,10 +28,9 @@ public class UsuarioBean implements Serializable{
 	}
 
 	
-	public String Autenticar(){
+	public String autenticar(){
 		
-				
-		return dao.autenticar(usuario.getLogin(), usuario.getSenha()) ? "menu" : "erro";
+		return dao.autenticar(usuario.getLogin(), usuario.getSenha()) ? "principal" : "";
 	}
 	
 	public Usuario getUsuario() {

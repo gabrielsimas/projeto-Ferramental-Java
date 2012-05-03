@@ -22,7 +22,7 @@ public class UsuarioDAO extends DAO<Usuario,Integer> {
 	
    public boolean autenticar(String usuario, String senha){
 	   
-	   String query = "SELECT u FROM Usuario u WHERE u.id = :p1 AND u.senha = :p2";
+	   String query = "SELECT u FROM Usuario u WHERE u.login = :p1 AND u.senha = :p2";
 	   
 	   try{
 		   
@@ -31,6 +31,8 @@ public class UsuarioDAO extends DAO<Usuario,Integer> {
 		   //Recebe os parametros
 		   consulta.setString("p1", usuario);
 		   consulta.setString("p2", senha);
+		   
+		   /*Usuario user = new Usuario();*/
 		   
 		   //Verifica o resultado
 		   Usuario user = (Usuario) consulta.uniqueResult();

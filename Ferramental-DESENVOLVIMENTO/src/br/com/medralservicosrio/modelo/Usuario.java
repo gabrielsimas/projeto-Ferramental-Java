@@ -48,9 +48,6 @@ public class Usuario implements Serializable{
 	@Column(name="iduser")
     private Integer id;
 	
-	@Column(name="ativacao", nullable=true)
-    private Integer idAtivicao;
-	
 	@Column(name="nome", nullable=false, length=100)
     private String nome;
 	
@@ -81,11 +78,10 @@ public class Usuario implements Serializable{
 	 * @param nivel
 	 * @param ativacao
 	 */
-	public Usuario(Integer idUsuario, Integer idAtivicao, String nome,
+	public Usuario(Integer idUsuario, String nome,
 			String login, String senha, String email, Integer nivel,
 			Integer ativacao) {
 		this.id = idUsuario;
-		this.idAtivicao = idAtivicao;
 		this.nome = nome;
 		this.login = login;
 		this.senha = senha;
@@ -113,20 +109,6 @@ public class Usuario implements Serializable{
 	 */
 	public void setIdUsuario(Integer idUsuario) {
 		this.id = idUsuario;
-	}
-
-	/**
-	 * @return the idAtivicao
-	 */
-	public Integer getIdAtivicao() {
-		return idAtivicao;
-	}
-
-	/**
-	 * @param idAtivicao the idAtivicao to set
-	 */
-	public void setIdAtivicao(Integer idAtivicao) {
-		this.idAtivicao = idAtivicao;
 	}
 
 	/**

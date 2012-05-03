@@ -17,6 +17,8 @@
         <img src="../imagem/TopoSCFP.jpg" width="1347" height='155'/>
 
         <h:form>
+        	
+        	<h:outputText value="#{beanUsuario.usuario.nome}" />
             <p:menubar autoSubmenuDisplay="true"> 
                 <p:submenu label="INÍCIO" >
                     <p:menuitem value="Home" ajax="false" action="/paginas/menu.xhtml" />
@@ -64,10 +66,6 @@
                 <p:menuitem value="SAIR" ajax="false" url="http://www.medralservicosrio.com.br"/>
 
             </p:menubar>
-            
-            
-
-
         </h:form>
     </h:body>
 </html>
