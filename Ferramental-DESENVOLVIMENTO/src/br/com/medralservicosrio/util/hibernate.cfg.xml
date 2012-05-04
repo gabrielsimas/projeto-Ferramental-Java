@@ -4,10 +4,17 @@
 	<session-factory>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-		<!-- <property name="hibernate.connection.url">jdbc:mysql://mysql.medralservicosrio.com.br:3306/medralservicosrio_com_br_9</property> -->
+		<!-- Banco remoto 
+		<property name="hibernate.connection.url">jdbc:mysql://mysql.medralservicosrio.com.br:3306/medralservicosrio_com_br_9</property>
+		<property name="hibernate.connection.username">medralservic9</property>
+		<property name="hibernate.connection.password">medral@2012fera</property>
+		-->
+		
+		<!--  Banco Local -->
 		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/ferramental</property>
 		<property name="hibernate.connection.username">root</property>
 		<property name="hibernate.connection.password">j4n3c4554n1</property>
+		
 		
 		<!-- Classes Mapeadas -->
 		<!-- <mapping class=""/>

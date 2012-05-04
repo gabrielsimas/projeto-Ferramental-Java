@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import br.com.medralservicosrio.dao.UsuarioDAO;
 import br.com.medralservicosrio.modelo.Usuario;
@@ -29,6 +31,8 @@ public class UsuarioBean implements Serializable{
 
 	
 	public String autenticar(){
+		FacesContext.getCurrentInstance()
+			.addMessage("messages", new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro de Login", "Usuário ou senha invalidos!"));
 		
 		return dao.autenticar(usuario.getLogin(), usuario.getSenha()) ? "principal" : "";
 	}
