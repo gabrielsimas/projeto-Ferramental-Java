@@ -26,10 +26,13 @@
             <h:form>  
                 <p:messages id="messages" showDetail="true" autoUpdate="true"/>
                 <h:panelGrid columns="2">    
-                    <h:outputLabel for="username" value="Usu&aacute;rio:" />  
-                    <p:inputText value="#{usuarioBean.usuario.login}" id="login" required="true" label="login" />
-                    <h:outputLabel for="password" value="Senha:" />  
-                    <p:inputText value="#{usuarioBean.usuario.senha}" id="senha" required="true" label="senha" />
+                    <h:outputLabel for="login" value="Usu&aacute;rio:" />  
+                    <p:inputText value="#{usuarioBean.usuario.login}" id="login" required="true" requiredMessage="É necessária a digitação de um login" 
+                    	label="login" />
+                    <h:outputLabel for="senha" value="Senha:" />  
+                    <!--  <p:inputText value="#{usuarioBean.usuario.senha}" id="senha" required="true" label="senha" /> -->
+                    <p:password id="senha" value="#{usuarioBean.usuario.senha}" goodLabel="Senha Boa!!" 
+                    		weakLabel="senha fraca!!" promptLabel="Entre a sua senha"  requiredMessage="Entre com a senha por favor." label="senha"/>
                     <f:facet name="footer">
                     	<p:commandButton action="#{usuarioBean.autenticar}" value="Efetuar Login" />
                     </f:facet>

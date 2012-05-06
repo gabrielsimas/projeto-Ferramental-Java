@@ -6,14 +6,14 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import br.com.medralservicosrio.dao.UsuarioDAO;
 import br.com.medralservicosrio.modelo.Usuario;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class UsuarioBean implements Serializable{
 	
 	private static final long serialVersionUID = 1249564889274195799L;
@@ -31,10 +31,10 @@ public class UsuarioBean implements Serializable{
 
 	
 	public String autenticar(){
-		FacesContext.getCurrentInstance()
-			.addMessage("messages", new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro de Login", "Usuário ou senha invalidos!"));
+		FacesContext fc = FacesContext.getCurrentInstance();
 		
-		return dao.autenticar(usuario.getLogin(), usuario.getSenha()) ? "principal" : "";
+		fc.addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR,"", "Usuário ou senha invalidos!"));
+		return dao.autenticar(usuario.getLogin(), usuario.getSenha()) ? "principal?faces-redirect=true" :"";
 	}
 	
 	public Usuario getUsuario() {

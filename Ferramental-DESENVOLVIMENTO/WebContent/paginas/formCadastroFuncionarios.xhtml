@@ -7,105 +7,27 @@
       xmlns:f="http://java.sun.com/jsf/core">
 
 
-    <h:head>
-        <title>:. Medral SCFP RJ.:</title>
-        <f:view contentType="text/html" />
+	<h:head>
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8"/>
+        <title>Cadastro de Funcion&aacute;rio</title> 
+        
     </h:head>
-
+	
+	<f:view contentType="text/html" />
 
     <h:body style="background-color: paleturquoise"> 
 
         <ui:include src="/paginas/menu.xhtml"/>
-
-        <p:growl id="avisos" showDetail="true" life="3000" />  
-
-        <p:fieldset legend="CADASTRO DE FUNCIONÁRIOS:" toggleable="true">  
-            <h:form> 
-                <h:panelGrid columns="4">
-                    <h:outputText value="MATRÍCULA:" />  
-                    <p:inputMask mask="999.999" value="#{FuncionarioBean.funcionario.matrfunc}" maxlength="6" size="10" />
-               
-                    <h:outputText value="NOME:" />  
-                    <p:inputText id="nome" value="#{FuncionarioBean.funcionario.nome}" maxlength="70" size="67"/>
-                </h:panelGrid>
-                
-                <h:panelGrid columns="6">    
-                    <h:outputText value="SETOR:" />   
-                    <p:inputText id="setor" value="#{FuncionarioBean.funcionario.setor}" maxlength="25" size="22" />
-
-                    <h:outputText value="FUNÇÃO:"/>
-                    <p:inputText id="funcao" value="#{FuncionarioBean.funcionario.funcao}" maxlength="25" size="22"/>
-               
-                    <h:outputText value="CUSTO:"/>
-                    <p:inputText id="custo" value="#{FuncionarioBean.funcionario.custo}" maxlength="25" size="22"/>
-                </h:panelGrid> 
-
-                <p:separator style="width: 100%; height: 3px" />  
-
-                <p:commandButton value="CADASTRAR" actionListener="#{FuncionarioBean.funcionario.cadastrar}" type="submit" />
-                <p:commandButton value="LIMPAR CAMPOS" actionListener="#{FuncionarioBean.funcionario.limpar}" type="reset" />
-
-            </h:form>  
-        </p:fieldset>
-   
-        <p:fieldset legend="LISTA GERAL:" toggleable="true">  
-              <h:form id="form">
-                 <p:outputPanel id="books">
-                    <p:dataTable id="booksTable" value="#{createBookBean.books}" var="book">
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="MATRÍCULA" />
-                            </f:facet>
-                            <h:outputText value="#{book.matrFunc}" />
-                        </p:column>
-                        
-                        <p:column>
-                            <f:facet name="header">
-                             <h:outputText value="NOME" />
-                            </f:facet>
-                            <h:outputText value="#{book.nomeFunc}" />
-                        </p:column>
-                        
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="SETOR" />
-                            </f:facet>
-                            <h:outputText value="#{book.setor}" />
-                        </p:column>
-                        
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="FUNÇÃO" />
-                            </f:facet>
-                            <h:outputText value="#{book.funcao}" />
-                        </p:column>
-                        
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="CUSTO" />
-                            </f:facet>
-                            <h:outputText value="#{book.custo}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="OPERAÇÃO" />
-                            </f:facet>
-                            
-                            <p:commandLink value="EXCLUIR" update=":form:books" process=":form:books">
-                                <p:collector value="#{book}"
-                                             removeFrom="#{bookBean.books}" />
-                            </p:commandLink>
-                        </p:column>
-
-                    </p:dataTable>
-                </p:outputPanel>
-
-            </h:form>
-        </p:fieldset>
-       
-    </h:body>  
+        
+        <h:form id="cadastraFuncionario">
+        	<p:messages id="mensageiroCadastro" globalOnly="true" rendered="true" autoUpdate="true"/> 
+        	<h:panelGrid columns="2" id="´pgdCadastraFuncionario">
+        		
+            </h:panelGrid>
+        </h:form>  
+        
+	</h:body>  
 
 </html> 
 

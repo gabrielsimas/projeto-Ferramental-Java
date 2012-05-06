@@ -7,65 +7,67 @@
       xmlns:p="http://primefaces.org/ui">
 
     <h:head>
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
         <link type="text/css" rel="stylesheet" href="../css/theme.css"/>
-        <title>:.Medral Tecnologia Penha.:</title>
+        <!-- <title>:.Medral Tecnologia Penha.:</title> -->
     </h:head>
 
-    <h:body style="background-image:url('../imagem/BemVindo.jpg');
-                   background-position: 50% 0%;background-repeat: no-repeat">
+    <!-- Corrigindo Facelets -->
+    <!-- <h:body style="background-image:url('../imagem/BemVindo.jpg');
+                   background-position: 50% 0%;background-repeat: no-repeat"> -->
+      <h:body>
             
-        <img src="../imagem/TopoSCFP.jpg" width="1347" height='155'/>
-
-        <h:form>
-        	
-        	
-            <p:menubar autoSubmenuDisplay="true"> 
-                <p:submenu label="INÍCIO" >
-                    <p:menuitem value="Home" ajax="false" url="menu.xhtml" />
-                </p:submenu>
+        <!--  <img src="../imagem/TopoSCFP.jpg" width="1347" height='155'/> -->
+		<ui:insert name="menu">
+        	<h:form id="faceletMenu">
+            	<p:menubar autoSubmenuDisplay="true" rendered="true"> 
+                	<p:submenu label="IN&Iacute;CIO" >
+                    	<p:menuitem value="Home"  url="menu.xhtml" />
+                	</p:submenu>
                 
-                <p:submenu label="CADASTRAR" >
-                    <p:menuitem value="Funcionário"     ajax="false" url="formCadastroFuncionarios.xhtml" />
-                    <p:menuitem value="Fornecedor"      ajax="false" url="formCadastroFornecedores.xhtml"/>
-                    <p:menuitem value="Produto"         ajax="false" url="formCadastroProdutos.xhtml"/>
-                    <p:menuitem value="Veículo"         ajax="false" url="formCadastroVeiculos.xhtml" />
-                    <p:menuitem value="Rastreabilidade" ajax="false" url="formCadastroRastreabilidade.xhtml"/>
-                    <p:menuitem value="Moto Serra"      ajax="false" url="formCadastroMotoSerra.xhtml"/>
-                </p:submenu>
+                	<p:submenu id="sbmnCadastrar" label="CADASTRAR">
+                    	<p:menuitem value="Funcionário"      url="formCadastroFuncionarios.xhtml" disabled="false"/>
+                    	<p:menuitem value="Fornecedor"       url="formCadastroFornecedores.xhtml" disabled="true"/>
+                    	<p:menuitem value="Produto"          url="formCadastroProdutos.xhtml" disabled="true"/>
+                    	<p:menuitem value="Veículo"          url="formCadastroVeiculos.xhtml" disabled="true"/>
+                    	<p:menuitem value="Rastreabilidade"  url="formCadastroRastreabilidade.xhtml" disabled="true"/>
+                    	<p:menuitem value="Moto Serra"       url="formCadastroMotoSerra.xhtml" disabled="true"/>
+                	</p:submenu>
 
-                <p:submenu label="MOVIMENTAÇÃO">
-                    <p:menuitem value="Individual"    ajax="false" url="formMovimentacaoIndividual.xhtml"/>
-                    <p:menuitem value="Veículos"      ajax="false" url="formMovimentacaoVeiculos.xhtml"/>
-                    <p:menuitem value="Transferência" ajax="false" url="formMovimentacaoTransfer.xhtml"/>
-                </p:submenu>
+                	<p:submenu id="sbmnMovmentacao" label="MOVIMENTAÇÃO">
+                    	<p:menuitem value="Individual"     url="formMovimentacaoIndividual.xhtml" disabled="true"/>
+                    	<p:menuitem value="Veículos"       url="formMovimentacaoVeiculos.xhtml" disabled="true"/>
+                    	<p:menuitem value="Transferência"  url="formMovimentacaoTransfer.xhtml" disabled="true"/>
+                	</p:submenu>
 
-                <p:submenu label="ESTOQUE" >
-                    <p:menuitem value="Entrada"  ajax="false" url="formEstoqueEntrada.xhtml"/>
-                    <p:menuitem value="Produtos" ajax="false" url="formEstoqueProduto.xhtml"/>
-                </p:submenu>
+                	<p:submenu id="sbmnEstoque" label="ESTOQUE" >
+                    	<p:menuitem value="Entrada"   url="formEstoqueEntrada.xhtml" disabled="true"/>
+                    	<p:menuitem value="Produtos"  url="formEstoqueProduto.xhtml" disabled="true"/>
+                	</p:submenu>
 
-                <p:submenu label="RELATÓRIO ADMINISTRATIVO">
-                    <p:menuitem value="Entrada"        ajax="false" url="relatorioAdministrativoEntrada.xhtml"/>
-                    <p:menuitem value="Individual"     ajax="false" url="relatorioAdministrativoIndividual.xhtml"/>
-                    <p:menuitem value="Veículos"       ajax="false" url="relatorioAdministrativoVeiculos.xhtml"/>
-                    <p:menuitem value="Movimentação"   ajax="false" url="relatorioAdministrativoMovimentacao.xhtml"/>
-                    <p:menuitem value="Teste Elétrico" ajax="false" url="relatorioAdministrativoTesteEletrico.xhtml"/>
-                    <p:menuitem value="Vales"          ajax="false" url="relatorioAdministrativoVales.xhtml"/>
-                    <p:menuitem value="Reforma"        ajax="false" url="relatorioAdministrativoReforma.xhtml"/>
-                </p:submenu>
+                	<p:submenu id="sbmnRelatorioAdministrativo" label="RELATÓRIO ADMINISTRATIVO">
+                    	<p:menuitem value="Entrada"         url="relatorioAdministrativoEntrada.xhtml" disabled="true"/>
+                    	<p:menuitem value="Individual"      url="relatorioAdministrativoIndividual.xhtml" disabled="true"/>
+                    	<p:menuitem value="Veículos"        url="relatorioAdministrativoVeiculos.xhtml" disabled="true"/>
+                    	<p:menuitem value="Movimentação"    url="relatorioAdministrativoMovimentacao.xhtml" disabled="true"/>
+                    	<p:menuitem value="Teste Elétrico"  url="relatorioAdministrativoTesteEletrico.xhtml" disabled="true"/>
+                    	<p:menuitem value="Vales"           url="relatorioAdministrativoVales.xhtml" disabled="true"/>
+                    	<p:menuitem value="Reforma"         url="relatorioAdministrativoReforma.xhtml" disabled="true"/>
+                	</p:submenu>
 
-                <p:submenu label="RELATÓRIO GERENCIAL">
-                    <p:menuitem value="Material"        ajax="false" url="relatorioGerencialMaterial.xhtml"/>
-                    <p:menuitem value="Compra"          ajax="false" url="relatorioGerencialCompras.xhtml"/>
-                    <p:menuitem value="Sucata"          ajax="false" url="relatorioGerencialSucata.xhtml"/>
-                    <p:menuitem value="Rastreabilidade" ajax="false" url="relatorioGerencialRastreabilidade.xhtml"/>
-                    <p:menuitem value="Produto"         ajax="false" url="relatorioGerencialProduto.xhtml"/>
-                </p:submenu>
-                <p:menuitem value="TROCAR SENHA" ajax="false" />
-                
-                <p:menuitem value="SAIR" ajax="false" url="http://www.medralservicosrio.com.br"/>
+                	<p:submenu id="sbmnRelatorioGerencial" label="RELATÓRIO GERENCIAL">
+                    	<p:menuitem value="Material"         url="relatorioGerencialMaterial.xhtml" disabled="true"/>
+                    	<p:menuitem value="Compra"           url="relatorioGerencialCompras.xhtml" disabled="true"/>
+                    	<p:menuitem value="Sucata"           url="relatorioGerencialSucata.xhtml" disabled="true"/>
+                    	<p:menuitem value="Rastreabilidade"  url="relatorioGerencialRastreabilidade.xhtml" disabled="true"/>
+                    	<p:menuitem value="Produto"          url="relatorioGerencialProduto.xhtml" disabled="true"/>
+                	</p:submenu>
+                	<p:menuitem id="sbmnTrocarSenha" value="TROCAR SENHA"  />
+                	<p:menuitem id="sbmnSair" value="SAIR"  url="http://www.medralservicosrio.com.br" disabled="true"/>
 
-            </p:menubar>
-        </h:form>
+            	</p:menubar>
+        	</h:form>
+        </ui:insert>
+        	
     </h:body>
 </html>
