@@ -2,33 +2,100 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
      xmlns:h="http://java.sun.com/jsf/html" 
-     xmlns:p="http://primefaces.prime.com.tr/ui"
+     xmlns:p="http://primefaces.org/ui"
      xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:f="http://java.sun.com/jsf/core">  
    
     <h:head>
         <title>:.Medral Tecnologia Penha.:</title>
+         <h:outputScript name="../include/funcoes.js"></h:outputScript>
     </h:head>
     
      <h:body style="background-color: paleturquoise">
          <ui:include src="/paginas/menu.xhtml"/>
-        
-    <p:growl id="avisos" showDetail="true" life="3000" />  
+    <h:form id="form" prependId="false">    
+	    <p:growl id="avisos" showDetail="true" life="3000" autoUpdate="true"/>  
+	
+	    <p:fieldset legend="RELATÓRIO PRODUTOS POR FUNCIONÁRIO:" toggleable="true" id="buscarDados">
+	       <h:panelGrid columns="8">
+	            <h:outputText value="MATRÍCULA:"/>
+	            <!-- <p:inputText id="matricula" value="#{relatoriosBean.matricula}" maxlength="5" size="6" onkeydown="ForceNumericInput(event, this, false, false)" /> -->
+	            
+	            <h:outputText value="PLACA:"/>
+	            <p:inputMask mask="aaa-9999" value="#{relatoriosBean.placa}" maxlength="7" size="8"/>
+	            
+	            <h:outputText value="PRODUTO:"/>
+	            <p:inputText id="produto" value="#{relatoriosBean.produto}" maxlength="25" size="40"/>
+	            <p:commandButton value="CONSULTAR" actionListener="#{relatoriosBean.gerarRelatorioGerencialProdutosPorFuncionarios}" type="submit" update="buscarDados, mostrarTabela " />
+	            <p:commandButton value="IMPRIMIR" rendered="#{not empty relatoriosBean.listaRelatorio}" type="submit"  actionListener="#{relatoriosBean.imprimirRelatorioGerencialProdutosPorFuncionarios}" ajax="false" />
+	        </h:panelGrid>
+	        
+	        <h:panelGrid columns="4" rendered="#{not empty relatoriosBean.listaRelatorio}">
+	            <h:outputText value="Matrícula / Placa  :"/>
+	            <h:outputText value="Funcionário / Encarregado:"/>
+	            <h:outputText value="Função:"/>
+	            <h:outputText value="Setor:"/>
 
-    <p:fieldset legend="RELATÓRIO INDIVIDUAL DO COLABORADOR:" toggleable="true"></p:fieldset> 
-    <p:fieldset legend="HISTÓRICO GERAL:" toggleable="true">
-    <h:form> 
-       <h:panelGrid columns="8">
-            <h:outputText value="Data do Cadastro:" />  
-            <p:calendar value="#{testeBean.dataCadastro}" maxlength="8" size="10"/>
-            
-            <h:outputText value="Matrícula:"/>
-            <p:inputText id="descricao" value="#{testeBean.matricula}" maxlength="5" size="6"/>
-            <p:commandButton value="CONSULTAR" actionListener="#{testeBean.consultar}" type="submit" />
-        </h:panelGrid>
-    </h:form>  
-  </p:fieldset> 
-  
+				<h:outputText value="#{relatoriosBean.func.matrFuncionario} #{relatoriosBean.placa}" />
+	            <h:outputText value="#{relatoriosBean.func.nome}"/>
+	            <h:outputText value="#{relatoriosBean.funcao}"/>
+	            <h:outputText value="#{relatoriosBean.setor}"/>
+	        </h:panelGrid>
+	   </p:fieldset> 
+    
+       <p:fieldset legend="MODIFICAR DESTINO DO MATERIAL:" toggleable="true" id="mostrarTabela">  
+
+        <p:dataTable value="#{relatoriosBean.listaRelatorio}" var="lista" id="dataTable" rendered="#{not empty relatoriosBean.listaRelatorio}"      
+                 paginator="true" rows="20" paginatorAlwaysVisible="false" rowsPerPageTemplate="20,50,100" rowIndexVar="linha"
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                 >
+	             
+	             <p:column>
+	                 <f:facet name="header">
+	                     <h:outputText value="Produto" />
+	                 </f:facet>
+	                 <h:outputText value="#{lista.produto.produto}" />
+	                 <f:facet name="footer">  
+               			TOTAL  
+           			</f:facet>
+	             </p:column>
+	             
+	             <p:column style="aling: center">
+	                 <f:facet name="header">
+	                     <h:outputText value="Quantidade" />
+	                 </f:facet>
+	                 <h:outputText value="#{lista.quantidade}" />
+	             </p:column>
+	             
+	             <p:column>
+	                 <f:facet name="header">
+	                     <h:outputText value="Valor Unitário"/>
+	                 </f:facet>
+	                <h:outputText value="#{lista.produto.valor}" >
+	                	<f:convertNumber minFractionDigits="2" />
+	                </h:outputText>
+	             </p:column>
+	             
+	             <p:column>
+	                 <f:facet name="header">
+	                     <h:outputText value="Valor Total"/>
+	                 </f:facet>
+	               
+	                <h:outputText value="#{lista.valor}" id="colunaValor" >
+	                	<f:convertNumber minFractionDigits="2" />
+	                </h:outputText>
+	                
+	                <f:facet name="footer">  
+	                <h:outputText value="#{relatoriosBean.calculoTotais.get('valorTotal')}">
+               				<f:convertNumber minFractionDigits="2"/>
+               		</h:outputText>
+               		</f:facet>
+	             </p:column>
+	             
+	         </p:dataTable>
+
+      </p:fieldset>    
+  	</h:form>
     </h:body>  
  </html> 
 

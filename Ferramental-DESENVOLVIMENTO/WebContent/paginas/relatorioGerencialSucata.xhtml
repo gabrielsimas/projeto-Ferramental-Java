@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
      xmlns:h="http://java.sun.com/jsf/html" 
-     xmlns:p="http://primefaces.prime.com.tr/ui"
+     xmlns:p="http://primefaces.org/ui"
      xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:f="http://java.sun.com/jsf/core">  
    
@@ -12,23 +12,86 @@
     
      <h:body style="background-color: paleturquoise">
          <ui:include src="/paginas/menu.xhtml"/>
-        
-    <p:growl id="avisos" showDetail="true" life="3000" />  
-
-    <p:fieldset legend="RELATÓRIO INDIVIDUAL DO COLABORADOR:" toggleable="true"></p:fieldset> 
-    <p:fieldset legend="HISTÓRICO GERAL:" toggleable="true">
-    <h:form> 
-       <h:panelGrid columns="8">
-            <h:outputText value="Data do Cadastro:" />  
-            <p:calendar value="#{testeBean.dataCadastro}" maxlength="8" size="10"/>
-            
-            <h:outputText value="Matrícula:"/>
-            <p:inputText id="descricao" value="#{testeBean.matricula}" maxlength="5" size="6"/>
-            <p:commandButton value="CONSULTAR" actionListener="#{testeBean.consultar}" type="submit" />
-        </h:panelGrid>
-    </h:form>  
-  </p:fieldset> 
+    <h:form id="form">   
+	    <p:growl id="avisos" showDetail="true" life="3000" autoUpdate="true"/>  
+	
+	    <p:fieldset legend="RELATÓRIO DE ITENS SUCATEADOS POR FUNCIONÁRIO:" toggleable="true" id="buscarDados">
+	       <h:panelGrid columns="2">
+	            <h:outputText value="DATA INICIAL:" />  
+	            <p:calendar value="#{relatoriosBean.dataInicial}" maxlength="10" size="10" pattern="dd/MM/yyyy"/>
+	            
+	            <h:outputText value="DATA FINAL:" />  
+	            <p:calendar value="#{relatoriosBean.dataFinal}" maxlength="10" size="10" pattern="dd/MM/yyyy"/>
+	            
+	            <h:outputText value="FUNCIONÁRIO:"/>
+	            <p:inputText id="funcionario" value="#{relatoriosBean.funcionario}" maxlength="15" size="30" autocomplete=""/>
+	            
+	            <h:outputText value="PRODUTO:"/>
+	            <p:inputText id="produto" value="#{relatoriosBean.produto}" maxlength="25" size="30"/>
+	
+	            <p:commandButton value="CONSULTAR" actionListener="#{relatoriosBean.gerarRelatorioGerencialDeSucata}" type="submit" update="buscarDados, mostrarDados"/>
+	            <p:commandButton value="IMPRIMIR" rendered="#{not empty relatoriosBean.listaRelatorio}" type="submit"  actionListener="#{relatoriosBean.imprimirRelatorioGerencialDeSucata}" ajax="false" />
+	        </h:panelGrid>
+	  </p:fieldset> 
+	    
+	    <p:fieldset legend="LISTA GERAL:" toggleable="true" id="mostrarDados">  
+	  
+	
+             <p:dataTable value="#{relatoriosBean.listaRelatorio}" var="lista" id="dataTable" rendered="#{not empty relatoriosBean.listaRelatorio}"     
+             paginator="true" rows="20" paginatorAlwaysVisible="false" rowsPerPageTemplate="20,50,100" rowIndexVar="linha"
+             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
+                    
+                   <p:column>
+                       <f:facet name="header">
+                          <h:outputText value="DATA" />
+                       </f:facet>
+                       <h:outputText value="#{lista.data}" >
+                       	<f:convertDateTime pattern="dd/MM/yyyy"/>
+                       </h:outputText>
+                   </p:column>
+                   
+                    <p:column>
+                       <f:facet name="header">
+                           <h:outputText value="MATRÍCULA"/>
+                       </f:facet>
+                       <h:outputText value="#{lista.matricula}" />
+                   </p:column>
+                   
+                    <p:column>
+                       <f:facet name="header">
+                           <h:outputText value="FUNCIONÁRIO"/>
+                       </f:facet>
+                       <h:outputText value="#{lista.nome}" />
+                   </p:column>
+	        		
+                   <p:column>
+                       <f:facet name="header">
+                           <h:outputText value="PRODUTO" />
+                       </f:facet>
+                       <h:outputText value="#{lista.produto}" />
+                   </p:column>
+                   
+                   <p:column>
+	                 <f:facet name="header">
+	                     <h:outputText value="Valor Unitário"/>
+	                 </f:facet>
+	                <h:outputText value="#{lista.valor}" >
+	                	<f:convertNumber minFractionDigits="2" />
+	                </h:outputText>
+	             	</p:column>
+                   
+                   <p:column>
+                       <f:facet name="header">
+                           <h:outputText value="RASTREADO" />
+                       </f:facet>
+                       <h:outputText value="#{lista.rastreabilidade}" />
+                   </p:column>
+               
+                </p:dataTable>
+	
+	      </p:fieldset>   
   
+    </h:form>  
     </h:body>  
  </html> 
 

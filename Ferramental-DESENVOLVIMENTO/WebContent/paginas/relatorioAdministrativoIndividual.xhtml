@@ -2,70 +2,109 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
      xmlns:h="http://java.sun.com/jsf/html" 
-     xmlns:p="http://primefaces.prime.com.tr/ui"
+     xmlns:p="http://primefaces.org/ui"
      xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:f="http://java.sun.com/jsf/core">  
    
     <h:head>
         <title>:.Medral Tecnologia Penha.:</title>
+        <h:outputScript name="../include/funcoes.js"></h:outputScript>
     </h:head>
     
      <h:body style="background-color: paleturquoise">
          <ui:include src="/paginas/menu.xhtml"/>
-        
-    <p:growl id="avisos" showDetail="true" life="3000" />  
+      <h:form id="form" prependId="false">  
+      <p:growl id="avisos" showDetail="true" life="3000" autoUpdate="true" />  
 
-    <p:fieldset legend="RELATÓRIO INDIVIDUAL DO COLABORADOR:" toggleable="true"></p:fieldset> 
-    <p:fieldset legend="HISTÓRICO GERAL:" toggleable="true">
-    <h:form> 
-       <h:panelGrid columns="8">
-            <h:outputText value="DATA DO CADASTRO:" />  
-            <p:calendar value="#{testeBean.dataCadastro}" maxlength="8" size="10"/>
-            
-            <h:outputText value="MATRÍCULA:"/>
-            <p:inputText id="descricao" value="#{testeBean.matricula}" maxlength="5" size="6"/>
-            <p:commandButton value="CONSULTAR" actionListener="#{testeBean.consultar}" type="submit" />
-        </h:panelGrid>
-    </h:form>  
-  </p:fieldset> 
+	    <p:fieldset legend="RELATÓRIO INDIVIDUAL DO COLABORADOR:" toggleable="true" id="buscaDados">
+	       <h:panelGrid columns="2">
+	            <h:outputText value="MATRÍCULA:"/>
+	            <p:inputText id="matricula" value="#{relatoriosBean.matricula}" maxlength="5" size="6" onkeydown="ForceNumericInput(event, this, false, false)"/>
+	            
+	            <p:commandButton value="CONSULTAR" actionListener="#{relatoriosBean.gerarRelatorioAdministrativoIndividual}" type="submit" update="mostraDados, buscaDados"  />
+	            <p:commandButton value="IMPRIMIR" rendered="#{not empty relatoriosBean.listaRelatorio}" type="submit"  actionListener="#{relatoriosBean.imprimirRelatorioAdministrativoIndividual}" ajax="false" />
+	        </h:panelGrid>
+	    </p:fieldset> 
     
-    <p:fieldset legend="LISTA GERAL:" toggleable="true">  
-   <h:form id="form">
+    <p:fieldset legend="LISTA GERAL:" toggleable="true" id="mostraDados">  
 
-                 <p:outputPanel id="books">
-                    <p:dataTable id="booksTable" value="#{bookBean.books}" var="book">
+             <p:dataTable id="dataTable" value="#{relatoriosBean.listaRelatorio}" var="lista">
+   
+                 <p:column>
+                     <f:facet name="header">
+                         <h:outputText value="Produto" />
+                     </f:facet>
+                     <h:outputText value="#{lista.produto}" />
+                 </p:column>
+                 
+                 <p:column>
+                     <f:facet name="header">
+                         <h:outputText value="Entrega" />
+                     </f:facet>
+                     <h:outputText value="#{lista.dataEntrada}">
+           		            <f:convertDateTime dateStyle="short" pattern="dd/MM/yyyy" />
+	               	 </h:outputText>
+                 </p:column>
+                 
+                 <p:column>
+                     <f:facet name="header">
+                         <h:outputText value="Durabilidade" />
+                     </f:facet>
+                     <h:outputText value="#{lista.durabilidade}" />
+                 </p:column>
+                 
+                 <p:column>
+                     <f:facet name="header">
+                         <h:outputText value="Utilizado" />
+                     </f:facet>
+                     <h:outputText value="#{lista.utilizado}" />
+                 </p:column>
+                 
+                 <p:column>
+                     <f:facet name="header">
+                         <h:outputText value="Rastreamento" />
+                     </f:facet>
+                     <h:outputText value="#{lista.rastreamento}" />
+                 </p:column>
+                 
+                 <p:column>
+                     <f:facet name="header">
+                         <h:outputText value="Status" />
+                     </f:facet>
+                     <h:outputText value="#{lista.status}" />
+                 </p:column>
+                 
+                 <p:column>
+                     <f:facet name="header">
+                         <h:outputText value="Movimentação" />
+                     </f:facet>
+                     <h:outputText value="#{lista.movimentacao}" />
+                 </p:column>
+                 
+                 <p:column>
+                     <f:facet name="header">
+                         <h:outputText value="Quantidade" />
+                     </f:facet>
+                     <h:outputText value="#{lista.quantidade}" />
+                 </p:column>
+                 
+                <!--  
+                <p:column>
+                     <f:facet name="header">
+                         <h:outputText value="OPERAÇÃO" />
+                     </f:facet>
+                     
+                     <p:commandLink value="BAIXA" update=":form:books" process=":form:books">
+                         <p:collector value="#{book}"
+                                      removeFrom="#{bookBean.books}" />
+                     </p:commandLink>
+                 </p:column>
+ 				-->
+             </p:dataTable>
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="DATA" />
-                            </f:facet>
-                            <h:outputText value="#{book.data}" />
-                        </p:column>
-                        
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="MATRÍCULA" />
-                            </f:facet>
-                            <h:outputText value="#{book.matr}" />
-                        </p:column>
-                       
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="OPERAÇÃO" />
-                            </f:facet>
-                            
-                            <p:commandLink value="EXCLUIR" update=":form:books" process=":form:books">
-                                <p:collector value="#{book}"
-                                             removeFrom="#{bookBean.books}" />
-                            </p:commandLink>
-                        </p:column>
-
-                    </p:dataTable>
-                </p:outputPanel>
-
-            </h:form>  
         </p:fieldset>     
   
+    </h:form>  
     </h:body>  
  </html> 
 

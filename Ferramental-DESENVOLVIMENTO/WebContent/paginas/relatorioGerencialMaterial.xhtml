@@ -2,33 +2,171 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
      xmlns:h="http://java.sun.com/jsf/html" 
-     xmlns:p="http://primefaces.prime.com.tr/ui"
+     xmlns:p="http://primefaces.org/ui"
      xmlns:ui="http://java.sun.com/jsf/facelets"
-     xmlns:f="http://java.sun.com/jsf/core">  
-   
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:c="http://java.sun.com/jstl/core"
+     >
     <h:head>
         <title>:.Medral Tecnologia Penha.:</title>
+        <script type="text/javascript" language="javascript">
+		function multiplicarValores(valor, qtd, id){
+			var resultado = valor * qtd;
+			document.getElementById(id).innerText = resultado.toFixed(2).toLocaleString();
+		}
+        </script>
     </h:head>
     
-     <h:body style="background-color: paleturquoise">
+    <h:body style="background-color: paleturquoise">
          <ui:include src="/paginas/menu.xhtml"/>
-        
-    <p:growl id="avisos" showDetail="true" life="3000" />  
+    <h:form id="formRelGerencialMaterial" prependId="false">
+    	<p:growl id="avisos" showDetail="true" sticky="true" autoUpdate="true"  />  
 
-    <p:fieldset legend="RELATÓRIO INDIVIDUAL DO COLABORADOR:" toggleable="true"></p:fieldset> 
-    <p:fieldset legend="HISTÓRICO GERAL:" toggleable="true">
-    <h:form> 
-       <h:panelGrid columns="8">
-            <h:outputText value="Data do Cadastro:" />  
-            <p:calendar value="#{testeBean.dataCadastro}" maxlength="8" size="10"/>
-            
-            <h:outputText value="Matrícula:"/>
-            <p:inputText id="descricao" value="#{testeBean.matricula}" maxlength="5" size="6"/>
-            <p:commandButton value="CONSULTAR" actionListener="#{testeBean.consultar}" type="submit" />
-        </h:panelGrid>
-    </h:form>  
-  </p:fieldset> 
-  
+	    <p:fieldset legend="RELATÓRIO DE PRODUTOS POR LOCALIDADE:" toggleable="true">
+	   
+	       	<h:panelGrid columns="4" id="painel">
+	            <h:outputText value="PRODUTO:"/>
+	            <p:inputText id="produto" value="#{relatoriosBean.produto}" maxlength="25" size="40"/>
+	            <p:commandButton value="CONSULTAR" actionListener="#{relatoriosBean.gerarRelatorioGerencialDeMateriais}" type="submit" update="painel, exibirDataTable, dataTable"/>
+	            <p:commandButton value="IMPRIMIR" rendered="#{not empty relatoriosBean.listaRelatorio}" type="submit"  actionListener="#{relatoriosBean.imprimirRelatorioGerencialDeMateriais}" ajax="false" />
+	        </h:panelGrid>
+   
+  		</p:fieldset> 
+    
+     	<p:fieldset legend="LISTA GERAL:" toggleable="true"  id="exibirDataTable">  
+	         
+	         <p:dataTable value="#{relatoriosBean.listaRelatorio}" var="lista" id="dataTable" rendered="#{not empty relatoriosBean.listaRelatorio}"     
+                 paginator="true" rows="20" paginatorAlwaysVisible="false" rowsPerPageTemplate="20,50,100" rowIndexVar="linha" 
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                 emptyMessage="Nenhum Produto Encontrado"  
+                 >
+                  
+	             <p:column>
+	                 <f:facet name="header" >
+	                     <h:outputText value="PRODUTO" style="width: 10pt;" />
+	                 </f:facet>
+	                 <h:outputText value="#{lista.produto.produto}"/>
+	                 <f:facet name="footer">  
+               			TOTAL  
+           			 </f:facet>  
+	             </p:column>
+	             
+	             
+	             <p:column >
+	                 <f:facet name="header">
+	                     <h:outputText value="TESTE" />
+	                 </f:facet>
+	                 <h:outputText value="#{lista.qtdTeste}" />
+	             </p:column>
+	             
+	             <p:column style="text-align: center">
+	                 <f:facet name="header">
+	                     <h:outputText value="VALOR"/>
+	                 </f:facet>
+	                
+	                <script type="text/javascript">
+	               		multiplicarValores(#{lista.produto.valor},#{lista.qtdTeste},"dataTable:"+#{linha}+":colunaValorTeste");
+					</script>
+	                <h:outputText value="" id="colunaValorTeste" />
+	                <f:facet name="footer">  
+               			<h:outputText value="#{relatoriosBean.calculoTotais.get('valorTotalTeste')}">
+               				<f:convertNumber minFractionDigits="2"/>
+               			</h:outputText>
+           			 </f:facet>  
+	             </p:column>
+	             
+	             <p:column>
+	                 <f:facet name="header">
+	                     <h:outputText value="REFORMA" />
+	                 </f:facet>
+	                 <h:outputText value="#{lista.qtdReformado}" />
+	             </p:column>
+	             
+	             <p:column style="text-align: center">
+	                 <f:facet name="header">
+	                     <h:outputText value="VALOR"/>
+	                 </f:facet>
+	               
+	               	<script type="text/javascript">
+	               		multiplicarValores(#{lista.produto.valor},#{lista.qtdReformado},"dataTable:"+#{linha}+":colunaValorReforma");
+					</script>
+	               	<h:outputText value="" id="colunaValorReforma"/>
+	                 <f:facet name="footer">
+	                 	<h:outputText value="#{relatoriosBean.calculoTotais.get('valorTotalReforma')}">
+               				<f:convertNumber minFractionDigits="2"/>
+               			</h:outputText>
+           			 </f:facet>
+	             </p:column>
+	             
+	             <p:column>
+	                 <f:facet name="header">
+	                     <h:outputText value="ESTOQUE" />
+	                 </f:facet>
+	                 <h:outputText value="#{lista.qtdEstoque}" />
+	             </p:column>
+	             
+	             <p:column style="text-align: center">
+	                 <f:facet name="header">
+	                     <h:outputText value="VALOR"/>
+	                 </f:facet>
+	                 <script type="text/javascript">
+	               		multiplicarValores(#{lista.produto.valor},#{lista.qtdEstoque},"dataTable:"+#{linha}+":colunaValorEstoque");
+					 </script>
+	                 <h:outputText value="" id="colunaValorEstoque"/>
+	                  <f:facet name="footer">
+	                 	<h:outputText value="#{relatoriosBean.calculoTotais.get('valorTotalEstoque')}">
+               				<f:convertNumber minFractionDigits="2"/>
+               			</h:outputText>
+           			</f:facet>
+	             </p:column>
+	             
+	             <p:column>
+	                 <f:facet name="header">
+	                     <h:outputText value="FUNCIONÁRIO"/>
+	                 </f:facet>
+	                 <h:outputText value="#{lista.qtdFuncionando}" />
+	             </p:column>
+	             
+	             <p:column style="text-align: center">
+	                 <f:facet name="header">
+	                     <h:outputText value="VALOR"/>
+	                 </f:facet>
+	                
+	                <script type="text/javascript">
+	               		multiplicarValores(#{lista.produto.valor},#{lista.qtdFuncionando},"dataTable:"+#{linha}+":colunaValorFuncionario");
+					</script>
+	                <h:outputText value="" id="colunaValorFuncionario"/>
+	                <f:facet name="footer">
+	                 	<h:outputText value="#{relatoriosBean.calculoTotais.get('valorTotalFuncionario')}">
+               				<f:convertNumber minFractionDigits="2"/>
+               			</h:outputText>
+           			</f:facet>
+	             </p:column>
+	             
+	             <p:column>
+	                 <f:facet name="header">
+	                     <h:outputText value="VEÍCULO"/>
+	                 </f:facet>
+	                 <h:outputText value="#{lista.qtdVeiculo}" />
+	             </p:column>
+	             
+	             <p:column style="text-align: center">
+	                 <f:facet name="header">
+	                     <h:outputText value="VALOR"/>
+	                 </f:facet>
+	                 <script type="text/javascript">
+	                 multiplicarValores(#{lista.produto.valor},#{lista.qtdVeiculo},"dataTable:"+#{linha}+":colunaValorVeiculo");
+					 </script>
+	                 <h:outputText value=""  id="colunaValorVeiculo"/>
+	                 <f:facet name="footer">
+	                 	<h:outputText value="#{relatoriosBean.calculoTotais.get('valorTotalVeiculo')}">
+               				<f:convertNumber minFractionDigits="2"/>
+               			</h:outputText>
+           			</f:facet>
+	             </p:column>
+	         </p:dataTable>
+        </p:fieldset>     
+ 	</h:form>  
     </h:body>  
  </html> 
 

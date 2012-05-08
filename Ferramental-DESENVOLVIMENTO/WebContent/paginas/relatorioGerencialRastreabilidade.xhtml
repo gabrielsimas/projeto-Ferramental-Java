@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
      xmlns:h="http://java.sun.com/jsf/html" 
-     xmlns:p="http://primefaces.prime.com.tr/ui"
+     xmlns:p="http://primefaces.org/ui"
      xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:f="http://java.sun.com/jsf/core">  
    
@@ -12,23 +12,26 @@
     
      <h:body style="background-color: paleturquoise">
          <ui:include src="/paginas/menu.xhtml"/>
-        
-    <p:growl id="avisos" showDetail="true" life="3000" />  
+     <h:form id="form" prependId="false">   
+	  
+	    <p:growl id="avisos" showDetail="true" life="3000" autoUpdate="true" />  
+	    <p:fieldset legend="RELATÓRIO RASTREAMENTO DE PRODUTOS:" toggleable="true" id="buscarDados"> 
+	       <h:panelGrid columns="6">
+	            <h:outputText value="RASTREABILIDADE:"/>
+	            <p:inputText id="rastrear" value="#{relatoriosBean.rastreabilidade}" maxlength="9" size="10"/>
+	            
+	            <h:outputText value="PRODUTO:"/>
+	            <p:inputText id="produto" value="#{relatoriosBean.produto}" maxlength="25" size="40"/>
+	            
+	            <p:commandButton value="CONSULTAR" actionListener="#{relatoriosBean.gerarRelatorioGerencialRastreabilidade}" type="submit" update="buscarDados, mostrarDados"/>
+	            <p:commandButton value="IMPRIMIR" rendered="#{not empty relatoriosBean.listaRelatorio}" type="submit"  actionListener="#{relatoriosBean.imprimirRelatorioGerencialProdutosPorFuncionarios}" ajax="false" />
+	        </h:panelGrid>
+	   </p:fieldset> 
+    
+     <p:fieldset legend="LISTA GERAL:" toggleable="true" id="mostrarDados">  
 
-    <p:fieldset legend="RELATÓRIO INDIVIDUAL DO COLABORADOR:" toggleable="true"></p:fieldset> 
-    <p:fieldset legend="HISTÓRICO GERAL:" toggleable="true">
-    <h:form> 
-       <h:panelGrid columns="8">
-            <h:outputText value="Data do Cadastro:" />  
-            <p:calendar value="#{testeBean.dataCadastro}" maxlength="8" size="10"/>
-            
-            <h:outputText value="Matrícula:"/>
-            <p:inputText id="descricao" value="#{testeBean.matricula}" maxlength="5" size="6"/>
-            <p:commandButton value="CONSULTAR" actionListener="#{testeBean.consultar}" type="submit" />
-        </h:panelGrid>
+     </p:fieldset>   
     </h:form>  
-  </p:fieldset> 
-  
     </h:body>  
  </html> 
 

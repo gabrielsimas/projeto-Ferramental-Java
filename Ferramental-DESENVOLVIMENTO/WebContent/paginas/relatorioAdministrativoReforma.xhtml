@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
      xmlns:h="http://java.sun.com/jsf/html" 
-     xmlns:p="http://primefaces.prime.com.tr/ui"
+     xmlns:p="http://primefaces.org/ui"
      xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:f="http://java.sun.com/jsf/core">  
    
@@ -12,73 +12,102 @@
     
      <h:body style="background-color: paleturquoise">
          <ui:include src="/paginas/menu.xhtml"/>
-        
-    <p:growl id="avisos" showDetail="true" life="3000" />  
+     <h:form id="form" prependId="false">   
+     <p:growl id="avisos" showDetail="true" life="3000" autoUpdate="true"/>  
 
-    <p:fieldset legend="RELATÓRIO REFORMA DE MATERIAL:" toggleable="true"></p:fieldset> 
-    <p:fieldset legend="HISTÓRICO GERAL:" toggleable="true">
-    <h:form> 
-       <h:panelGrid columns="8">
-            <h:outputText value="Data da Baixa:" />  
-            <p:calendar value="#{testeBean.dataCadastro}" maxlength="8" size="10"/>
-            
-            <h:outputText value="Produto:"/>
-            <p:inputText id="produto" value="#{testeBean.produto}" maxlength="25" size="35"/>
-            <p:commandButton value="CONSULTAR" actionListener="#{testeBean.consultar}" type="submit" />
-        </h:panelGrid>
-    </h:form>  
-  </p:fieldset> 
-    
-    <p:fieldset legend="MODIFICAR DESTINO DO MATERIAL:" toggleable="true">  
-        <h:form id="form">
-           <p:growl id="msgs" />
+	    <p:fieldset legend="RELATÓRIO REFORMA DE MATERIAL:" toggleable="true" id="buscarDados"> 
+	       <h:panelGrid columns="2">
+	            <h:outputText value="Data da Baixa:" />  
+	            <p:calendar value="#{relatoriosBean.dataInicial}" maxlength="10" size="10" pattern="dd/MM/yyyy"/>
+	            
+	            <h:outputText value="Produto:"/>
+	            <p:inputText id="produto" value="#{relatoriosBean.produto}" maxlength="25" size="35"/>
+				
+				<p:commandButton value="CONSULTAR" actionListener="#{relatoriosBean.gerarRelatorioAdministrativoReforma}" type="submit" update="buscarDados, mostrarDados"/>
+            	<p:commandButton value="IMPRIMIR" rendered="#{not empty relatoriosBean.listaRelatorio}" type="submit"  actionListener="#{relatoriosBean.imprimirRelatorioAdministrativoReforma}" ajax="false" />	            
 
-                 <p:outputPanel id="books">
-                    <p:dataTable id="booksTable" value="#{bookBean.books}" var="book">
-                        
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="Produto" />
-                            </f:facet>
-                            <h:outputText value="#{book.produto}" />
-                        </p:column>
+	        </h:panelGrid>
+	    </p:fieldset>
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="Retornar Estoque" />
-                            </f:facet>
-                            
-                            <p:commandLink value="INSERIR" update=":form:books" process=":form:books">
-                                <p:collector value="#{book}"
-                                             removeFrom="#{bookBean.books}" />
-                            </p:commandLink>
-                        </p:column>
-                        
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="Produto" />
-                            </f:facet>
-                            <h:outputText value="#{book.produto2}" />
-                        </p:column>
-                        
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="Enviar p/Sucata" />
-                            </f:facet>
-                            
-                            <p:commandLink value="PROSSEGUIR" update=":form:books" process=":form:books">
-                                <p:collector value="#{book}"
-                                             removeFrom="#{bookBean.books2}" />
-                            </p:commandLink>
-                        </p:column>
+		<p:fieldset legend="MODIFICAR DESTINO DO MATERIAL:" toggleable="true" id="mostrarDados">
 
-                    </p:dataTable>
-                </p:outputPanel>
+			<p:dataTable id="dataTable" value="#{relatoriosBean.listaRelatorio}" var="lista">
 
-            </h:form>  
-        </p:fieldset>    
-    
-  
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Produto" />
+					</f:facet>
+					<h:outputText value="#{lista.produto}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Valor Total" />
+					</f:facet>
+
+					<h:outputText value="#{lista.valor}" id="colunaValor">
+						<f:convertNumber minFractionDigits="2" />
+					</h:outputText>
+
+					<f:facet name="footer">
+						<h:outputText
+							value="#{relatoriosBean.calculoTotais.get('valorTotal')}">
+							<f:convertNumber minFractionDigits="2" />
+						</h:outputText>
+					</f:facet>
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Último Funcionario" />
+					</f:facet>
+					<h:outputText value="#{lista.funcionario}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Rastreamento" />
+					</f:facet>
+					<h:outputText value="#{lista.rastreamento}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Data" />
+					</f:facet>
+					<h:outputText value="#{lista.data}">
+						<f:convertDateTime dateStyle="short" pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+
+				<!-- 
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Retornar Estoque" />
+					</f:facet>
+
+					<p:commandLink value="INSERIR" update=":form:books"
+						process=":form:books">
+						<p:collector value="#{book}" removeFrom="#{bookBean.books}" />
+					</p:commandLink>
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Enviar p/Sucata" />
+					</f:facet>
+
+					<p:commandLink value="PROSSEGUIR" update=":form:books"
+						process=":form:books">
+						<p:collector value="#{book}" removeFrom="#{bookBean.books2}" />
+					</p:commandLink>
+				</p:column>
+				-->
+			</p:dataTable>
+		</p:fieldset>
+
+	</h:form>  
     </h:body>  
  </html> 
 
