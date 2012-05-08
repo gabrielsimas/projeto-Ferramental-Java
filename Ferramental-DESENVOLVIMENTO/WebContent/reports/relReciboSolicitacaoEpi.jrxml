@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relReciboSolicitacaoEpi" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="4"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1"/>
+	<parameter name="mchapa" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT i.id, p.produto, p.durabilidade, DATEDIFF(now(),i.data) as temp, i.status,i.tipo_req,i.chapa,i.data,i.rastreabilidade,i.qntd,f.nome,f.funcao,f.setor FROM  individual as i INNER JOIN produtos as p ON i.idproduto = p.idproduto INNER JOIN funcionarios as f ON i.chapa = f.chapa WHERE i.chapa=$P{mchapa}]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="produto" class="java.lang.String"/>
+	<field name="durabilidade" class="java.lang.Integer"/>
+	<field name="temp" class="java.lang.Long"/>
+	<field name="status" class="java.lang.String"/>
+	<field name="tipo_req" class="java.lang.String"/>
+	<field name="chapa" class="java.lang.Integer"/>
+	<field name="data" class="java.sql.Date"/>
+	<field name="rastreabilidade" class="java.lang.Long"/>
+	<field name="qntd" class="java.lang.Integer"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="funcao" class="java.lang.String"/>
+	<field name="setor" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="64" splitType="Stretch">
+			<staticText>
+				<reportElement x="137" y="16" width="281" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RECIBO DE SOLICITAÇÃO DE EPI E EPC]]></text>
+			</staticText>
+			<image>
+				<reportElement x="-1" y="2" width="162" height="30"/>
+				<imageExpression><![CDATA["C:\\Desenvolvimento\\MEDRAL\\medralservicosrio\\SCFP\\web\\imagem\\medral.JPG"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="93" y="36" width="368" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TERMO DE RESPONSABILIDADE DO ALMOXARIFADO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="29" splitType="Stretch">
+			<staticText>
+				<reportElement x="443" y="0" width="49" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Emitido em:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy hh:mm">
+				<reportElement x="492" y="0" width="63" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="203" splitType="Stretch">
+			<staticText>
+				<reportElement x="-1" y="0" width="36" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Chapa:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="41" y="0" width="30" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chapa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="108" y="0" width="218" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="73" y="0" width="35" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nome:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="370" y="0" width="185" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{funcao}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="327" y="0" width="43" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Função:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="35" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Setor :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="41" y="20" width="514" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{setor}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="44" width="555" height="129"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Declaro ter recebido sem ônus, os equipamentos de proteção individual EPI's, adequados ao risco e em perfeito estado de conservação e funcionamento, bem como o treinamento e a orientação conforme preconiza a NR-6 - sub - itens 6.6.1 e 6.7.1
+* Estar ciente da obrigatoriedade do seu uso, constituindo ATO FALTOSO a recusa injustificada do uso do EPI, conforme disposição legal constante na NR-10, sub-item 1.8.1, incorrendo nas penalidades previstas em lei;
+* Responsabiliza-me pela guarda e conservação;
+* Usá-lo apenas para a finalidade a que se destina;
+* Solicitar a sua substituição sempre que o mesmo se torne impróprio para o uso;
+* Não alterar as caracteristicas originais do equipamento;
+* Devolvê-los no caso de rescisão de contrato de trabalho;
+* Restituir à empresa o prejuizo decorrente do extravio ou danos causados no EPI por uso e/ou acondicionamento indevido;
+* Autorizo o desconto salarial proporcional ao custo de reparação do dano que evetualmente vier a provocar no EPI em questão conforme Art. 462 1º da CLT;
+* Importante: Após o preenchimento deste "Termo de Responsabilidade" o mesmo deve ser encaminhado ao Departamento de Recursos Humanos para que seja arquivado por um periodo de vinte anos.]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="183" width="555" height="20"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="183" width="65" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quantidade]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="161" y="183" width="116" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descrição do EPI / EPC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="374" y="183" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rastreabilidade]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="498" y="183" width="37" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data]]></text>
+			</staticText>
+			<line direction="BottomUp">
+				<reportElement x="476" y="183" width="1" height="20"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="371" y="183" width="1" height="20"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="65" y="183" width="1" height="20"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="20"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<line>
+				<reportElement x="476" y="0" width="1" height="20"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="371" y="0" width="1" height="20"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="65" y="0" width="1" height="20"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="0" width="64" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qntd}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="73" y="0" width="292" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{produto}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="374" y="0" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rastreabilidade}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="478" y="0" width="77" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="59" splitType="Stretch">
+			<line>
+				<reportElement x="30" y="32" width="230" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="295" y="32" width="230" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="96" y="33" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Supervisor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="362" y="32" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Colaborador]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="457" y="4" width="98" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pág. "+$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
