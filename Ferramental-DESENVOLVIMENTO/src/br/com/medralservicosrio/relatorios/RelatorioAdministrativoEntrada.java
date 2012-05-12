@@ -2,15 +2,15 @@ package br.com.medralservicosrio.relatorios;
 
 import java.util.Date;
 
-import br.com.medralservicosrio.modelo.Produto;
-
 public class RelatorioAdministrativoEntrada {
 
+	private Integer idFornecedor;
 	private Integer numNota;
 	private Integer quantidade;
-	private String fornecedor;
 	private Date data;
-	private Produto produto;
+	private String produto;
+	private Double valor;
+	private Double total;
 	
 	public RelatorioAdministrativoEntrada() {
 	}
@@ -28,18 +28,6 @@ public class RelatorioAdministrativoEntrada {
 		this.numNota = numNota;
 	}
 	/**
-	 * @return the fornecedor
-	 */
-	public String getFornecedor() {
-		return fornecedor;
-	}
-	/**
-	 * @param fornecedor the fornecedor to set
-	 */
-	public void setFornecedor(String fornecedor) {
-		this.fornecedor = fornecedor;
-	}
-	/**
 	 * @return the data
 	 */
 	public Date getData() {
@@ -51,18 +39,22 @@ public class RelatorioAdministrativoEntrada {
 	public void setData(Date data) {
 		this.data = data;
 	}
-	/**
-	 * @return the produto
-	 */
-	public Produto getProduto() {
+	public String getProduto() {
 		return produto;
 	}
-	/**
-	 * @param produto the produto to set
-	 */
-	public void setProduto(Produto produto) {
+
+	public void setProduto(String produto) {
 		this.produto = produto;
 	}
+
+	public Double getValor() {
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
+	}
+
 	/**
 	 * @return the quantidade
 	 */
@@ -75,5 +67,20 @@ public class RelatorioAdministrativoEntrada {
 	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
 	}
-	
+
+	public Integer getIdFornecedor() {
+		return idFornecedor;
+	}
+
+	public void setIdFornecedor(Integer idFornecedor) {
+		this.idFornecedor = idFornecedor;
+	}
+
+	public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total) {
+		this.total = total;
+	}
 }

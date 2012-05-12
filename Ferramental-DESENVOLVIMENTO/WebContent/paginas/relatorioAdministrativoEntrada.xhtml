@@ -17,20 +17,27 @@
         <p:growl id="avisos" showDetail="true" life="3000" autoUpdate="true" />
 	    <p:fieldset legend="RELATÓRIO DE ENTRADA DE PRODUTOS:" toggleable="true" id="buscarDados"> 
 	       <h:panelGrid columns="2">
-	            <h:outputText value="NOTA FISCAL:"/>
-	            <p:inputText value="#{relatoriosBean.notaFiscal}" maxlength="5" size="10" onkeydown="ForceNumericInput(event, this, false, false)" />
-	           
+		        <h:outputText value="NOTA FISCAL:"/>
+		        <p:inputText id="numNota" value="#{relatoriosBean.numNota}" maxlength="5" size="10" onkeydown="ForceNumericInput(event, this, false, false)" required="false" requiredMessage="Para Imprimmir o Número da Nota é Obrigatório" />
+		        
+		       
 	            <h:outputText value="DATA:" />  
-	            <p:calendar value="#{relatoriosBean.dataInicial}" maxlength="10" size="10" pattern="dd/MM/yyyy"/>
+	            <p:calendar id="dataEvento" value="#{relatoriosBean.dataInicial}" maxlength="10" size="10" pattern="dd/MM/yyyy"/>
 	            
-	            <p:commandButton value="CONSULTAR" actionListener="#{relatoriosBean.gerarRelatorioAdministrativoEntrada}" type="submit" update="buscarDados, mostrarDados"/>
-	            <p:commandButton value="IMPRIMIR" rendered="#{not empty relatoriosBean.listaRelatorio}" type="submit"  actionListener="#{relatoriosBean.imprimirRelatorioAdministrativoEntrada}" ajax="false" />
+	            <p:commandButton value="CONSULTAR" actionListener="#{relatoriosBean.gerarRelatorioAdministrativoEntrada}" type="submit" update="buscarDados, mostrarDados" title="Para Imprimir o Número da Nota é Obrigatório"/>
+	            <p:commandButton value="IMPRIMIR" rendered="#{not empty relatoriosBean.listaRelatorio and not empty relatoriosBean.numNota }" type="submit"  actionListener="#{relatoriosBean.imprimirRelatorioAdministrativoEntrada}" ajax="false" />
+	            
+	            
+	            
 	        </h:panelGrid>
 	  	</p:fieldset> 
     
    		<p:fieldset legend="LISTA GERAL:" toggleable="true" id="mostrarDados" >  
    
-                    <p:dataTable value="#{relatoriosBean.listaRelatorio}" var="lista"  >
+                    <p:dataTable value="#{relatoriosBean.listaRelatorio}" var="lista" 
+                    paginator="true" rows="20" paginatorAlwaysVisible="false" rowsPerPageTemplate="20,50,100" rowIndexVar="linha"
+                	 paginatorTemplate=" {PageLinks} {RowsPerPageDropdown}"
+                     >
 
                         <p:column>
                             <f:facet name="header">
@@ -47,21 +54,12 @@
                 		            <f:convertDateTime dateStyle="short" pattern="dd/MM/yyyy" />
 	               			 </h:outputText>
                         </p:column>
-                        
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="Fornecedor" />
-                            </f:facet>
-                            <h:outputText value="#{lista.fornecedor}" >
-	                				<f:convertDateTime dateStyle="short" pattern="dd/MM/yyyy" />
-	               			 </h:outputText>
-                        </p:column>
-                      
+
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="Produto" />
                             </f:facet>
-                            <h:outputText value="#{lista.produto.produto}" />
+                            <h:outputText value="#{lista.produto}" />
                         </p:column>
                         
                         <p:column>
@@ -75,19 +73,30 @@
                             <f:facet name="header">
                                 <h:outputText value="Valor" />
                             </f:facet>
-                            <h:outputText value="#{lista.produto.valor}">
+                            <h:outputText value="#{lista.valor}">
 	                			<f:convertNumber minFractionDigits="2"/>
 	                		</h:outputText>
-                        </p:column>
-                        
-                        <p:column>
-                            <f:facet name="header">
+	                		
+	                		<f:facet name="footer">
+                            	 <h:outputText value="TOTAL"/>
+               				</f:facet>		
+	                	 </p:column>
+	                	
+	                	 <p:column>
+	                		<f:facet name="header">
                                 <h:outputText value="Total" />
                             </f:facet>
-                             <h:outputText value="#{relatoriosBean.calculoTotais.get('valorTotal')}">
+                             <h:outputText value="#{lista.total}">
                						<f:convertNumber minFractionDigits="2"/>
                				</h:outputText>
-                        </p:column>
+               				
+               				 <f:facet name="footer">
+	                             <h:outputText value="#{relatoriosBean.calculoTotais.get('valorTotal')}">
+	               						<f:convertNumber minFractionDigits="2"/>
+	               				</h:outputText>
+                            </f:facet>
+                       </p:column>
+                        
 
                     </p:dataTable>
 

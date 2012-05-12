@@ -3,7 +3,6 @@ package br.com.medralservicosrio.controlador;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,11 +18,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.swing.ImageIcon;
 
 import net.sf.jasperreports.engine.JRException;
+import br.com.medralservicosrio.dao.FornecedorDAO;
 import br.com.medralservicosrio.dao.RelatorioDao;
-import br.com.medralservicosrio.modelo.Produto;
-import br.com.medralservicosrio.relatorios.RelatorioDeProdutosPorFuncionario;
+import br.com.medralservicosrio.modelo.Fornecedor;
+import br.com.medralservicosrio.modelo.Funcionario;
+import br.com.medralservicosrio.relatorios.RelatorioAdmReforma;
+import br.com.medralservicosrio.relatorios.RelatorioAdmTesteEletrico;
+import br.com.medralservicosrio.relatorios.RelatorioAdmVales;
+import br.com.medralservicosrio.relatorios.RelatorioAdministrativoEntrada;
+import br.com.medralservicosrio.relatorios.RelatorioGerencialCompras;
+import br.com.medralservicosrio.relatorios.RelatorioGerencialProdutosPorFuncionarios;
 import br.com.medralservicosrio.relatorios.RelatorioGerencialRastreabilidade;
-import br.com.medralservicosrio.relatorios.RelatorioGerencialRastreabilidadeSubReport;
+import br.com.medralservicosrio.relatorios.RelatorioGerencialSucata;
 import br.com.medralservicosrio.util.ReportUtils;
 /**
  * Classe responsavel de gerar todos os relatorios em pdf do sistema.
@@ -32,10 +38,13 @@ import br.com.medralservicosrio.util.ReportUtils;
  */
 @ManagedBean
 @ViewScoped
+@SuppressWarnings("rawtypes")
 public class RelatoriosBean{
 
 	private RelatorioDao relatorioDao = null;
 	private List listaRelatorio = null;
+	private Funcionario func;
+	private Map calculoTotais;
 	private String produto;
 	private String funcionario;
 	private String rastreabilidade;
@@ -43,19 +52,24 @@ public class RelatoriosBean{
 	private Date dataInicial;
 	private Date dataFinal;
 	private String matricula;
-	private Integer numNota;
-	private String numNotaS;
+	private String numNota;
+	private String setor;
+	
 
+	
 	public RelatoriosBean() {
 		relatorioDao = new RelatorioDao();
 		listaRelatorio = new ArrayList();
+		calculoTotais = new HashMap();
+		func = new Funcionario();
 		produto = "";
 		funcionario = "";
 		rastreabilidade = "";
 		placa = "";
 		dataInicial = null;
 		dataFinal = null;
-		numNotaS = "";
+		numNota = "";
+		setor = "";
 	}
 
 
@@ -72,9 +86,47 @@ public class RelatoriosBean{
 			if(listaRelatorio.isEmpty()){
 				FacesContext context = FacesContext.getCurrentInstance();  
 		        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção" , "Sua Busca não retornou nenhum resultado"));
+			}else{
+				
+				List<RelatorioGerencialCompras> lista = listaRelatorio;
+				Map<String,Double> calculoTotaisTemp = new HashMap<String,Double>();
+				
+				Double valorTeste = new Double("0");
+				Double valorReforma = new Double("0");
+				Double valorEstoque = new Double("0");
+				Double valorFuncionario = new Double("0");
+				Double valorVeiculo = new Double("0");
+				Double vlrTemp = new Double("0");
+				
+				for(RelatorioGerencialCompras compra : lista){
+					
+					vlrTemp = compra.getProduto().getValor() * compra.getQtdTeste();
+					valorTeste =  vlrTemp  + valorTeste;
+					
+					vlrTemp = compra.getProduto().getValor() * compra.getQtdReformado();
+					valorReforma =  vlrTemp + valorReforma;
+					
+					vlrTemp = compra.getProduto().getValor() * compra.getQtdEstoque();
+					valorEstoque =  vlrTemp + valorEstoque;
+					
+					vlrTemp = compra.getProduto().getValor() * compra.getQtdFuncionando();
+					valorFuncionario =  vlrTemp + valorFuncionario;
+					
+					vlrTemp = compra.getProduto().getValor() * compra.getQtdVeiculo();
+					valorVeiculo =  vlrTemp + valorVeiculo;
+				}
+				
+				calculoTotaisTemp.put("valorTotalTeste", valorTeste);
+				calculoTotaisTemp.put("valorTotalReforma", valorReforma);
+				calculoTotaisTemp.put("valorTotalEstoque", valorEstoque);
+				calculoTotaisTemp.put("valorTotalFuncionario", valorFuncionario);
+				calculoTotaisTemp.put("valorTotalVeiculo", valorVeiculo);
+				
+				calculoTotais = calculoTotaisTemp;
+				
 			}
 	
-		} catch (SQLException e) {
+		} catch (Exception e) {
 
 			e.printStackTrace();
 		}
@@ -122,11 +174,24 @@ public class RelatoriosBean{
 		try {
 			
 			listaRelatorio = new ArrayList();
-			listaRelatorio = relatorioDao.gerarRelatorioGerencialDeCompras(numNotaS, produto, dataInicial, dataFinal);
+			listaRelatorio = relatorioDao.gerarRelatorioGerencialDeCompras(numNota, produto, dataInicial, dataFinal);
 			if(listaRelatorio.isEmpty()){
 				FacesContext context = FacesContext.getCurrentInstance();  
 		        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção" , "Sua Busca não retornou nenhum resultado"));
 		        numNota = null;
+			}else{
+				
+				List<RelatorioGerencialCompras> lista = listaRelatorio;
+				Map<String, Double> calculoTotaisTemp = new HashMap<String, Double>();
+				Double valorTotal = new Double("0");
+				Double vlrTemp = new Double("0");
+				
+				for(RelatorioGerencialCompras compra : lista){
+					vlrTemp = compra.getProduto().getValor() * compra.getQtd();
+					valorTotal =  vlrTemp  + valorTotal;
+				}
+				calculoTotaisTemp.put("valorTotal", valorTotal);
+				calculoTotais = calculoTotaisTemp;
 			}
 	
 		} catch (SQLException e) {
@@ -135,6 +200,8 @@ public class RelatoriosBean{
 		}
 
 	}
+	
+	
 
 	/**
 	 * 
@@ -171,6 +238,49 @@ public class RelatoriosBean{
 		}
 	}
 	
+	/**
+	 * Metodo responsavel por gerar o relatorio de compras
+	 * @param event
+	 */
+	public void gerarRelatorioGerencialDeSucata(ActionEvent event){
+		
+		try {
+			
+			listaRelatorio = new ArrayList();
+			listaRelatorio = relatorioDao.gerarRelatorioGerencialDeSucataHibernate(funcionario, produto, dataInicial, dataFinal);
+			
+			if(listaRelatorio.isEmpty()){
+				FacesContext context = FacesContext.getCurrentInstance();  
+		        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção" , "Sua Busca não retornou nenhum resultado"));
+		        numNota = null;
+			}else{
+				
+				List<RelatorioGerencialSucata> lista = listaRelatorio;
+				Map<String, Double> total = new HashMap<String, Double>();
+				Double valorTotal = new Double("0");
+				Double vlrTemp = new Double("0");
+				
+				for(RelatorioGerencialSucata compra : lista){
+					vlrTemp = compra.getValor();
+					valorTotal =  vlrTemp  + valorTotal;
+				}
+				total.put("valorTotal", valorTotal);
+				calculoTotais = total;
+			}
+	
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+
+	}
+	
+	/**
+	 * Imprimir relatorio de sucatas.
+	 */
+	public void imprimirRelatorioGerencialDeSucata(ActionEvent event){
+		
+	}
 	
 	/**
 	 * Metodo responsavel por gerar o relatorio de rastreabilidade
@@ -178,43 +288,83 @@ public class RelatoriosBean{
 	 */
 	public void gerarRelatorioGerencialRastreabilidade(ActionEvent event){
 
+		try {
+
+			listaRelatorio = new ArrayList();
+			listaRelatorio = relatorioDao.gerarRelatorioGerencialRastreabilidade(rastreabilidade, produto);
+
+			if(listaRelatorio.isEmpty()){
+				FacesContext context = FacesContext.getCurrentInstance();  
+				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção" , "Sua Busca não retornou nenhum resultado"));
+			}else{
+
+				List<RelatorioGerencialRastreabilidade> listaRelatorioTemp = listaRelatorio;
+				List listaDetalhes = new ArrayList();
+				for (RelatorioGerencialRastreabilidade rastreio : listaRelatorioTemp ) {
+					
+					listaDetalhes = relatorioDao.gerarRelatorioGerencialRastreabilidadeDealhes(rastreio.getIdRastreabilidade());
+					rastreio.setListaDetalhes(listaDetalhes);
+					
+				}
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+
+	}
+	
+	/**
+	 * Imprimir relatorio Gerencial Rastreabilidde
+	 * @param event
+	 */
+	public void imprimirRelatorioGerencialRastreabilidade(ActionEvent event){
+		
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest request   = (HttpServletRequest) context.getExternalContext().getRequest();		
 		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
-		
-		
 
 		try {
 			
+			
+			
 			//trocar pelo dao
+			/*
 			Collection listaRastreabilidade = new ArrayList();
 			for(int i = 1 ; i <= 150 ; i++){
 				RelatorioGerencialRastreabilidade rastreabilidade = new RelatorioGerencialRastreabilidade();
 				RelatorioGerencialRastreabilidadeSubReport subReport = new RelatorioGerencialRastreabilidadeSubReport();
 				rastreabilidade.setIdRastreabilidade(i);
 				rastreabilidade.setProduto("produto_"+i);
-				rastreabilidade.setTempoDeUso((int)(Math.random() * 300));
+				rastreabilidade.setData(new Date());
+				Integer d = (int)(Math.random() * 600);
+				Integer d2 = (int)(Math.random() * 300);
+				rastreabilidade.setTempoDeUso(d);
 				
 				for (int j = 0; j < 1 + (int)(Math.random() * 5); j++) {
 					
 					subReport.setNomeFuncionario("funcionario_"+ i);
 					subReport.setStatus("teste status 1");
 					subReport.setStatus2("teste status 2");
-					subReport.setTUPF(new Double(Math.random() * 400).toString());
+					subReport.setTUPF(d2.toString());
+					subReport.setData(new Date());
 					rastreabilidade.getListaDetalhes().add(subReport);
 					
 				}
 				
-				listaRastreabilidade.add(rastreabilidade);
+				listaRelatorio.add(rastreabilidade);
 			}
-
+			*/
+			
+			
 			// parametros do relatorio
 			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("SUBREPORT_DIR", request.getServletContext().getRealPath("/reports") + "/");
+			params.put("SUBREPORT_DIR", request.getServletContext().getRealPath("/reports/"));
 			params.put("logo", new ImageIcon(context.getExternalContext().getResource("/imagem/medral.JPG")).getImage());
 			
 			String fileName = "relRastreabilidadeDeProdutos"; 
-			ReportUtils.gerarPdf("/reports/relRastreabilidadeDeProdutos.jasper", fileName, listaRastreabilidade, params, request, response);
+			ReportUtils.gerarPdf("/reports/relRastreabilidadeDeProdutos.jasper", fileName, listaRelatorio, params, context);
 
 		} catch (JRException e) {
 			
@@ -224,45 +374,225 @@ public class RelatoriosBean{
 
 			e.printStackTrace();
 		} finally{
+		
 			context.renderResponse();
 			context.responseComplete();
-			
-			
 			
 		}
 	}
 	
-	public void gerarRelatorioProdutosPorFuncionarios(ActionEvent event){
-		FacesContext context = FacesContext.getCurrentInstance();
-		HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+	/**
+	 * Gera a tela de produto por funcionario
+	 *todo tudo
+	 * @param event
+	 */
+	public void gerarRelatorioGerencialProdutosPorFuncionarios(ActionEvent event){
+
 
 		try {
 
-			//trocar pelo dao
-			Collection lista = new ArrayList();
-			for(int i = 1 ; i <= 10; i++){
+			listaRelatorio = new ArrayList();
+			
+			  // Chapa diferente de null pocura no individual
+			  // placa diferente de null procura em veiculos
+			  // se os dois estiverem preenchidos, procuro o funcionario se eu não achar procuro o veiculo e recupero a chapa para procurar o funcionario novamente.
+			  // O produto vem de individual ou de veiculos
+			
+			/*
+			 * if(!matricula.isEmpty() && !placa.isEmpty()){
+				//FuncionarioDAO dao = new FuncionarioDAO();
+				//Funcionario func = 
+			}else if(){
 				
-				RelatorioDeProdutosPorFuncionario relatorio = new RelatorioDeProdutosPorFuncionario();
-				Produto p = new Produto();
-				p.setProduto("produto_"+i);
-				p.setValor(10.00);
-				relatorio.setProduto(p);
-				relatorio.setQuantidade((int)(Math.random() * 5));
+			}*/
+			
+			if(listaRelatorio.isEmpty()){
+				
+				FacesContext context = FacesContext.getCurrentInstance();  
+				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção" , "Sua Busca não retornou nenhum resultado"));
+				
+			}else{
 
-				lista.add(relatorio);
+				List<RelatorioGerencialProdutosPorFuncionarios> lista = listaRelatorio;
+				Map<String, Double> total = new HashMap<String, Double>();
+				Double valorTotal = new Double("0");
+				Double vlrTemp = new Double("0");
+
+				for(RelatorioGerencialProdutosPorFuncionarios produto : lista){
+					vlrTemp = produto.getProduto().getValor();
+					valorTotal =  vlrTemp  + valorTotal;
+				}
+				total.put("valorTotal", valorTotal);
+				calculoTotais = total;
 			}
 
-			// parametros do relatorio
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("logo", new ImageIcon(context.getExternalContext().getResource("/imagem/medral.JPG")).getImage());
-			params.put("matricula_placa", "000004");
-			params.put("funcionario_encarregado", "Felipe Tavaares dos Santos Pinto");
-			params.put("funcao", "Desenvolvedor Web");
-			params.put("setor", "Desenvolvimento");
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+
+
+
+	}
+	
+	/**
+	 * imprimir relarorio de produtos por funcionarios.
+	 * @param event
+	 */
+	public void imprimirRelatorioGerencialProdutosPorFuncionarios(ActionEvent event){
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		try {
+			
+			Map<String, Object> params = new HashMap<String,Object>();
+			params.put("matricula", matricula);
+			params.put("placa", placa);
+			//TODO recuperar o nome do funcionario usando o dão do hibernate, pela matricula, se não achar procurar o responsavel pelo carro usando a placa
+			//params.put("funcionario_encarregado", listaRelatorio.get(0));
+			params.put("logo", new ImageIcon (context.getExternalContext().getResource("/imagem/medral.JPG")).getImage());
 			
 			String fileName = "relProdutosPorFuncionarios"; 
-			ReportUtils.gerarPdf("/reports/relProdutosPorFuncionarios.jasper", fileName, lista, params, request, response);
+			ReportUtils.gerarPdf("/reports/relProdutosPorFuncionarios.jasper", fileName, listaRelatorio, params, context);
+			
+		} catch (JRException e) {
+			
+			e.printStackTrace();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		
+	}
+	
+	/**
+	 * Gera a tela de relatorio de entrada de notas
+	 * @param event
+	 */
+	public void gerarRelatorioAdministrativoEntrada(ActionEvent event)  {
+		
+		try {
+			listaRelatorio = new ArrayList();
+			listaRelatorio = relatorioDao.gerarRelAdministrativoEntrada(numNota, dataInicial );
+			FacesContext context = FacesContext.getCurrentInstance();  
+			
+			if(listaRelatorio.isEmpty()){
+				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção" , "Sua Busca não retornou nenhum resultado"));
+			}else{
+
+				List<RelatorioAdministrativoEntrada> lista = listaRelatorio;
+				//Fornecedor f = (Fornecedor) new FornecedorDAO().getSessao().getNamedQuery("").setInteger(":id", lista.get(0).getIdFornecedor()).uniqueResult();
+				
+				if(numNota.isEmpty()){
+					context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção" , "Para Imprimir o Número da Nota é Obrigatório"));
+				}
+				
+				Map<String, Double> total = new HashMap<String, Double>();
+				Double valorTotal = new Double("0");
+				Double vlrTemp = new Double("0");
+
+				for(RelatorioAdministrativoEntrada entrada : lista){
+					vlrTemp = entrada.getTotal();
+					valorTotal =  vlrTemp  + valorTotal;
+				}
+				total.put("valorTotal", valorTotal);
+				calculoTotais = total;
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+
+
+
+
+	}
+	
+	/**
+	 * Imprime o relatorio de entrada
+	 * @param event
+	 */
+	public void imprimirRelatorioAdministrativoEntrada(ActionEvent event)  {
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		try {
+			
+			Map<String, Object> params = new HashMap<String,Object>();
+			params.put("fornecedor", "");
+			params.put("endereco", "");
+			params.put("nota", "");
+			params.put("cnpj", "");
+			params.put("telefone", "");
+			params.put("data", new Date());
+			params.put("logo", new ImageIcon(context.getExternalContext().getResource("/imagem/medral.JPG")).getImage());
+			
+			String fileName = "relatorioNotaFiscalEntrada"; 
+			ReportUtils.gerarPdf("/reports/relAdmNotaFiscalEntrada.jasper", fileName, listaRelatorio, params, context);
+			
+		} catch (JRException e) {
+			
+			e.printStackTrace();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * TODO contem ação na tela, verificar no php
+	 * Gera a tela de relatorio individual
+	 * @param event
+	 * 
+	 */
+	public void gerarRelatorioAdministrativoIndividual(ActionEvent event) {
+
+		try {
+
+			listaRelatorio = new ArrayList();
+			listaRelatorio = relatorioDao.gerarRelAdministrativoIndividual(matricula);
+
+			if(listaRelatorio.isEmpty()){
+				FacesContext context = FacesContext.getCurrentInstance();  
+				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção" , "Sua Busca não retornou nenhum resultado"));
+			}else{
+
+				List<RelatorioAdministrativoEntrada> lista = listaRelatorio;
+				Map<String, Double> total = new HashMap<String, Double>();
+				Double valorTotal = new Double("0");
+				Double vlrTemp = new Double("0");
+
+				for(RelatorioAdministrativoEntrada entrada : lista){
+					vlrTemp = entrada.getValor();
+					valorTotal =  vlrTemp  + valorTotal;
+				}
+				total.put("valorTotal", valorTotal);
+				calculoTotais = total;
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Imprimie o relatorio Individual
+	 * @param event
+	 */
+	public void imprimirRelatorioAdministrativoIndividual(ActionEvent event) {
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+		
+		try {
+
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("funcionario", funcionario);
+			params.put("logo", new ImageIcon(context.getExternalContext().getResource("/imagem/medral.JPG")).getImage());
+			
+			String fileName = "relatorioAdmIndividual";
+			ReportUtils.gerarPdf("/report/relAdmIndividual.jasper",fileName, listaRelatorio, params, context);
 
 		} catch (JRException e) {
 
@@ -271,11 +601,292 @@ public class RelatoriosBean{
 		} catch (IOException e) {
 
 			e.printStackTrace();
-		} finally{
-			context.renderResponse();
-			context.responseComplete(); 
+		}
+		
+	}
+	
+	public void gerarRelatorioAdministrativoVeiculos(ActionEvent event) {
+
+		try {
+
+			listaRelatorio = new ArrayList();
+			listaRelatorio = relatorioDao.gerarRelAdministrativoVeiculos(placa);
+
+			if(listaRelatorio.isEmpty()){
+				FacesContext context = FacesContext.getCurrentInstance();  
+				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção" , "Sua Busca não retornou nenhum resultado"));
+			}
+			
+		} catch (Exception e) {
+
+			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Imprime relatorio de veiculos
+	 * @param event
+	 */
+	public void imprimirRelatorioAdministrativoVeiculos(ActionEvent event) {
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		try {
+			
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("placa", placa);
+			params.put("nomeFuncionario", funcionario);
+			params.put("logo", new ImageIcon(context.getExternalContext().getResource("/imagem/medral.JPG")).getImage());
+			
+			String fileName = "relAdmistrativoDeVeiculos";
+			ReportUtils.gerarPdf("/report/relAdmVeiculos.jasper", fileName, listaRelatorio, params, context);
+			
+		} catch (JRException e) {
+
+			e.printStackTrace();
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		
+	}
+	
+	/**
+	 * Gera a tela de relatorio adm de movimentação
+	 * @param event
+	 * @throws SQLException
+	 */
+	public void gerarRelatorioAdministrativoMovimentacao(ActionEvent event) throws SQLException {
+
+		listaRelatorio = new ArrayList();
+		listaRelatorio = relatorioDao.gerarRelAdministrativoMovimentacao(matricula, placa, rastreabilidade, produto);
+		
+		if(listaRelatorio.isEmpty()){
+			FacesContext context = FacesContext.getCurrentInstance();  
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção" , "Sua Busca não retornou nenhum resultado"));
+		}else{
+
+		}
+		
+		
+	}
+
+	/**
+	 * Gerar relatorio administrativo de movimentação
+	 * @param event
+	 * @throws SQLException
+	 */
+	public void imprimirRelatorioAdministrativoMovimentacao(ActionEvent event)  {
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		try {
+			
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("logo", new ImageIcon(context.getExternalContext().getResource("/imagem/medral.JPG")).getImage());
+			
+			String fileName = "relAdmistrativoDeMovimentacao";
+			ReportUtils.gerarPdf("/report/relAdmMovi.jasper", fileName, listaRelatorio, params, context);
+		
+		} catch (JRException e) {
+
+			e.printStackTrace();
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		} 
+	}
+	
+	/**
+	 * TODO Contem Ação
+	 * Gera a tela para o relatorio de Teste Eletrico
+	 * @param event
+	 */
+	public void gerarRelatorioAdministrativoTesteEletrico(ActionEvent event) {
+		
+		try {
+
+			listaRelatorio = new ArrayList();
+			listaRelatorio = relatorioDao.gerarRelAdministrativoTesteEletrico(produto , rastreabilidade);
+
+			if(listaRelatorio.isEmpty()){
+				FacesContext context = FacesContext.getCurrentInstance();  
+				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção" , "Sua Busca não retornou nenhum resultado"));
+			}else{
+
+				List<RelatorioAdmTesteEletrico> lista = listaRelatorio;
+				Map<String, Double> total = new HashMap<String, Double>();
+				Double valorTotal = new Double("0");
+				Double vlrTemp = new Double("0");
+
+				for(RelatorioAdmTesteEletrico testeEletrico : lista){
+					vlrTemp = testeEletrico.getValor();
+					valorTotal =  vlrTemp  + valorTotal;
+				}
+				total.put("valorTotal", valorTotal);
+				calculoTotais = total;
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Gera o relatorio de Teste Eletrico
+	 * @param event
+	 */
+	public void imprimirRelatorioAdministrativoTesteEletrico(ActionEvent event) {
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		try {
+			
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("logo", new ImageIcon(context.getExternalContext().getResource("/imagem/medral.JPG")).getImage());
+			
+			String fileName = "relAdmistrativoTesteEletrico";
+			ReportUtils.gerarPdf("/report/relAdmTesteEletrico.jasper", fileName, listaRelatorio, params, context);
+		
+		} catch (JRException e) {
+
+			e.printStackTrace();
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		} 
+		
+	}
+	
+	/**
+	 * Gera a tela para o relatorio de Vales
+	 * @param event
+	 */
+	public void gerarRelatorioAdministrativoVales(ActionEvent event) {
+		
+		try {
+
+			listaRelatorio = new ArrayList();
+			listaRelatorio = relatorioDao.gerarRelAdministrativoVales(matricula, setor, dataInicial, dataFinal);
+
+			if(listaRelatorio.isEmpty()){
+				FacesContext context = FacesContext.getCurrentInstance();  
+				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção" , "Sua Busca não retornou nenhum resultado"));
+			}else{
+
+				List<RelatorioAdmVales> lista = listaRelatorio;
+				Map<String, Double> total = new HashMap<String, Double>();
+				Double valorTotal = new Double("0");
+				Double vlrTemp = new Double("0");
+
+				for(RelatorioAdmVales vale : lista){
+					vlrTemp = vale.getValor();
+					valorTotal =  vlrTemp  + valorTotal;
+				}
+				total.put("valorTotal", valorTotal);
+				calculoTotais = total;
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		
+	}
+	
+	/**
+	 * Gera o relatorio de Vales
+	 * @param event
+	 */
+	public void imprimirRelatorioAdministrativoVales(ActionEvent event) {
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		try {
+			
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("logo", new ImageIcon(context.getExternalContext().getResource("/imagem/medral.JPG")).getImage());
+			
+			String fileName = "relAdmistrativoVales";
+			ReportUtils.gerarPdf("/report/relAdmVales.jasper", fileName, listaRelatorio, params, context);
+		
+		} catch (JRException e) {
+
+			e.printStackTrace();
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		} 
+	}
+	
+	/**
+	 * Gera a tela para o relatorio de Reforma
+	 * @param event
+	 */
+	public void gerarRelatorioAdministrativoReforma(ActionEvent event) {
+		
+		try {
+
+			listaRelatorio = new ArrayList();
+			listaRelatorio = relatorioDao.gerarRelAdministrativoReforma(dataInicial, produto);
+
+			if(listaRelatorio.isEmpty()){
+				FacesContext context = FacesContext.getCurrentInstance();  
+				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção" , "Sua Busca não retornou nenhum resultado"));
+			}else{
+
+				List<RelatorioAdmReforma> lista = listaRelatorio;
+				Map<String, Double> total = new HashMap<String, Double>();
+				Double valorTotal = new Double("0");
+				Double vlrTemp = new Double("0");
+
+				for(RelatorioAdmReforma reforma : lista){
+					vlrTemp = reforma.getValor();
+					valorTotal =  vlrTemp  + valorTotal;
+				}
+				total.put("valorTotal", valorTotal);
+				calculoTotais = total;
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Gera o relatorio de Reforma
+	 * @param event
+	 */
+	public void imprimirRelatorioAdministrativoReforma(ActionEvent event) {
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		try {
+			
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("logo", new ImageIcon(context.getExternalContext().getResource("/imagem/medral.JPG")).getImage());
+			
+			String fileName = "relAdmistrativoProdutosAguadandoRefoma";
+			ReportUtils.gerarPdf("/report/relAdmReforma.jasper", fileName, listaRelatorio, params, context);
+		
+		} catch (JRException e) {
+
+			e.printStackTrace();
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		} 
+		
+	}
+
+
 	/**
 	 * @return the relatorioDao
 	 */
@@ -418,37 +1029,60 @@ public class RelatoriosBean{
 	public void setListaRelatorio(List listaRelatorio) {
 		this.listaRelatorio = listaRelatorio;
 	}
-
-
-	/**
-	 * @return the numNota
-	 */
-	public Integer getNumNota() {
+	
+	public String getNumNota() {
 		return numNota;
 	}
 
 
-	/**
-	 * @param numNota the numNota to set
-	 */
-	public void setNumNota(Integer numNota) {
+	public void setNumNota(String numNota) {
 		this.numNota = numNota;
 	}
 
 
 	/**
-	 * @return the numNotaS
+	 * @return the calculoTotais
 	 */
-	public String getNumNotaS() {
-		return numNotaS;
+	public Map getCalculoTotais() {
+		return calculoTotais;
 	}
 
 
 	/**
-	 * @param numNotaS the numNotaS to set
+	 * @param calculoTotais the calculoTotais to set
 	 */
-	public void setNumNotaS(String numNotaS) {
-		this.numNotaS = numNotaS;
+	public void setCalculoTotais(Map calculoTotais) {
+		this.calculoTotais = calculoTotais;
 	}
 
+
+	/**
+	 * @return the func
+	 */
+	public Funcionario getFunc() {
+		return func;
+	}
+
+	/**
+	 * @param func the func to set
+	 */
+	public void setFunc(Funcionario func) {
+		this.func = func;
+	}
+
+
+	/**
+	 * @return the setor
+	 */
+	public String getSetor() {
+		return setor;
+	}
+
+
+	/**
+	 * @param setor the setor to set
+	 */
+	public void setSetor(String setor) {
+		this.setor = setor;
+	}
 }
