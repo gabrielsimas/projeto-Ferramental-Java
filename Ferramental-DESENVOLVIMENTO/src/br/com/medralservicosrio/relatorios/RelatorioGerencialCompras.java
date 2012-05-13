@@ -5,16 +5,16 @@ package br.com.medralservicosrio.relatorios;
 
 import java.util.Date;
 
-import br.com.medralservicosrio.modelo.Produto;
-
 /**
  * Classe que é um espelho do relatorio, os campos Estaticos são referentes a busca
  * @author Felipe Tavares
- * TODO Converte para hibernate, esta em JDBC 
+ *
  */
 public class RelatorioGerencialCompras {
 
-	private Produto produto;
+	
+	private Integer idProduto;
+	private String produto;
 	private Integer qtd;
 	private Integer numNota;
 	private Integer qtdEstoque;
@@ -23,9 +23,11 @@ public class RelatorioGerencialCompras {
 	private Integer qtdTeste;
 	private Integer qtdVeiculo;
 	private Date data;
+	private Double valor;
+	private Double valorUnitario;
 		
 	public RelatorioGerencialCompras() {
-		produto = new Produto();
+		produto = "";
 		data = new Date();
 		this.numNota = 0;
 		this.qtd = 0;
@@ -36,20 +38,17 @@ public class RelatorioGerencialCompras {
 		this.qtdVeiculo = 0;
 	}
 
-	/**
-	 * @return the produto
-	 */
-	public Produto getProduto() {
+	public String getProduto() {
 		return produto;
 	}
 
-
-
-	/**
-	 * @param produto the produto to set
-	 */
-	public void setProduto(Produto produto) {
+	public void setProduto(String produto) {
 		this.produto = produto;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
+		this.valorUnitario = valor;
 	}
 
 	/**
@@ -163,5 +162,30 @@ public class RelatorioGerencialCompras {
 	public void setNumNota(Integer numNota) {
 		this.numNota = numNota;
 	}
+
+	/**
+	 * @return the valor
+	 */
+	public Double getValor() {
+		
+		return valor * qtd;
+	}
 	
+
+	public Double getValorUnitario() {
+		return valorUnitario;
+	}
+
+	public void setValorUnitario(Double valorUnitario) {
+		this.valorUnitario = valorUnitario;
+	}
+
+	public Integer getIdProduto() {
+		return idProduto;
+	}
+
+	public void setIdProduto(Integer idProduto) {
+		this.idProduto = idProduto;
+	}
+
 }

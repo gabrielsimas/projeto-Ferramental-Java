@@ -41,50 +41,6 @@ public class RelatorioDao extends DAO{
 	private PreparedStatement pstmt; 
 	private ResultSet rs;
 
-	/*public List gerarRelatorioGerencialDeMateriais(String numNota, String nomeProduto,Date dataInicial, Date dataFinal) throws SQLException {
-
-
-		Query q = getConsulta(); 
-		Session s = getSessao();
-		q = s.createSQLQuery(getSQLGerarRelatorioGerencialDeCompras(numNota, nomeProduto, dataInicial, dataFinal)).setResultTransformer(Transformers.aliasToBean(RelatorioGerencialCompras.class)); 
-		return q.list();
-
-	 }
-
-	 @SuppressWarnings("unused")
-	private String getSQLGerarRelatorioGerencialDeCompras(String numNota, String nomeProduto,Date dataInicial, Date dataFinal) {
-			StringBuffer query = new StringBuffer();
-			query.append(" SELECT entrada.nota  AS NUM_NOTA,							\n");
-			query.append("        p.produto 	AS NOME_PRODUTO,						\n");
-			query.append("        sum(qntd) 	AS QTD,									\n");
-			query.append("        sum(qntd*entrada.valor) AS VAL,						\n");
-			query.append("        entrada.data AS DATA_ENTRADA							\n");
-			query.append("   FROM entradas_via_nota entrada,							\n");
-			query.append("        produtos p											\n");
-			query.append("  WHERE p.idproduto = entrada.idprod							\n");
-
-			if(!numNota.isEmpty()){
-				query.append("    AND entrada.nota = ?						\n");
-			}
-			if(!nomeProduto.isEmpty()){
-				query.append("    AND upper(p.produto) LIKE(upper(?))		\n");			
-			}
-			if((dataInicial != null) && (dataInicial != null)){
-				query.append("    AND entrada.data   between STR_TO_DATE( ?, '%Y-%m-%d' ) AND STR_TO_DATE( ?, '%Y-%m-%d' )	\n");			
-			}else if(dataInicial != null && dataInicial == null) {
-				query.append("    AND entrada.data   > STR_TO_DATE( ?, '%Y-%m-%d' )	\n");
-			}else if(dataInicial == null && dataInicial != null ){
-				query.append("    AND entrada.data   < STR_TO_DATE( ?, '%Y-%m-%d' )	\n");
-			}
-
-			query.append("    group by NUM_NOTA,							\n");
-			query.append("             NOME_PRODUTO,						\n");
-			query.append("             DATA_ENTRADA							\n");
-			query.append("    order by NUM_NOTA								\n");
-
-			return query.toString();
-		}*/
-
 	/**
 	 * recuperar os valores do relatorio de materiais
 	 */
@@ -93,37 +49,40 @@ public class RelatorioDao extends DAO{
 		List<RelatorioGerencialCompras> lista = new ArrayList<RelatorioGerencialCompras>();
 		try {
 
-			connection = ConnectionFactory.getConnection();
-			pstmt = connection.prepareStatement(getSQLGerarRelatorioGerencialDeMateriais(nomeProduto));
+			StringBuilder sb = new StringBuilder();
+			sb.append(" SELECT								\n");
+			sb.append("    		p.idproduto AS idProduto,	\n");
+			sb.append("   		p.produto AS produto,		\n");
+			sb.append("   		p.valor AS valor,  			\n");
+			sb.append("    		(select count(teste_eletrico.idproduto) from teste_eletrico where teste_eletrico.idproduto = p.idproduto) AS qtdTeste,		\n");
+			sb.append("   		(select count(reforma.idproduto) from reforma where reforma.idproduto = p.idproduto) AS qtdReformado,						\n");
+			sb.append("   		(select count(estoque.idproduto) from estoque where estoque.idproduto = p.idproduto) AS qtdEstoque,							\n");
+			sb.append("   		(select count(individual.idproduto) from individual where individual.idproduto = p.idproduto) AS qtdFuncionando,			\n");
+			sb.append("    		(select count(veiculos.idproduto) from veiculos where veiculos.idproduto = p.idproduto) AS qtdVeiculo						\n");
+			sb.append(" from produtos p						\n");
+			if(!nomeProduto.isEmpty()){
+				sb.append(" where upper(p.produto) LIKE (upper(:nomeProduto))		\n");
+			}
+			
+			Session s = getSessao();
+			query =	s.createSQLQuery(sb.toString());
+			query.addScalar("idProduto", Hibernate.INTEGER);
+			query.addScalar("produto" , Hibernate.STRING);
+			query.addScalar("valor" , Hibernate.DOUBLE);
+			query.addScalar("qtdTeste" , Hibernate.INTEGER);
+			query.addScalar("qtdReformado" , Hibernate.INTEGER);
+			query.addScalar("qtdEstoque" , Hibernate.INTEGER);
+			query.addScalar("qtdFuncionando" , Hibernate.INTEGER);
+			query.addScalar("qtdVeiculo" , Hibernate.INTEGER);
+			query.setResultTransformer(Transformers.aliasToBean(RelatorioGerencialCompras.class));
 			
 			if(!nomeProduto.isEmpty()){
-				pstmt.setString(1, "%"+nomeProduto+"%");
+				query.setString("nomeProduto", "%"+nomeProduto+"%");
 			}
 			
-			rs = pstmt.executeQuery();
-
-			while(rs.next()){
-
-				RelatorioGerencialCompras relGerencialCompras = new RelatorioGerencialCompras();
-				relGerencialCompras.getProduto().setProduto(rs.getString("nome_produto"));
-				relGerencialCompras.getProduto().setValor(rs.getDouble("valor_produto"));
-				relGerencialCompras.setQtdTeste(rs.getInt("QTD_TESTE"));
-				relGerencialCompras.setQtdReformado(rs.getInt("QTD_REFORMA"));
-				relGerencialCompras.setQtdEstoque(rs.getInt("QTD_ESTOQUE"));
-				relGerencialCompras.setQtdFuncionando(rs.getInt("QTD_INDIVIDUAL"));
-				relGerencialCompras.setQtdVeiculo(rs.getInt("QTD_VEICULOS"));
-				lista.add(relGerencialCompras);
-			}
+			lista = query.list();
 			
-			connection.close();
-			
-		} catch(SQLException e){
-			
-			System.err.println("Erro na query ou conexão não aberta em gerarRelatorioGerencialDeMateriais :: RelatorioDao \nErro reportado: " + e.getMessage() );
-			e.printStackTrace();
-		}
-		
-		catch (Exception e) {
+		}catch (Exception e) {
 
 			System.err.println("Erro ocorrido em gerarRelatorioGerencialDeMateriais :: RelatorioDao \nErro reportado: " + e.getMessage() );
 			e.printStackTrace();
@@ -131,74 +90,39 @@ public class RelatorioDao extends DAO{
 		return lista;
 	}
 
-	/**
-	 * 
-	 * @param nomeProduto
-	 * @return
-	 */
-	private String getSQLGerarRelatorioGerencialDeMateriais(String nomeProduto) {
-		StringBuffer query = new StringBuffer();
-		query.append(" SELECT							\n");
-		query.append("    p.idproduto AS id,			\n");
-		query.append("    p.produto AS nome_produto,	\n");
-		query.append("    p.valor AS valor_produto,  	\n");
-		query.append("    (select count(teste_eletrico.idproduto) from teste_eletrico where teste_eletrico.idproduto = p.idproduto) AS QTD_TESTE,	\n");
-		query.append("    (select count(reforma.idproduto) from reforma where reforma.idproduto = p.idproduto) AS QTD_REFORMA,						\n");
-		query.append("    (select count(estoque.idproduto) from estoque where estoque.idproduto = p.idproduto) AS QTD_ESTOQUE,						\n");
-		query.append("    (select count(individual.idproduto) from individual where individual.idproduto = p.idproduto) AS QTD_INDIVIDUAL,			\n");
-		query.append("    (select count(veiculos.idproduto) from veiculos where veiculos.idproduto = p.idproduto) AS QTD_VEICULOS					\n");
-		query.append(" from produtos p					\n");
-		if(!nomeProduto.isEmpty()){
-			query.append(" where upper(p.produto) LIKE (upper(?))		\n");
-		}
-		return query.toString();
-	}
-
 	public List<RelatorioGerencialCompras> gerarRelatorioGerencialDeCompras(String numNota, String nomeProduto, Date dataInicial, Date dataFinal) throws SQLException {
 		List<RelatorioGerencialCompras> lista = new ArrayList<RelatorioGerencialCompras>();
 		try {
 
+			Session s = getSessao();
+			query =	s.createSQLQuery(getSQLGerarRelatorioGerencialDeCompras(numNota, nomeProduto, dataInicial, dataFinal));
+			query.addScalar("numNota", Hibernate.INTEGER);
+			query.addScalar("produto" , Hibernate.STRING);
+			query.addScalar("qtd" , Hibernate.INTEGER);
+			query.addScalar("valor" , Hibernate.DOUBLE);
+			query.addScalar("data" , Hibernate.DATE);
+			query.setResultTransformer(Transformers.aliasToBean(RelatorioGerencialCompras.class));
 
-			connection = ConnectionFactory.getConnection();
-			pstmt = connection.prepareStatement(getSQLGerarRelatorioGerencialDeCompras(numNota, nomeProduto, dataInicial, dataFinal));
-			int i = 1; 
-
+			
 			if(!numNota.isEmpty()){
-				pstmt.setInt(i++, Integer.valueOf(numNota));
+				query.setInteger("numNota", Integer.valueOf(numNota));
 			}
 
 			if(!nomeProduto.isEmpty()){
-				pstmt.setString(i++, "%"+  nomeProduto  +"%");			 
+				query.setString("nomeProduto", "%"+  nomeProduto  +"%");			 
 			}
 
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			if(dataInicial != null){
-				pstmt.setString(i++, sdf.format(dataInicial));
+				query.setString("dataInicial", sdf.format(dataInicial));
 			}
-			if(dataInicial != null){
-				pstmt.setString(i++, sdf.format(dataInicial));			 
+			if(dataFinal != null){
+				query.setString("dataFinal", sdf.format(dataFinal));			 
 			}
 
-			rs = pstmt.executeQuery();
+			lista = query.list();
 
-
-			while(rs.next()){
-
-				RelatorioGerencialCompras relGerencialCompras = new RelatorioGerencialCompras();
-				relGerencialCompras.setNumNota(rs.getInt("NUM_NOTA"));
-				relGerencialCompras.getProduto().setProduto(rs.getString("NOME_PRODUTO"));
-				relGerencialCompras.setQtd(rs.getInt("QTD"));
-				relGerencialCompras.getProduto().setValor(rs.getDouble("VAL"));
-				relGerencialCompras.setData(rs.getDate("DATA_ENTRADA"));
-				lista.add(relGerencialCompras);
-			}
-		} catch(SQLException e){
-
-			System.err.println("Erro na query ou conexão não aberta em gerarRelatorioGerencialDeCompras :: RelatorioDao \nErro reportado: " + e.getMessage() );
-			e.printStackTrace();
-		}
-
-		catch (Exception e) {
+		}catch (Exception e) {
 
 			System.err.println("Erro ocorrido em gerarRelatorioGerencialDeCompras :: RelatorioDao \nErro reportado: " + e.getMessage() );
 			e.printStackTrace();
@@ -206,118 +130,76 @@ public class RelatorioDao extends DAO{
 		return lista;
 	}
 
+	/**
+	 * Gera a query para o relatorio gerencial de compras
+	 * @param numNota
+	 * @param nomeProduto
+	 * @param dataInicial
+	 * @param dataFinal
+	 * @return
+	 */
 	@SuppressWarnings("unused")
 	private String getSQLGerarRelatorioGerencialDeCompras(String numNota, String nomeProduto,Date dataInicial, Date dataFinal) {
 		StringBuffer query = new StringBuffer();
-		query.append(" SELECT entrada.nota  AS NUM_NOTA,							\n");
-		query.append("        p.produto 	AS NOME_PRODUTO,						\n");
-		query.append("        sum(qntd) 	AS QTD,									\n");
-		query.append("        sum(qntd*entrada.valor) AS VAL,						\n");
-		query.append("        entrada.data AS DATA_ENTRADA							\n");
-		query.append("   FROM entradas_via_nota entrada,							\n");
-		query.append("        produtos p											\n");
-		query.append("  WHERE p.idproduto = entrada.idprod							\n");
+		query.append(" SELECT entrada.nota  AS numNota,									\n");
+		query.append("        p.produto 	AS produto,									\n");
+		query.append("        sum(qntd) 	AS qtd,										\n");
+		query.append("        sum(qntd*entrada.valor) AS valor,							\n");
+		query.append("        entrada.data  AS data										\n");
+		query.append("   FROM entradas_via_nota entrada,								\n");
+		query.append("        produtos p												\n");
+		query.append("  WHERE p.idproduto = entrada.idprod								\n");
 
 		if(!numNota.isEmpty()){
-			query.append("    AND entrada.nota = ?						\n");
+			query.append("    AND entrada.nota = :numNota								\n");
 		}
 		if(!nomeProduto.isEmpty()){
-			query.append("    AND upper(p.produto) LIKE(upper(?))		\n");			
+			query.append("    AND upper(p.produto) LIKE(upper(:nomeProduto))			\n");			
 		}
-		if((dataInicial != null) && (dataInicial != null)){
-			query.append("    AND entrada.data   between STR_TO_DATE( ?, '%Y-%m-%d' ) AND STR_TO_DATE( ?, '%Y-%m-%d' )	\n");			
-		}else if(dataInicial != null && dataInicial == null) {
-			query.append("    AND entrada.data   > STR_TO_DATE( ?, '%Y-%m-%d' )	\n");
-		}else if(dataInicial == null && dataInicial != null ){
-			query.append("    AND entrada.data   < STR_TO_DATE( ?, '%Y-%m-%d' )	\n");
+		
+		if((dataInicial != null) && (dataFinal != null)){
+			query.append("    AND entrada.data   between :dataInicial AND :dataFinal	\n");			
+		}else if(dataInicial != null && dataFinal == null) {
+			query.append("    AND entrada.data   >= :dataInicial							\n");
+		}else if(dataInicial == null && dataFinal != null ){
+			query.append("    AND entrada.data   <= :dataFinal							\n");
 		}
 
-		query.append("    group by NUM_NOTA,							\n");
-		query.append("             NOME_PRODUTO,						\n");
-		query.append("             DATA_ENTRADA							\n");
-		query.append("    order by NUM_NOTA								\n");
+		query.append("    group by numNota,						\n");
+		query.append("             produto,						\n");
+		query.append("             data							\n");
+		query.append("    order by numNota						\n");
 
 		return query.toString();
 	}
+	
+	public List gerarRelatorioGerencialDeSucataHibernate(String funcionario, String nomeProduto, Date dataInicial, Date dataFinal) throws SQLException {
 
-	public List<RelatorioGerencialSucata> gerarRelatorioGerencialDeSucata(String funcionario,	String nomeProduto, Date dataInicial, Date dataFinal) throws SQLException{
 		List<RelatorioGerencialSucata> lista = new ArrayList<RelatorioGerencialSucata>();
-		try {
-			connection = ConnectionFactory.getConnection();
-			pstmt = connection.prepareStatement(getSQLGerarRelatorioGerencialDeSucata(funcionario, nomeProduto, dataInicial, dataFinal));
-			int i = 1;
-
-			if(!funcionario.isEmpty()){
-				pstmt.setString(i++, "%"+  funcionario +"%");
-			}
-			if(!nomeProduto.isEmpty()){
-				pstmt.setString(i++, "%"+  nomeProduto  +"%");			 
-			}
-
-			/*SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			 if(dataInicial != null){
-				 pstmt.setString(i++, sdf.format(dataInicial));
-			 }
-			 if(dataInicial != null){
-				 pstmt.setString(i++, sdf.format(dataInicial));			 
-			 }*/
-
-			rs = pstmt.executeQuery();
-			while(rs.next()){
-
-				RelatorioGerencialSucata sucata = new RelatorioGerencialSucata();
-				sucata.setData(rs.getDate("DATA"));
-				sucata.setMatricula(rs.getString("MATRICULA"));
-				sucata.setNome(rs.getString("NOME"));
-				sucata.setProduto(rs.getString("PRODUTO"));
-				sucata.setValor(rs.getDouble("VALOR"));
-				lista.add(sucata);
-			}
-		}  catch(SQLException e){
-
-			System.err.println("Erro na query ou conexão não aberta em gerarRelatorioGerencialDeCompras :: RelatorioDao \nErro reportado: " + e.getMessage() );
-			e.printStackTrace();
-		}
-
-		catch (Exception e) {
-
-			System.err.println("Erro ocorrido em gerarRelatorioGerencialDeCompras :: RelatorioDao \nErro reportado: " + e.getMessage() );
-			e.printStackTrace();
-		}
-		return lista;
-	}
-
-	private String getSQLGerarRelatorioGerencialDeSucata(String funcionario, String nomeProduto, Date dataInicial, Date dataFinal) {
-		StringBuffer query = new StringBuffer();
-
-		query.append(" select s.data_exclu AS DATA , s.chapa AS MATRICULA ,f.nome AS NOME , p.produto AS PRODUTO ,p.valor AS VALOR	\n");
-		query.append("   from sucata s, produtos p, funcionarios f	 where s.idproduto = p.idproduto	and s.chapa = f.chapa		\n");
-		if(!funcionario.isEmpty()){
-			query.append("    and upper(s.chapa) LIKE (upper(?))														   			\n");
-		}
-		if(!nomeProduto.isEmpty()){
-			query.append("    and upper(p.produto) LIKE (upper(?))																	\n");
-		}
-		//query.append("    AND s.data   between STR_TO_DATE( ?, 'YYYY-MM-DD' ) AND STR_TO_DATE( ?, 'YYYY-MM-DD' )		 				\n");
-
-		return query.toString();
-	}
-
-
-	public List gerarRelatorioGerencialDeSucataHibernate(String funcionario,	String nomeProduto, Date dataInicial, Date dataFinal) throws SQLException {
-
 		Session s = getSessao();
-		StringBuffer sql = new StringBuffer();
-		sql.append("select s.data_exclu AS data, s.chapa AS matricula, s.idrastre AS rastreabilidade, f.nome AS nome, p.produto AS produto, p.valor AS valor ");
-		sql.append("from ((sucata s join produtos p) join funcionarios f) where ((s.idproduto = p.idproduto) and (s.chapa = f.chapa))");
+		StringBuffer sb = new StringBuffer();
+		sb.append(" select  s.data_exclu AS data,								\n");
+		sb.append(" 		s.chapa AS matricula ,								\n");
+		sb.append(" 		f.nome AS nome,										\n");
+		sb.append(" 		p.produto AS produto,								\n");
+		sb.append(" 		p.valor AS valor,									\n");
+		sb.append(" 		s.idrastre AS rastreabilidade						\n");
+		sb.append("from ((sucata s join produtos p) join funcionarios f) where ((s.idproduto = p.idproduto) and (s.chapa = f.chapa))");
 		if(!funcionario.isEmpty()){
-			sql.append("    and (upper(f.nome) LIKE (upper(:funcionario)))		\n");
+			sb.append("    and (upper(f.nome) LIKE (upper(:funcionario)))		\n");
 		}
 		if(!nomeProduto.isEmpty()){
-			sql.append("    and upper(p.produto) LIKE (upper(:nomeProduto))	\n");
+			sb.append("    and upper(p.produto) LIKE (upper(:nomeProduto))		\n");
 		}
-
-		query =	s.createSQLQuery(sql.toString());
+		if((dataInicial != null) && (dataFinal != null)){
+			sb.append("    AND s.data_exclu   between :dataInicial AND :dataFinal		\n");			
+		}else if(dataInicial != null && dataFinal == null) {
+			sb.append("    AND s.data_exclu   >= :dataInicial							\n");
+		}else if(dataInicial == null && dataFinal != null ){
+			sb.append("    AND s.data_exclu   <= :dataFinal							\n");
+		}
+		
+		query =	s.createSQLQuery(sb.toString());
 		query.addScalar("data", Hibernate.DATE);
 		query.addScalar("matricula" , Hibernate.STRING);
 		query.addScalar("nome" , Hibernate.STRING);
@@ -332,8 +214,15 @@ public class RelatorioDao extends DAO{
 		if(!nomeProduto.isEmpty()){
 			query.setString("nomeProduto", "%" + nomeProduto + "%");
 		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		if(dataInicial != null){
+			query.setString("dataInicial", sdf.format(dataInicial));			 
+		}
+		if(dataFinal != null){
+			query.setString("dataFinal", sdf.format(dataFinal));			 
+		}
  
-		List lista = query.list();
+		lista = query.list();
 		return lista;
 	}
 
@@ -342,43 +231,23 @@ public class RelatorioDao extends DAO{
 		List<RelatorioGerencialRastreabilidade> lista = new ArrayList<RelatorioGerencialRastreabilidade>();
 		try{
 
-			connection = ConnectionFactory.getConnection();
-			pstmt = connection.prepareStatement(getSQLGerarRelatorioGerencialRastreabilidade(rastreabilidade, produto));
-			int i = 1;
-
+			Session s = getSessao();
+			query = s.createSQLQuery(getSQLGerarRelatorioGerencialRastreabilidade(rastreabilidade, produto));
+			query.addScalar("idRastreabilidade", Hibernate.INTEGER);
+			query.addScalar("produto", Hibernate.STRING);
+			query.addScalar("data", Hibernate.DATE);
+			//query.addScalar("tempoDeUso", Hibernate.INTEGER);
+			query.setResultTransformer(Transformers.aliasToBean(RelatorioGerencialRastreabilidade.class));
+			
 			if(!rastreabilidade.isEmpty()){
-				pstmt.setInt(i++,Integer.valueOf(rastreabilidade));
+				query.setInteger("idRastreio",Integer.valueOf(rastreabilidade));
 			}
 			if(!produto.isEmpty()){
-				pstmt.setString(i++, "%"+  produto  +"%");			 
+				query.setString("produto", "%"+ produto +"%");			 
 			}
-
-			/*SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			 if(dataInicial != null){
-				 pstmt.setString(i++, sdf.format(dataInicial));
-			 }
-			 if(dataInicial != null){
-				 pstmt.setString(i++, sdf.format(dataInicial));			 
-			 }*/
-
-			rs = pstmt.executeQuery();
-
-			while(rs.next()){
-
-				RelatorioGerencialRastreabilidade rastreio = new RelatorioGerencialRastreabilidade();
-				rastreio.setData(rs.getDate("DATA_ENTRADA"));
-				rastreio.setProduto(rs.getString("NOME_PRODUTO"));
-				rastreio.setIdRastreabilidade(rs.getInt("RASTREIO"));
-				lista.add(rastreio);
-			}
-
-		}catch(SQLException e){
-
-			System.err.println("Erro na query ou conexão não aberta em gerarRelatorioGerencialRastreabilidade :: RelatorioDao \nErro reportado: " + e.getMessage() );
-			e.printStackTrace();
-		}
-
-		catch (Exception e) {
+			lista = query.list();
+			
+		}catch (Exception e) {
 
 			System.err.println("Erro ocorrido em gerarRelatorioGerencialRastreabilidade :: RelatorioDao \nErro reportado: " + e.getMessage() );
 			e.printStackTrace();
@@ -392,27 +261,28 @@ public class RelatorioDao extends DAO{
 		StringBuffer query = new StringBuffer();
 
 		query.append(" SELECT 																\n");
-		query.append(" 	   r.idrastre    AS RASTREIO, 									\n");
-		query.append(" 	   p.produto     AS NOME_PRODUTO,								\n");
-		query.append(" 	   r.data        AS DATA_ENTRADA								\n");
-		query.append(" 	   -- (SELECT IF(MAX(moviment.data) = MIN(moviment.data), 			\n");
-		query.append(" 		-- 		  DATEDIFF(CURDATE(), moviment.DATA), 				\n");
-		query.append(" 		--		  DATEDIFF(MAX(moviment.data),MIN(moviment.data)))	\n");
-		query.append(" 		--  FROM moviment 											\n");
+		query.append(" 	   r.idrastre    AS idRastreabilidade,								\n");
+		query.append(" 	   p.produto     AS produto,										\n");
+		query.append(" 	   r.data        AS data											\n");
+		query.append(" 	    -- (SELECT IF(MAX(moviment.data) = MIN(moviment.data), 			\n");
+		query.append(" 		-- 		  DATEDIFF(CURDATE(), moviment.DATA), 					\n");
+		query.append(" 		--		  DATEDIFF(MAX(moviment.data),MIN(moviment.data)))		\n");
+		query.append(" 		--  FROM moviment 												\n");
 		query.append(" 		-- WHERE moviment.rastre    = r.idrastre 						\n");
-		query.append(" 		--   AND moviment.idproduto = p.idproduto) AS TEMPO_DE_USO	\n");
+		query.append(" 		--   AND moviment.idproduto = p.idproduto) AS tempoDeUso		\n");
 		query.append("   FROM rastreabilidade r,											\n");
-		query.append(" 	   produtos p													\n");
-		query.append("  WHERE p.idproduto = r.idproduto									\n");
-		query.append(" -- AND r.idrastre = 1139 -- m.rastre								\n");
-		query.append(" -- AND p.produto  = ?												\n");
-		query.append("    GROUP BY RASTREIO,												\n");
-		query.append(" 			NOME_PRODUTO,											\n");
-		query.append(" 			DATA_ENTRADA											\n");
-		query.append(" 			-- TEMPO_DE_USO											\n");
+		query.append(" 	   produtos p														\n");
+		query.append("  WHERE p.idproduto = r.idproduto										\n");
+		if(!rastreabilidade.isEmpty())
+			query.append("    AND r.idrastre = :idRastreio									\n");
+		if(!produto.isEmpty())
+			query.append("    AND p.produto  = :produto										\n");
+		query.append("    GROUP BY idRastreabilidade,										\n");
+		query.append(" 			produto,													\n");
+		query.append(" 			data														\n");
+		query.append(" 			-- TEMPO_DE_USO												\n");
 		query.append("    ORDER BY RASTREIO;												\n");
 		
-		System.out.println(query.toString());
 		return query.toString();
 	}
 	
@@ -425,30 +295,33 @@ public class RelatorioDao extends DAO{
 	public List<RelatorioGerencialRastreabilidadeSubReport> gerarRelatorioGerencialRastreabilidadeDealhes(Integer rastreio){
 		List<RelatorioGerencialRastreabilidadeSubReport> lista = new ArrayList<RelatorioGerencialRastreabilidadeSubReport>();
 		try {
+			StringBuilder sb = new StringBuilder();
+			sb.append("   SELECT IF(moviment.tipo_mov = 2, 'PAGO','DEVOLVIDO') AS status,					\n");
+			sb.append("          funcionarios.nome AS nomeFuncionario,										\n");
+			sb.append("          moviment.data AS data,														\n");
+			sb.append("          moviment.caminho AS caminho												\n");
+			sb.append("     FROM   moviment, funcionarios, cadcicle carro									\n");
+			sb.append("     where (moviment.chapa = funcionarios.chapa or moviment.chapa = carro.placa )	\n");
+			sb.append("     and carro.chapa_enc = funcionarios.chapa										\n");
+			sb.append("     and moviment.rastre = :idRastreio												\n");
+			sb.append("     group by status, data, caminho													\n");
 			
-			connection = ConnectionFactory.getConnection();
-			pstmt = connection.prepareStatement(getSQLGerarRelatorioGerencialRastreabilidadeSubReport());
-			pstmt.setInt(1, rastreio);
-			rs = pstmt.executeQuery();
-
-			while(rs.next()){
-
-				RelatorioGerencialRastreabilidadeSubReport subRastreio = new RelatorioGerencialRastreabilidadeSubReport();
-				subRastreio.setStatus(rs.getString("STATUS_TIPO_MOVIMENTO"));
-				subRastreio.setNomeFuncionario(rs.getString("NOME"));
-				subRastreio.setData(rs.getDate("DATA_MOVIMENTO"));
-				subRastreio.setCaminho(rs.getString("CAMINHO"));
-				//TODO VER CALCULO DE DIAS TUPF
-				lista.add(subRastreio);
-			}
 			
-		} catch(SQLException e){
-
-			System.err.println("Erro na query ou conexão não aberta em gerarRelatorioGerencialRastreabilidade :: RelatorioDao \nErro reportado: " + e.getMessage() );
-			e.printStackTrace();
-		}
-
-		catch (Exception e) {
+			
+			Session s = getSessao();
+			query = s.createSQLQuery(sb.toString());
+			query.addScalar("status", Hibernate.STRING);
+			query.addScalar("nomeFuncionario", Hibernate.STRING);
+			query.addScalar("data", Hibernate.DATE);
+			query.addScalar("caminho", Hibernate.STRING);
+			//query.addScalar("tempoDeUso", Hibernate.INTEGER);
+			query.setResultTransformer(Transformers.aliasToBean(RelatorioGerencialRastreabilidadeSubReport.class));
+			//TODO VER CALCULO DE DIAS TUPF
+			query.setInteger("idRastreio", rastreio);
+			
+			lista = query.list();
+			
+		}catch (Exception e) {
 
 			System.err.println("Erro ocorrido em gerarRelatorioGerencialRastreabilidade :: RelatorioDao \nErro reportado: " + e.getMessage() );
 			e.printStackTrace();
@@ -456,37 +329,20 @@ public class RelatorioDao extends DAO{
 		return lista;
 	}
 	
-	private String getSQLGerarRelatorioGerencialRastreabilidadeSubReport() {
-		StringBuffer query = new StringBuffer();
-
-		query.append("   SELECT IF(moviment.tipo_mov = 2, 'PAGO','DEVOLVIDO') AS STATUS_TIPO_MOVIMENTO,	\n");
-		query.append("          funcionarios.nome AS NOME,												\n");
-		query.append("          moviment.data AS DATA_MOVIMENTO,										\n");
-		query.append("          moviment.caminho AS CAMINHO												\n");
-		query.append("     FROM   moviment, funcionarios, cadcicle carro								\n");
-		query.append("     where (moviment.chapa = funcionarios.chapa or moviment.chapa = carro.placa )	\n");
-		query.append("     and carro.chapa_enc = funcionarios.chapa										\n");
-		query.append("     and moviment.rastre = ?														\n");
-		query.append("     group by STATUS_TIPO_MOVIMENTO, DATA_MOVIMENTO, CAMINHO;						\n");
-			
-		
-		System.out.println(query.toString());
-		return query.toString();
-	}
 	
 	public List<RelatorioGerencialProdutosPorFuncionarios> getSQLGerarRelatorioGerencialProdutosPorFuncionarios(String chapa){
 		List<RelatorioGerencialProdutosPorFuncionarios> lista = new ArrayList<RelatorioGerencialProdutosPorFuncionarios>();
 		try {
 			
 			connection = ConnectionFactory.getConnection();
-			pstmt = connection.prepareStatement(getSQLGerarRelatorioGerencialRastreabilidadeSubReport());
+			pstmt = connection.prepareStatement(getSQLGerarRelatorioGerencialProdutosPorFuncionarios());
 			pstmt.setString(1, chapa);
 			rs = pstmt.executeQuery();
 
 			while(rs.next()){
 
 				RelatorioGerencialProdutosPorFuncionarios relProdPorFuncionarios = new RelatorioGerencialProdutosPorFuncionarios();
-				relProdPorFuncionarios.getProduto().setProduto(rs.getString("PrODUTO"));
+				relProdPorFuncionarios.getProduto().setProduto(rs.getString("PRODUTO"));
 				relProdPorFuncionarios.getProduto().setValor(rs.getDouble("VALOR"));
 				relProdPorFuncionarios.setQuantidade(rs.getInt("QUANTIDADE"));
 				lista.add(relProdPorFuncionarios);
@@ -576,13 +432,42 @@ public class RelatorioDao extends DAO{
 		try{
 
 			Session s = getSessao();
-			StringBuffer sql = new StringBuffer();
+			StringBuffer sb = new StringBuffer();
+			sb.append(" select 	i.id as idIndividual,						\n");
+			sb.append(" 		i.chapa AS matricula, 						\n");
+			sb.append(" 		i.rastreabilidade AS rastreabilidade, 		\n");
+			sb.append(" 		i.qntd AS quantidade, i.status AS status,  	\n");
+			sb.append(" 		i.tipo_req AS tipoRequisicao, 				\n");
+			sb.append(" 		p.produto AS produto, 						\n");
+			sb.append(" 		p.durabilidade AS durabilidadeProduto,		\n");
+			sb.append(" 	  	p.idproduto AS idProduto	 				\n");
+			sb.append("    from individual i, produtos p  					\n");
+			sb.append("   where i.idproduto = p.idproduto					\n");
+			sb.append("     and i.chapa = :matricula						\n");
+			
+			query =	s.createSQLQuery(sb.toString());
+			query.addScalar("idProduto", Hibernate.INTEGER);
+			query.addScalar("produto" , Hibernate.STRING);
+			query.addScalar("idIndividual" , Hibernate.INTEGER);
+			query.addScalar("rastreabilidade" , Hibernate.INTEGER);
+			query.addScalar("quantidade" , Hibernate.INTEGER);
+			query.addScalar("status" , Hibernate.STRING	);
+			query.addScalar("tipoRequisicao" , Hibernate.STRING);
+			//query.addScalar("nome" , Hibernate.STRING);
+			//query.addScalar("idFuncionario" , Hibernate.INTEGER);
+			query.addScalar("movimentacao" , Hibernate.INTEGER);
+			query.addScalar("dataEntrega" , Hibernate.DATE);
+			query.addScalar("durabilidadeProduto" , Hibernate.INTEGER);
+			query.setString("matricula", matricula);
+			query.setResultTransformer(Transformers.aliasToBean(RelatorioAdmIndividual.class));
+ 
+			lista = query.list();
 
 		} 
 
 		catch (Exception e) {
 
-			System.err.println("Erro ocorrido em gerarRelAdministrativoEntrada :: RelatorioDao \nErro reportado: " + e.getMessage() );
+			System.err.println("Erro ocorrido em gerarRelAdministrativoIndividual :: RelatorioDao \nErro reportado: " + e.getMessage() );
 			e.printStackTrace();
 		}
 		return lista;
@@ -594,6 +479,7 @@ public class RelatorioDao extends DAO{
 
 			Session s = getSessao();
 			StringBuffer sql = new StringBuffer();
+			/* SELECT v.`id` AS idveiculo,v.`placa` AS placa,v.`quantidade` AS vqtd, v.rastre as vRastre,v.`idproduto` AS vIdProd,p.`produto` AS produto, v.data as entrega, p.durabilidade as durabilidade,f.nome as nome FROM `produtos` p INNER JOIN `veiculos` v ON p.`idproduto` = v.`idproduto` inner join funcionarios f on v.chapaenc = f.chapa	*/
 
 		} 
 
@@ -647,11 +533,6 @@ public class RelatorioDao extends DAO{
 			System.err.println("Erro ocorrido em gerarRelAdministrativoEntrada :: RelatorioDao \nErro reportado: " + e.getMessage() );
 			e.printStackTrace();
 		}
-		StringBuilder sb = new StringBuilder();
-		
-		
-		
-		
 		return lista;
 	}
 	
@@ -661,7 +542,18 @@ public class RelatorioDao extends DAO{
 
 			Session s = getSessao();
 			StringBuffer sql = new StringBuffer();
-
+	/*SELECT
+	     	p.idproduto as id,
+		p.produto as produto,
+		p.valor as valor,
+		r.idrastre as rastreado,
+		t.data_ent as data
+	
+	from produtos p
+		inner join rastreabilidade r
+		on r.idproduto = p.idproduto
+		inner join teste_eletrico t
+		on t.idproduto = p.idproduto*/
 		} 
 
 		catch (Exception e) {
@@ -671,12 +563,15 @@ public class RelatorioDao extends DAO{
 		}
 		return lista;
 	}
+	
+	
 	public List gerarRelAdministrativoVales(String matricula, String setor, Date dataInicial, Date dataFinal){
 		List<RelatorioAdmVales> lista = new ArrayList<RelatorioAdmVales>();
 		try{
 
 			Session s = getSessao();
 			StringBuffer sql = new StringBuffer();
+			//TODO ver query no php
 
 		} 
 
@@ -695,6 +590,7 @@ public class RelatorioDao extends DAO{
 
 			Session s = getSessao();
 			StringBuffer sql = new StringBuffer();
+			//TODO ver query no php
 
 		} 
 

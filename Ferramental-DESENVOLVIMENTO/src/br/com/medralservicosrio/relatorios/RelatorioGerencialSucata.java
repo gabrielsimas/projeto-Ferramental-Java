@@ -1,6 +1,5 @@
 package br.com.medralservicosrio.relatorios;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 
@@ -16,12 +15,12 @@ public class RelatorioGerencialSucata {
 	public RelatorioGerencialSucata() {
 	}
 
-	public RelatorioGerencialSucata(Date data, String matricula, String nome, String produto, BigDecimal valor, BigInteger rastreabilidade) {
+	public RelatorioGerencialSucata(Date data, String matricula, String nome, String produto, Double valor, BigInteger rastreabilidade) {
 		this.data = data;
 		this.matricula = matricula;
 		this.nome = nome;
 		this.produto = produto;
-		this.valor = valor.doubleValue();
+		this.valor = valor;
 		this.rastreabilidade = rastreabilidade;
 	}
 
@@ -61,8 +60,8 @@ public class RelatorioGerencialSucata {
 		return valor;
 	}
 
-	public void setValor(BigDecimal valor) {
-		this.valor = valor.doubleValue();
+	public void setValor(Double valor) {
+		this.valor = valor;
 	}
 
 	public BigInteger getRastreabilidade() {

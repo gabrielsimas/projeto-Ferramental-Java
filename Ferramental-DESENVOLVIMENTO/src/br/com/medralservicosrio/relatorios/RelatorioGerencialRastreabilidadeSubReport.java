@@ -6,7 +6,7 @@ public class RelatorioGerencialRastreabilidadeSubReport {
 
 	private String nomeFuncionario;
 	private String status;
-	private String status2;
+	private String caminho;
 	private Date data;
 	private String TUPF;
 
@@ -40,18 +40,6 @@ public class RelatorioGerencialRastreabilidadeSubReport {
 		this.status = status;
 	}
 	/**
-	 * @return the status2
-	 */
-	public String getStatus2() {
-		return status2;
-	}
-	/**
-	 * @param status2 the status2 to set
-	 */
-	public void setStatus2(String status2) {
-		this.status2 = status2;
-	}
-	/**
 	 * @return the data
 	 */
 	public Date getData() {
@@ -74,6 +62,14 @@ public class RelatorioGerencialRastreabilidadeSubReport {
 	 */
 	public void setTUPF(String tUPF) {
 		TUPF = tUPF;
+	}
+
+	public String getCaminho() {
+		return caminho;
+	}
+
+	public void setCaminho(String caminho) {
+		this.caminho = caminho;
 	}
 	
 }

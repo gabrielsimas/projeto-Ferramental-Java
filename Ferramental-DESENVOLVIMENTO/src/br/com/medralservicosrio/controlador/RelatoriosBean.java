@@ -18,9 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.swing.ImageIcon;
 
 import net.sf.jasperreports.engine.JRException;
-import br.com.medralservicosrio.dao.FornecedorDAO;
 import br.com.medralservicosrio.dao.RelatorioDao;
-import br.com.medralservicosrio.modelo.Fornecedor;
 import br.com.medralservicosrio.modelo.Funcionario;
 import br.com.medralservicosrio.relatorios.RelatorioAdmReforma;
 import br.com.medralservicosrio.relatorios.RelatorioAdmTesteEletrico;
@@ -41,6 +39,8 @@ import br.com.medralservicosrio.util.ReportUtils;
 @SuppressWarnings("rawtypes")
 public class RelatoriosBean{
 
+	// PROPIEDADES USADAS PARA RECURAR VALORES EM TODAS AS TELAS DE RELATORIO
+	// E USADO APENAS UMA LISTA E UM MAP PARA TODAS.
 	private RelatorioDao relatorioDao = null;
 	private List listaRelatorio = null;
 	private Funcionario func;
@@ -54,8 +54,6 @@ public class RelatoriosBean{
 	private String matricula;
 	private String numNota;
 	private String setor;
-	
-
 	
 	public RelatoriosBean() {
 		relatorioDao = new RelatorioDao();
@@ -74,7 +72,7 @@ public class RelatoriosBean{
 
 
 	/**
-	 * Metodo responsavel por buscar os dados do relatorio de materiais
+	 * Gera a tela de relatorio gerencial de materiais
 	 * @param event
 	 * @throws IOException 
 	 */
@@ -100,19 +98,19 @@ public class RelatoriosBean{
 				
 				for(RelatorioGerencialCompras compra : lista){
 					
-					vlrTemp = compra.getProduto().getValor() * compra.getQtdTeste();
+					vlrTemp = compra.getValorUnitario() * compra.getQtdTeste();
 					valorTeste =  vlrTemp  + valorTeste;
 					
-					vlrTemp = compra.getProduto().getValor() * compra.getQtdReformado();
+					vlrTemp = compra.getValorUnitario() * compra.getQtdReformado();
 					valorReforma =  vlrTemp + valorReforma;
 					
-					vlrTemp = compra.getProduto().getValor() * compra.getQtdEstoque();
+					vlrTemp = compra.getValorUnitario() * compra.getQtdEstoque();
 					valorEstoque =  vlrTemp + valorEstoque;
 					
-					vlrTemp = compra.getProduto().getValor() * compra.getQtdFuncionando();
+					vlrTemp = compra.getValorUnitario() * compra.getQtdFuncionando();
 					valorFuncionario =  vlrTemp + valorFuncionario;
 					
-					vlrTemp = compra.getProduto().getValor() * compra.getQtdVeiculo();
+					vlrTemp = compra.getValorUnitario() * compra.getQtdVeiculo();
 					valorVeiculo =  vlrTemp + valorVeiculo;
 				}
 				
@@ -133,7 +131,7 @@ public class RelatoriosBean{
 	}
 	
 	/**
-	 * Metodo Responsavel por Gerar o pdf do relatorio
+	 * Imprime o relatorio em PDF / XLS 
 	 * @param event
 	 */
 	public void imprimirRelatorioGerencialDeMateriais(ActionEvent event){
@@ -166,7 +164,7 @@ public class RelatoriosBean{
 	}
 	
 	/**
-	 * Metodo responsavel por gerar o relatorio de compras
+	 * Gera a tela de relatorio gerencial de compras
 	 * @param event
 	 */
 	public void gerarRelatorioGerencialDeCompras(ActionEvent event){
@@ -187,7 +185,7 @@ public class RelatoriosBean{
 				Double vlrTemp = new Double("0");
 				
 				for(RelatorioGerencialCompras compra : lista){
-					vlrTemp = compra.getProduto().getValor() * compra.getQtd();
+					vlrTemp = compra.getValorUnitario() * compra.getQtd();
 					valorTotal =  vlrTemp  + valorTotal;
 				}
 				calculoTotaisTemp.put("valorTotal", valorTotal);
@@ -204,7 +202,7 @@ public class RelatoriosBean{
 	
 
 	/**
-	 * 
+	 * Imprime o relatorio gerencial de compras.
 	 * @param event
 	 */
 	public void imprimirRelatorioGerencialDeCompras(ActionEvent event){
@@ -239,8 +237,9 @@ public class RelatoriosBean{
 	}
 	
 	/**
-	 * Metodo responsavel por gerar o relatorio de compras
+	 * Gera a tela de relatorio gerencial de sucata
 	 * @param event
+	 * TODO funcionando na tela, mas busca somente pelo funcionario, adicionar busca pelo carro
 	 */
 	public void gerarRelatorioGerencialDeSucata(ActionEvent event){
 		
@@ -277,14 +276,45 @@ public class RelatoriosBean{
 	
 	/**
 	 * Imprimir relatorio de sucatas.
+	 * @param event
 	 */
 	public void imprimirRelatorioGerencialDeSucata(ActionEvent event){
 		
+		FacesContext context = FacesContext.getCurrentInstance();
+		HttpServletRequest request   = (HttpServletRequest) context.getExternalContext().getRequest();		
+		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+
+		try {
+			
+				// parametros do relatorio
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("funcionario", funcionario);
+			params.put("produto", produto);
+			params.put("dataInicial", dataInicial);
+			params.put("dataFinal", dataFinal);
+			params.put("logo", new ImageIcon (context.getExternalContext().getResource("/imagem/medral.JPG")).getImage());
+			
+			String fileName = "relGerencialSucata"; 
+			ReportUtils.gerarPdf("/reports/relItensSucateados.jasper", fileName, listaRelatorio, params, request, response);
+			//ReportUtils.gerarXls("/reports/relItensSucateados.jasper", fileName, listaRelatorio, params, request, response);
+
+		} catch (JRException e) {
+			
+			e.printStackTrace();
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		} finally{
+			context.renderResponse();
+			context.responseComplete(); 
+		}
 	}
 	
 	/**
-	 * Metodo responsavel por gerar o relatorio de rastreabilidade
+	 * Metodo responsavel por gerar a tela de rastreabilidade
 	 * @param event
+	 * TODO gera a primeira parte da tela, tem que colocar uma linha expansivel para mostrar a lista de detalhes.
 	 */
 	public void gerarRelatorioGerencialRastreabilidade(ActionEvent event){
 
@@ -327,37 +357,6 @@ public class RelatoriosBean{
 
 		try {
 			
-			
-			
-			//trocar pelo dao
-			/*
-			Collection listaRastreabilidade = new ArrayList();
-			for(int i = 1 ; i <= 150 ; i++){
-				RelatorioGerencialRastreabilidade rastreabilidade = new RelatorioGerencialRastreabilidade();
-				RelatorioGerencialRastreabilidadeSubReport subReport = new RelatorioGerencialRastreabilidadeSubReport();
-				rastreabilidade.setIdRastreabilidade(i);
-				rastreabilidade.setProduto("produto_"+i);
-				rastreabilidade.setData(new Date());
-				Integer d = (int)(Math.random() * 600);
-				Integer d2 = (int)(Math.random() * 300);
-				rastreabilidade.setTempoDeUso(d);
-				
-				for (int j = 0; j < 1 + (int)(Math.random() * 5); j++) {
-					
-					subReport.setNomeFuncionario("funcionario_"+ i);
-					subReport.setStatus("teste status 1");
-					subReport.setStatus2("teste status 2");
-					subReport.setTUPF(d2.toString());
-					subReport.setData(new Date());
-					rastreabilidade.getListaDetalhes().add(subReport);
-					
-				}
-				
-				listaRelatorio.add(rastreabilidade);
-			}
-			*/
-			
-			
 			// parametros do relatorio
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("SUBREPORT_DIR", request.getServletContext().getRealPath("/reports/"));
@@ -383,8 +382,8 @@ public class RelatoriosBean{
 	
 	/**
 	 * Gera a tela de produto por funcionario
-	 *todo tudo
 	 * @param event
+	 * TODO BUSCAS SIMPLES;
 	 */
 	public void gerarRelatorioGerencialProdutosPorFuncionarios(ActionEvent event){
 
@@ -392,19 +391,12 @@ public class RelatoriosBean{
 		try {
 
 			listaRelatorio = new ArrayList();
-			
+				
+			  //BUSCAS FULL SCAM SOMENTE COM O ID DO FUNCIONARIO SEGUNDO AS REGRAS ABAIXO
 			  // Chapa diferente de null pocura no individual
 			  // placa diferente de null procura em veiculos
 			  // se os dois estiverem preenchidos, procuro o funcionario se eu não achar procuro o veiculo e recupero a chapa para procurar o funcionario novamente.
 			  // O produto vem de individual ou de veiculos
-			
-			/*
-			 * if(!matricula.isEmpty() && !placa.isEmpty()){
-				//FuncionarioDAO dao = new FuncionarioDAO();
-				//Funcionario func = 
-			}else if(){
-				
-			}*/
 			
 			if(listaRelatorio.isEmpty()){
 				
@@ -436,7 +428,7 @@ public class RelatoriosBean{
 	}
 	
 	/**
-	 * imprimir relarorio de produtos por funcionarios.
+	 * Imprimir relarorio de produtos por funcionarios.
 	 * @param event
 	 */
 	public void imprimirRelatorioGerencialProdutosPorFuncionarios(ActionEvent event){
@@ -466,8 +458,9 @@ public class RelatoriosBean{
 	}
 	
 	/**
-	 * Gera a tela de relatorio de entrada de notas
+	 * Gera a tela de relatorio administrativo de entrada de notas
 	 * @param event
+	 * 
 	 */
 	public void gerarRelatorioAdministrativoEntrada(ActionEvent event)  {
 		
@@ -481,8 +474,6 @@ public class RelatoriosBean{
 			}else{
 
 				List<RelatorioAdministrativoEntrada> lista = listaRelatorio;
-				//Fornecedor f = (Fornecedor) new FornecedorDAO().getSessao().getNamedQuery("").setInteger(":id", lista.get(0).getIdFornecedor()).uniqueResult();
-				
 				if(numNota.isEmpty()){
 					context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção" , "Para Imprimir o Número da Nota é Obrigatório"));
 				}
@@ -510,7 +501,8 @@ public class RelatoriosBean{
 	}
 	
 	/**
-	 * Imprime o relatorio de entrada
+	 * Imprime o relatorio administrativo de entrada
+	 * TODO buscar o fornecedor pelo id para imprimir no relatorio.
 	 * @param event
 	 */
 	public void imprimirRelatorioAdministrativoEntrada(ActionEvent event)  {
@@ -519,6 +511,7 @@ public class RelatoriosBean{
 
 		try {
 			
+			//Fornecedor f = (Fornecedor) new FornecedorDAO().getSessao().getNamedQuery("").setInteger(":id", lista.get(0).getIdFornecedor()).uniqueResult();
 			Map<String, Object> params = new HashMap<String,Object>();
 			params.put("fornecedor", "");
 			params.put("endereco", "");
@@ -542,7 +535,7 @@ public class RelatoriosBean{
 	
 	/**
 	 * TODO contem ação na tela, verificar no php
-	 * Gera a tela de relatorio individual
+	 * Gera a tela de relatorio administrativo individual
 	 * @param event
 	 * 
 	 */
@@ -558,17 +551,6 @@ public class RelatoriosBean{
 				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção" , "Sua Busca não retornou nenhum resultado"));
 			}else{
 
-				List<RelatorioAdministrativoEntrada> lista = listaRelatorio;
-				Map<String, Double> total = new HashMap<String, Double>();
-				Double valorTotal = new Double("0");
-				Double vlrTemp = new Double("0");
-
-				for(RelatorioAdministrativoEntrada entrada : lista){
-					vlrTemp = entrada.getValor();
-					valorTotal =  vlrTemp  + valorTotal;
-				}
-				total.put("valorTotal", valorTotal);
-				calculoTotais = total;
 			}
 
 		} catch (Exception e) {
@@ -578,7 +560,7 @@ public class RelatoriosBean{
 	}
 
 	/**
-	 * Imprimie o relatorio Individual
+	 * Imprime o relatorio administrativo individual
 	 * @param event
 	 */
 	public void imprimirRelatorioAdministrativoIndividual(ActionEvent event) {
@@ -605,6 +587,10 @@ public class RelatoriosBean{
 		
 	}
 	
+	/**
+	 * Gera a tela de relatorio administrativo de veiculos
+	 * @param event
+	 */
 	public void gerarRelatorioAdministrativoVeiculos(ActionEvent event) {
 
 		try {
@@ -736,7 +722,7 @@ public class RelatoriosBean{
 	}
 	
 	/**
-	 * Gera o relatorio de Teste Eletrico
+	 * Imprime o relatorio administrativo Teste Eletrico
 	 * @param event
 	 */
 	public void imprimirRelatorioAdministrativoTesteEletrico(ActionEvent event) {
@@ -799,7 +785,7 @@ public class RelatoriosBean{
 	}
 	
 	/**
-	 * Gera o relatorio de Vales
+	 * Imprime o relatorio administrativo de vales
 	 * @param event
 	 */
 	public void imprimirRelatorioAdministrativoVales(ActionEvent event) {
@@ -860,7 +846,7 @@ public class RelatoriosBean{
 	}
 	
 	/**
-	 * Gera o relatorio de Reforma
+	 * Imprime o relatorio de Reforma
 	 * @param event
 	 */
 	public void imprimirRelatorioAdministrativoReforma(ActionEvent event) {
@@ -885,7 +871,6 @@ public class RelatoriosBean{
 		} 
 		
 	}
-
 
 	/**
 	 * @return the relatorioDao
