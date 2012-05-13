@@ -46,7 +46,14 @@
                         <f:facet name="header">
                             <h:outputText value="Valor" />
                         </f:facet>
-                        <h:outputText value="#{lista.valor}" />
+                         <h:outputText value="#{lista.valor}" >
+	                		<f:convertNumber minFractionDigits="2" />
+	                	</h:outputText>
+	                	 <f:facet name="footer">  
+	                	<h:outputText value="#{relatoriosBean.calculoTotais.get('valorTotal')}">
+               				<f:convertNumber minFractionDigits="2"/>
+               			</h:outputText>
+               		</f:facet>
                     </p:column>
                     
                     <p:column>

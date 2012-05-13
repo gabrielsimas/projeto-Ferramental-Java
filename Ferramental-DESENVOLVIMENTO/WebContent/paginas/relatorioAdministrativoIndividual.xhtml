@@ -28,7 +28,7 @@
     
     <p:fieldset legend="LISTA GERAL:" toggleable="true" id="mostraDados">  
 
-             <p:dataTable id="dataTable" value="#{relatoriosBean.listaRelatorio}" var="lista">
+             <p:dataTable value="#{relatoriosBean.listaRelatorio}" var="lista">
    
                  <p:column>
                      <f:facet name="header">
@@ -41,7 +41,7 @@
                      <f:facet name="header">
                          <h:outputText value="Entrega" />
                      </f:facet>
-                     <h:outputText value="#{lista.dataEntrada}">
+                     <h:outputText value="#{lista.dataEntrega}">
            		            <f:convertDateTime dateStyle="short" pattern="dd/MM/yyyy" />
 	               	 </h:outputText>
                  </p:column>
@@ -50,7 +50,7 @@
                      <f:facet name="header">
                          <h:outputText value="Durabilidade" />
                      </f:facet>
-                     <h:outputText value="#{lista.durabilidade}" />
+                     <h:outputText value="#{lista.durabilidadeProduto}" />
                  </p:column>
                  
                  <p:column>
@@ -64,7 +64,7 @@
                      <f:facet name="header">
                          <h:outputText value="Rastreamento" />
                      </f:facet>
-                     <h:outputText value="#{lista.rastreamento}" />
+                     <h:outputText value="#{lista.rastreabilidade}" />
                  </p:column>
                  
                  <p:column>
@@ -88,18 +88,7 @@
                      <h:outputText value="#{lista.quantidade}" />
                  </p:column>
                  
-                <!--  
-                <p:column>
-                     <f:facet name="header">
-                         <h:outputText value="OPERAÇÃO" />
-                     </f:facet>
-                     
-                     <p:commandLink value="BAIXA" update=":form:books" process=":form:books">
-                         <p:collector value="#{book}"
-                                      removeFrom="#{bookBean.books}" />
-                     </p:commandLink>
-                 </p:column>
- 				-->
+               
              </p:dataTable>
 
         </p:fieldset>     

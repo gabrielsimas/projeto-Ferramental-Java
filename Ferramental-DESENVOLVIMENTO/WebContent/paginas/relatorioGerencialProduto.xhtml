@@ -17,12 +17,12 @@
 	    <p:growl id="avisos" showDetail="true" life="3000" autoUpdate="true"/>  
 	
 	    <p:fieldset legend="RELATÓRIO PRODUTOS POR FUNCIONÁRIO:" toggleable="true" id="buscarDados">
-	       <h:panelGrid columns="8">
+	       <h:panelGrid columns="2">
 	            <h:outputText value="MATRÍCULA:"/>
-	            <!-- <p:inputText id="matricula" value="#{relatoriosBean.matricula}" maxlength="5" size="6" onkeydown="ForceNumericInput(event, this, false, false)" /> -->
+	            <p:inputText id="matricula" value="#{relatoriosBean.matricula}" maxlength="5" size="10" onkeydown="ForceNumericInput(event, this, false, false)" /> 
 	            
 	            <h:outputText value="PLACA:"/>
-	            <p:inputMask mask="aaa-9999" value="#{relatoriosBean.placa}" maxlength="7" size="8"/>
+	            <p:inputMask mask="aaa-9999" value="#{relatoriosBean.placa}" maxlength="7" size="10"/>
 	            
 	            <h:outputText value="PRODUTO:"/>
 	            <p:inputText id="produto" value="#{relatoriosBean.produto}" maxlength="25" size="40"/>

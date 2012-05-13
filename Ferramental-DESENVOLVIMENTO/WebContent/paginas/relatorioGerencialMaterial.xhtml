@@ -45,7 +45,7 @@
 	                 <f:facet name="header" >
 	                     <h:outputText value="PRODUTO" style="width: 10pt;" />
 	                 </f:facet>
-	                 <h:outputText value="#{lista.produto.produto}"/>
+	                 <h:outputText value="#{lista.produto}"/>
 	                 <f:facet name="footer">  
                			TOTAL  
            			 </f:facet>  
@@ -65,7 +65,7 @@
 	                 </f:facet>
 	                
 	                <script type="text/javascript">
-	               		multiplicarValores(#{lista.produto.valor},#{lista.qtdTeste},"dataTable:"+#{linha}+":colunaValorTeste");
+	               		multiplicarValores(#{lista.valorUnitario},#{lista.qtdTeste},"dataTable:"+#{linha}+":colunaValorTeste");
 					</script>
 	                <h:outputText value="" id="colunaValorTeste" />
 	                <f:facet name="footer">  
@@ -88,7 +88,7 @@
 	                 </f:facet>
 	               
 	               	<script type="text/javascript">
-	               		multiplicarValores(#{lista.produto.valor},#{lista.qtdReformado},"dataTable:"+#{linha}+":colunaValorReforma");
+	               		multiplicarValores(#{lista.valorUnitario},#{lista.qtdReformado},"dataTable:"+#{linha}+":colunaValorReforma");
 					</script>
 	               	<h:outputText value="" id="colunaValorReforma"/>
 	                 <f:facet name="footer">
@@ -110,7 +110,7 @@
 	                     <h:outputText value="VALOR"/>
 	                 </f:facet>
 	                 <script type="text/javascript">
-	               		multiplicarValores(#{lista.produto.valor},#{lista.qtdEstoque},"dataTable:"+#{linha}+":colunaValorEstoque");
+	               		multiplicarValores(#{lista.valorUnitario},#{lista.qtdEstoque},"dataTable:"+#{linha}+":colunaValorEstoque");
 					 </script>
 	                 <h:outputText value="" id="colunaValorEstoque"/>
 	                  <f:facet name="footer">
@@ -133,7 +133,7 @@
 	                 </f:facet>
 	                
 	                <script type="text/javascript">
-	               		multiplicarValores(#{lista.produto.valor},#{lista.qtdFuncionando},"dataTable:"+#{linha}+":colunaValorFuncionario");
+	               		multiplicarValores(#{lista.valorUnitario},#{lista.qtdFuncionando},"dataTable:"+#{linha}+":colunaValorFuncionario");
 					</script>
 	                <h:outputText value="" id="colunaValorFuncionario"/>
 	                <f:facet name="footer">
@@ -155,7 +155,7 @@
 	                     <h:outputText value="VALOR"/>
 	                 </f:facet>
 	                 <script type="text/javascript">
-	                 multiplicarValores(#{lista.produto.valor},#{lista.qtdVeiculo},"dataTable:"+#{linha}+":colunaValorVeiculo");
+	                 multiplicarValores(#{lista.valorUnitario},#{lista.qtdVeiculo},"dataTable:"+#{linha}+":colunaValorVeiculo");
 					 </script>
 	                 <h:outputText value=""  id="colunaValorVeiculo"/>
 	                 <f:facet name="footer">

@@ -22,7 +22,7 @@
        	<h:panelGrid columns="2" id="painel">
 
        			<h:outputText value="NOTA:"/>
-       			<p:inputText value="#{relatoriosBean.numNotaS}" id="Nota" size="10"  onkeydown="ForceNumericInput(event, this, false, false)" />
+       			<p:inputText value="#{relatoriosBean.numNota}" id="Nota" size="10"  onkeydown="ForceNumericInput(event, this, false, false)" />
        			
              	<h:outputText value="DATA INICIAL:" />  
            	 	<p:calendar value="#{relatoriosBean.dataInicial}" maxlength="10" size="10" pattern="dd/MM/yyyy"/>
@@ -34,7 +34,7 @@
             	<p:inputText id="descricao" value="#{relatoriosBean.produto}" maxlength="25" size="40"/>
             
             	<p:commandButton value="CONSULTAR" actionListener="#{relatoriosBean.gerarRelatorioGerencialDeCompras}" type="submit" update="painel, exibirDataTable"/>
-            	<p:commandButton value="IMPRIMIR" rendered="#{not empty relatoriosBean.listaRelatorio}" type="submit"  actionListener="#{relatoriosBean.gerarRelatorioGerencialRastreabilidade}" ajax="false" />
+            	<p:commandButton value="IMPRIMIR" rendered="#{not empty relatoriosBean.listaRelatorio}" type="submit"  actionListener="#{relatoriosBean.imprimirRelatorioGerencialDeCompras}" ajax="false" />
         	</h:panelGrid>
   		</p:fieldset> 
     
@@ -65,7 +65,7 @@
 	                 <f:facet name="header">
 	                     <h:outputText value="Produto" />
 	                 </f:facet>
-	                 <h:outputText value="#{lista.produto.produto}" />
+	                 <h:outputText value="#{lista.produto}" />
 	                 <f:facet name="footer">  
                			TOTAL  
            			</f:facet>
@@ -82,7 +82,7 @@
 	                 <f:facet name="header">
 	                     <h:outputText value="Valor Unitário"/>
 	                 </f:facet>
-	                <h:outputText value="#{lista.produto.valor}" >
+	                <h:outputText value="#{lista.valorUnitario}" >
 	                	<f:convertNumber minFractionDigits="2" />
 	                </h:outputText>
 	             </p:column>
