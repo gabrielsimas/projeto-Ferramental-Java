@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relGerencialMaterial" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relGerencialMaterial" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="2.33253690104871"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="168"/>
+	<property name="ireport.y" value="264"/>
 	<style name="style1" mode="Opaque"/>
 	<subDataset name="dataset1"/>
 	<parameter name="logo" class="java.awt.Image" isForPrompting="false">
 		<parameterDescription><![CDATA[Caminho da imagem]]></parameterDescription>
 	</parameter>
 	<parameter name="produto" class="java.lang.String"/>
-	<field name="produto" class="br.com.medralservicosrio.modelo.Produto"/>
+	<field name="produto" class="java.lang.String"/>
 	<field name="qtdTeste" class="java.lang.Integer"/>
 	<field name="qtdReformado" class="java.lang.Integer"/>
 	<field name="qtdEstoque" class="java.lang.Integer"/>
 	<field name="qtdFuncionando" class="java.lang.Integer"/>
 	<field name="qtdVeiculo" class="java.lang.Integer"/>
 	<field name="data" class="java.lang.String"/>
+	<field name="valorUnitario" class="java.lang.Double"/>
 	<variable name="QTD_TESTE_PAGINA" class="java.lang.Integer" resetType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$F{qtdTeste}]]></variableExpression>
 		<initialValueExpression><![CDATA[]]></initialValueExpression>
@@ -55,26 +56,26 @@ $F{qtdFuncionando}+
 $F{qtdVeiculo}]]></variableExpression>
 	</variable>
 	<variable name="VALOR_TOTAL_COLUMN" class="java.lang.Double" resetType="None">
-		<variableExpression><![CDATA[(($F{produto}.getValor() * $F{qtdTeste}) +
-($F{produto}.getValor() * $F{qtdReformado}) +
-($F{produto}.getValor() * $F{qtdEstoque}) +
-($F{produto}.getValor() * $F{qtdFuncionando}) +
-($F{produto}.getValor() * $F{qtdVeiculo}))]]></variableExpression>
+		<variableExpression><![CDATA[(($F{valorUnitario} * $F{qtdTeste}) +
+($F{valorUnitario} * $F{qtdReformado}) +
+($F{valorUnitario} * $F{qtdEstoque}) +
+($F{valorUnitario} * $F{qtdFuncionando}) +
+($F{valorUnitario} * $F{qtdVeiculo}))]]></variableExpression>
 	</variable>
 	<variable name="VALOR_TESTE_COLUMN" class="java.lang.Double" resetType="None">
-		<variableExpression><![CDATA[$F{produto}.getValor() * $F{qtdTeste}]]></variableExpression>
+		<variableExpression><![CDATA[$F{valorUnitario} * $F{qtdTeste}]]></variableExpression>
 	</variable>
 	<variable name="VALOR_REFORMADO_COLUMN" class="java.lang.Double" resetType="None">
-		<variableExpression><![CDATA[$F{produto}.getValor() * $F{qtdReformado}]]></variableExpression>
+		<variableExpression><![CDATA[$F{valorUnitario} * $F{qtdReformado}]]></variableExpression>
 	</variable>
 	<variable name="VALOR_ESTOQUE_COLUMN" class="java.lang.Double" resetType="None">
-		<variableExpression><![CDATA[$F{produto}.getValor() * $F{qtdEstoque}]]></variableExpression>
+		<variableExpression><![CDATA[$F{valorUnitario} * $F{qtdEstoque}]]></variableExpression>
 	</variable>
 	<variable name="VALOR_FUNC_COLUMN" class="java.lang.Double" resetType="None">
-		<variableExpression><![CDATA[$F{produto}.getValor() * $F{qtdFuncionando}]]></variableExpression>
+		<variableExpression><![CDATA[$F{valorUnitario} * $F{qtdFuncionando}]]></variableExpression>
 	</variable>
 	<variable name="VALOR_VEICULO_COLUMN" class="java.lang.Double" resetType="None">
-		<variableExpression><![CDATA[$F{produto}.getValor() * $F{qtdVeiculo}]]></variableExpression>
+		<variableExpression><![CDATA[$F{valorUnitario} * $F{qtdVeiculo}]]></variableExpression>
 	</variable>
 	<variable name="VALOR_TESTE_PAGINA" class="java.lang.Double" resetType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$V{VALOR_TESTE_COLUMN}]]></variableExpression>
@@ -457,7 +458,7 @@ $F{qtdVeiculo}]]></variableExpression>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{produto}.getProduto()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{produto}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="20" isPrintWhenDetailOverflows="true"/>

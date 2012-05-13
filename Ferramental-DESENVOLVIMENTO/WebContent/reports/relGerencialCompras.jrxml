@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relGerencialCompras" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.7715610000000144"/>
-	<property name="ireport.x" value="12"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="99"/>
 	<parameter name="produto" class="java.lang.String"/>
 	<parameter name="dataInicial" class="java.lang.String"/>
 	<parameter name="dataFinal" class="java.lang.String"/>
 	<parameter name="logo" class="java.awt.Image"/>
-	<field name="produto" class="br.com.medralservicosrio.modelo.Produto"/>
+	<field name="produto" class="java.lang.String"/>
 	<field name="qtdEstoque" class="java.lang.Integer"/>
 	<field name="data" class="java.util.Date"/>
 	<field name="qtd" class="java.lang.Integer"/>
 	<field name="numNota" class="java.lang.Integer"/>
+	<field name="valorUnitario" class="java.lang.Double"/>
 	<variable name="TOTAL_VALOR_UNITARIO_PAGINA" class="java.lang.Double" resetType="Column" calculation="Sum">
-		<variableExpression><![CDATA[$F{produto}.getValor()]]></variableExpression>
+		<variableExpression><![CDATA[$F{valorUnitario}]]></variableExpression>
 	</variable>
 	<variable name="TOTAL_QTD_PAGINA" class="java.lang.Integer" resetType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$F{qtd}]]></variableExpression>
@@ -23,7 +24,7 @@
 		<initialValueExpression><![CDATA[$V{VALOR_TOTAL_COLUMN}]]></initialValueExpression>
 	</variable>
 	<variable name="TOTAL_VALOR_UNITARIO_REPORT" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{produto}.getValor()]]></variableExpression>
+		<variableExpression><![CDATA[$F{valorUnitario}]]></variableExpression>
 	</variable>
 	<variable name="TOTAL_QTD_REPORT" class="java.lang.Integer" calculation="Sum">
 		<variableExpression><![CDATA[$F{qtd}]]></variableExpression>
@@ -32,7 +33,7 @@
 		<variableExpression><![CDATA[$V{VALOR_TOTAL_COLUMN}]]></variableExpression>
 	</variable>
 	<variable name="VALOR_TOTAL_COLUMN" class="java.lang.Double" resetType="None">
-		<variableExpression><![CDATA[$F{produto}.getValor() * $F{qtd}]]></variableExpression>
+		<variableExpression><![CDATA[$F{valorUnitario} * $F{qtd}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -217,14 +218,14 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{produto}.getProduto()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{produto}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0.00;-###0.00">
 				<reportElement stretchType="RelativeToTallestObject" x="401" y="0" width="110" height="25"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{produto}.getValor()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{valorUnitario}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="511" y="0" width="80" height="25"/>

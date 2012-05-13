@@ -27,17 +27,17 @@ FROM
 WHERE funcionarios.`chapa` = 9367]]>
 	</queryString>
 	<field name="idProduto" class="java.lang.Integer"/>
-	<field name="Produto" class="java.lang.String"/>
+	<field name="produto" class="java.lang.String"/>
 	<field name="Id" class="java.lang.Integer"/>
-	<field name="Rastreabilidade" class="java.lang.Long"/>
-	<field name="Quantidade" class="java.lang.Integer"/>
-	<field name="Status" class="java.lang.String"/>
-	<field name="TipoRequisicao" class="java.lang.String"/>
-	<field name="Nome" class="java.lang.String"/>
-	<field name="IdFuncionario" class="java.lang.Integer"/>
+	<field name="rastreabilidade" class="java.lang.Long"/>
+	<field name="quantidade" class="java.lang.Integer"/>
+	<field name="status" class="java.lang.String"/>
+	<field name="tipoRequisicao" class="java.lang.String"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="idFuncionario" class="java.lang.Integer"/>
 	<field name="movimentacao" class="java.lang.Integer"/>
-	<field name="entrega" class="java.sql.Date"/>
-	<field name="produtos_durabilidade" class="java.lang.Integer"/>
+	<field name="dataEntrega" class="java.sql.Date"/>
+	<field name="durabilidadeProduto" class="java.lang.Integer"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

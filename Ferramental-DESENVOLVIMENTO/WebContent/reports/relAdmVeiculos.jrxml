@@ -33,7 +33,7 @@
 	<parameter name="logo" class="java.awt.Image"/>
 	<parameter name="nomeFuncionario" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT v.`id` AS idveiculo,v.`placa` AS placa,v.`quantidade` AS vqtd, v.rastre as vRastre,v.`idproduto` AS vIdProd,p.`produto` AS produto, v.data as entrega, p.durabilidade as durabilidade,f.nome as nome FROM `produtos` p INNER JOIN `veiculos` v ON p.`idproduto` = v.`idproduto` inner join funcionarios f on v.chapaenc = f.chapa]]>
+		<![CDATA[]]>
 	</queryString>
 	<field name="idveiculo" class="java.lang.Integer"/>
 	<field name="placa" class="java.lang.String"/>
