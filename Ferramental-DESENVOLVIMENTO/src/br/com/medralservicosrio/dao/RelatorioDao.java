@@ -17,6 +17,7 @@ import org.hibernate.transform.Transformers;
 
 import br.com.medralservicosrio.conexao.ConnectionFactory;
 import br.com.medralservicosrio.generics.DAO;
+import br.com.medralservicosrio.relatorios.RelatorioAdmIndividual;
 import br.com.medralservicosrio.relatorios.RelatorioAdmMovimentacao;
 import br.com.medralservicosrio.relatorios.RelatorioAdmReforma;
 import br.com.medralservicosrio.relatorios.RelatorioAdmTesteEletrico;

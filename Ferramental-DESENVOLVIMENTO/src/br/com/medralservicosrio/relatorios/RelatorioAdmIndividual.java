@@ -1,4 +1,4 @@
-package br.com.medralservicosrio.dao;
+package br.com.medralservicosrio.relatorios;
 
 import java.util.Date;
 
