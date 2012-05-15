@@ -16,13 +16,18 @@ import br.com.medralservicosrio.modelo.Usuario;
 
 public class UsuarioDAO extends DAO<Usuario,Integer> {
 
-	/*TODO: Adicionar Métodos de autenticação para o Usuário
-	 * 
-	 */
+		
+	public UsuarioDAO(Class<Usuario> entidade) {
+		super(entidade);
 	
-   public boolean autenticar(String usuario, String senha){
+	}
+	//*TODO: Adicionar Métodos de autenticação para o Usuário - DONE
+
+public boolean autenticar(String usuario, String senha){
 	   
 	   String query = "SELECT u FROM Usuario u WHERE u.login = :p1 AND u.senha = :p2";
+	   
+	   
 	   
 	   try{
 		   

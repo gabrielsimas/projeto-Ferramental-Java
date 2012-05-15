@@ -13,6 +13,11 @@ import br.com.medralservicosrio.modelo.Produto;
  */
 
 public class ProdutoDAO extends DAO<Produto, Integer> {
+
+	public ProdutoDAO(Class<Produto> entidade) {
+		super(entidade);
+		// TODO Auto-generated constructor stub
+	}
 	
 	//TODO:Adicionar outras consultas aqui.
 

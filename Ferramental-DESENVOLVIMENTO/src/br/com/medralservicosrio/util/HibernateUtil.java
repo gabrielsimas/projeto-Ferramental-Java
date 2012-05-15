@@ -75,6 +75,7 @@ public class HibernateUtil {
 				//sessionFactory = ac.configure().buildSessionFactory();
 				sessionFactory = ac.configure("br/com/medralservicosrio/util/hibernate.cfg.xml").buildSessionFactory();
 				
+				System.out.println("[HibernateUtil] - Instanciando a SessionFactoty");
 				
 			} catch(Throwable ex) {
 				System.err.println("Criacao da instancia para conexao com o BD falhou!" +

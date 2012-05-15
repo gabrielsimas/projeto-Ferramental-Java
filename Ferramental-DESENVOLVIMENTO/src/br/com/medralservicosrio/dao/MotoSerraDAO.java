@@ -14,6 +14,11 @@ import br.com.medralservicosrio.modelo.MotoSerra;
  */
 public class MotoSerraDAO extends DAO<MotoSerra, Integer> {
 
+	public MotoSerraDAO(Class<MotoSerra> entidade) {
+		super(entidade);
+		// TODO Auto-generated constructor stub
+	}
+
    /* private Connection connection;
     
     public boolean validar(MotoSerra motoserra) throws SQLException {

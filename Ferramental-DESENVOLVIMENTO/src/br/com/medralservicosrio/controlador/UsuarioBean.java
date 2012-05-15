@@ -25,15 +25,16 @@ public class UsuarioBean implements Serializable{
 	
 	public UsuarioBean() {
 		usuario = new Usuario();
-		dao = new UsuarioDAO();
+		dao = new UsuarioDAO(Usuario.class);
 		usuarios = new ArrayList<Usuario>();
+		
 	}
 
 	
 	public String autenticar(){
 		FacesContext fc = FacesContext.getCurrentInstance();
 		
-		fc.addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR,"", "Usuário ou senha invalidos!"));
+		fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,null, "Usuário ou senha invalidos!"));
 		return dao.autenticar(usuario.getLogin(), usuario.getSenha()) ? "principal?faces-redirect=true" :"";
 	}
 	

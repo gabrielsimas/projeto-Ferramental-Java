@@ -26,7 +26,7 @@ import javax.persistence.Table;
  * 
  *  Este padrão serve para qualquer projeto Java até EJB
  */
-@Entity
+@Entity(name="Funcionario")
 @Table(name="funcionarios")
 /*@NamedQueries(
 		
@@ -42,11 +42,12 @@ public class Funcionario implements Serializable{
     
 	private static final long serialVersionUID = 2940772491105983478L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")
-    private Integer id;
 	
+	/*@Column(name="id")
+    private Integer id;*/
+	
+	@Id
+	/*@GeneratedValue(strategy=GenerationType.AUTO)*/
 	@Column(name="chapa", nullable=false, unique=true)
     private Integer matricula;
 	
@@ -59,9 +60,8 @@ public class Funcionario implements Serializable{
 	@Column(name="funcao", length=100,nullable=false)
     private String funcao;
 	
-	@Column(name="custo",nullable=false)
-    private double custo;
-    
+	@Column(name="custo",length=100,nullable=false)
+    private String custo;
     
 	/**
 	 * @param id
@@ -71,9 +71,9 @@ public class Funcionario implements Serializable{
 	 * @param funcao
 	 * @param custo
 	 */
-	public Funcionario(Integer id, Integer matricula, String nome,
-			String setor, String funcao, double custo) {
-		this.id = id;
+	public Funcionario(Integer matricula, String nome,
+			String setor, String funcao, String custo) {
+		
 		this.matricula = matricula;
 		this.nome = nome;
 		this.setor = setor;
@@ -88,18 +88,18 @@ public class Funcionario implements Serializable{
 	/**
 	 * @return the id
 	 */
-	public Integer getId() {
+	/*public Integer getId() {
 		return id;
 	}
 
 
-	/**
+	*//**
 	 * @param id the id to set
-	 */
+	 *//*
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
+*/
 
 	/**
 	 * @return the matricula
@@ -164,7 +164,7 @@ public class Funcionario implements Serializable{
 	/**
 	 * @return the custo
 	 */
-	public double getCusto() {
+	public String getCusto() {
 		return custo;
 	}
 
@@ -172,7 +172,7 @@ public class Funcionario implements Serializable{
 	/**
 	 * @param custo the custo to set
 	 */
-	public void setCusto(double custo) {
+	public void setCusto(String custo) {
 		this.custo = custo;
 	}
 	
@@ -207,8 +207,8 @@ public class Funcionario implements Serializable{
 	public boolean equals(Object obj) {
 		if (obj instanceof Funcionario){
 			Funcionario funcionario = (Funcionario) obj;
-			if (funcionario.getId() != null){
-				return funcionario.getId().equals(this.id);
+			if (funcionario.getMatricula() != null){
+				return funcionario.getMatricula().equals(this.matricula);
 			}
 		}
 		return false;
@@ -216,11 +216,11 @@ public class Funcionario implements Serializable{
 
 	@Override
 	public int hashCode() {
-		return this.id != null ? this.id.hashCode() : 0;
+		return this.matricula != null ? this.matricula.hashCode() : 0;
 	}
 
 	@Override
 	public String toString() {
-		return this.id + ", " + this.nome;
+		return this.matricula + ", " + this.nome;
 	}
 }

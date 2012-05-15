@@ -2,92 +2,102 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
      xmlns:h="http://java.sun.com/jsf/html" 
-     xmlns:p="http://primefaces.prime.com.tr/ui" 
+     xmlns:p="http://primefaces.org/ui" 
      xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:f="http://java.sun.com/jsf/core">  
    
     <h:head>
-        <title>:.Medral Tecnologia Penha.:</title>
+        <title>Cadastro de Produtos</title>
+       
     </h:head>
     
     <h:body style="background-color: paleturquoise"> 
-        <ui:include src="/paginas/menu.xhtml"/>
+        <!-- <ui:include src="/paginas/menu.xhtml"/> -->
         
-    <p:growl id="avisos" showDetail="true" life="3000" />  
+		<!-- Formulário de Cadastro -->        
+        <h:form id="frmCadastraProduto">
+        	<p:panel id="pnlCadastro" header="Cadastro de Produtos">
+        		<p:messages showDetail="true" autoUpdate="true"/>
+        		
+        		<!-- Corpo do Cadastro -->
+        		<p:panelGrid columns="2">
+        		
+        			<h:outputText 	value="Nome:" />
+        			<p:inputText 	value="#{produtoBean.produto.produto}" size="50"/>
+        			
+        			<h:outputText 	value="Valor: "/>
+        			<p:inputText 	value="#{produtoBean.produto.valor}"  size="50"/>
+        			
+        			<h:outputText 	value="Durabilidade: " />
+        			<p:inputText 	value="#{produtoBean.produto.durabilidade}" size="50"/>
+        			
+        		</p:panelGrid>
+        		<!-- Fim Corpo do Cadastro -->
+        		
+        		<f:facet name="footer">
+        			<p:panelGrid columns="3">
+        				<!-- Botões de Controle do Formulário -->
+        				<!-- Botão Cadastrar/Atualizar -->
+						<p:commandButton id="btnOperacao" value="#{produtoBean.textoBotao}"
+						actionListener="#{produtoBean.cadastrar}" update=":frmListaProduto">
+							<f:setPropertyActionListener target="#{produtoBean.textoBotao}" value="Cadastrar"/>
+        					<f:setPropertyActionListener target="#{produtoBean.atualizacao}" value="true"/>
+						</p:commandButton>
 
-    <p:fieldset legend="CADASTRO DE PRODUTOS:" toggleable="true">  
-    <h:form> 
+						<!-- Botão Limpar -->
+        				<p:commandButton id="btnLimpar" value="Limpar" actionListener="#{produtoBean.limpar}" update=":frmCadastraProduto">
+        					<f:setPropertyActionListener target="#{produtoBean.atualizacao}" value="true"/>
+        					<f:setPropertyActionListener target="#{produtoBean.textoBotao}" value="Cadastrar"/>
+        				</p:commandButton>
+        				
+        				<!-- Retornar ao Menu Principal -->
+        				<p:commandButton id="btnRetornar" value="Retornar ao Menu Principal" action="#{produtoBean.voltar}"/>
+        			</p:panelGrid>
+        		</f:facet>
+        	</p:panel>	
+        </h:form>
         
-        <h:panelGrid columns="8">
-            <h:outputText value="ID:" />  
-            <p:inputText id="idprod" value="#{ProdutoBean.produto.idprod}"  maxlength="4" size="6"/>
-            
-            <h:outputText value="DESCRIÇÃO:" />  
-            <p:inputText id="descricao" value="#{ProdutoBean.produto.descricao}"  maxlength="70" size="50"/>
-       
-            <h:outputText value="DURABILIDADE:"/>
-            <p:inputText id="durabilidade" value="#{ProdutoBean.produto.durabilidade}" maxlength="3" size="4"/> 
-            
-            <h:outputText value="VALOR:" />  
-            <p:inputMask mask="R$ 9.999,99" value="#{ProdutoBean.produto.valor}" maxlength="10" size="10"/>
-        </h:panelGrid>        
-
-         <p:separator style="width: 100%; height: 3px" />  
-
-        <p:commandButton value="CADASTRAR" actionListener="#{ProdutoBean.produto.cadastrar}" type="submit" update="avisos,mensagens"/>
-        <p:commandButton value="LIMPAR CAMPOS" actionListener="#{ProdutoBean.produto.limpar}" type="reset" /> 
-        
-    </h:form>
-    </p:fieldset>
-          
-     <p:fieldset legend="LISTA GERAL:" toggleable="true">  
-          <h:form id="form">
-                <p:outputPanel id="books">
-                    <p:dataTable id="booksTable" value="#{bookBean.books}" var="book">
-                    
-                         <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="ID" />
-                            </f:facet>
-                            <h:outputText value="#{book.idprod}" />
-                        </p:column>
-                        
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="DESCRIÇÃO" />
-                            </f:facet>
-                            <h:outputText value="#{book.descricao}" />
-                        </p:column>
-                        
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="DURABILIDADE" />
-                            </f:facet>
-                            <h:outputText value="#{book.durabilidade}" />
-                        </p:column>
-                        
-                        <p:column>
-                            <f:facet name="header">
-                             <h:outputText value="VALOR" />
-                            </f:facet>
-                            <h:outputText value="#{book.valor}" />
-                        </p:column>
-                     
-                       <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="OPERAÇÃO" />
-                            </f:facet>
-                            
-                            <p:commandLink value="EXCLUIR" update=":form:books" process=":form:books">
-                                <p:collector value="#{book}"
-                                             removeFrom="#{bookBean.books}" />
-                            </p:commandLink>
-                        </p:column>
-
-                    </p:dataTable>
-                </p:outputPanel>
-            </h:form>  
-        </p:fieldset>    
+        <!-- Formulário de Lista -->
+        <h:form id="frmListaProduto" >
+        	<p:panel header="Produtos Cadastrados">
+        	
+        		<!-- Tabela de Produtos Cadastrados -->
+        		<p:dataTable paginator="true" rows="3" value="#{produtoBean.produtos}" var="listaProduto">
+        			<!-- Colunas -->
+        			<p:column headerText="Codigo" filterMatchMode="exact" filterBy="#{listaProduto.idProduto}">
+        				
+        			</p:column>
+        			
+        			<p:column headerText="Produto">
+        				<h:commandLink id="lnkSelecionaProduto" value="#{listaProduto.produto}" update=":frmCadastrarProduto">
+        					<f:setPropertyActionListener target="#{produtoBean.produto}" value="#{listaProduto}"/>
+        					<f:setPropertyActionListener target="#{produtoBean.atualizacao}" value="true"/>
+        					<f:setPropertyActionListener target="#{produtoBean.textoBotao}" value="Atualizar"/>
+        				</h:commandLink>
+        			</p:column>
+        			
+        			<p:column headerText="Valor">
+        				<h:outputText value="R$#{listaProduto.valor}" />
+        			</p:column>
+        	
+        			<p:column headerText="Durabilidade">
+        				<h:outputText value="#{listaProduto.durabilidade}" />
+        			</p:column>
+        			
+        			<p:column headerText="Opera&atilde;o">
+        				<p:commandButton id="btnExcluir" value="Excluir" actionListener="#{produtoBean.excluir}"
+        					update=":frmCadastraProduto,:frmListaProduto">
+        					<f:param id="idProduto" name="idProduto" value="#{listaProduto.idProduto}" />
+        					<f:setPropertyActionListener target="#{produtoBean.atualizacao}" value="true" />
+        				</p:commandButton>		
+        			</p:column>
+        			<!-- Fim Colunas -->
+        			
+        		</p:dataTable>
+        		<!-- Fim Tabela -->
+        		        		
+        	</p:panel>
+        </h:form>
     </h:body>  
 
  </html> 

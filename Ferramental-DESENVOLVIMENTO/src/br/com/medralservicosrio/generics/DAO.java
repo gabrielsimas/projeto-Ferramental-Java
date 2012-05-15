@@ -28,7 +28,8 @@ public abstract class DAO<E, ID extends Serializable> implements GenericDAO<E, I
 	/**
 	 * 
 	 */
-	public DAO() {
+	public DAO(Class<E> entidade) {
+		this.entidade = entidade;
 		conexaoInicial();
 	}
 		
@@ -53,7 +54,7 @@ public abstract class DAO<E, ID extends Serializable> implements GenericDAO<E, I
 	public void atualizar(E entidade)  {
 		try {
 			conexaoInicial();
-			sessao.update(entidade);
+			sessao.merge(entidade);
 			transacao.commit();
 		} catch (HibernateException ex) {
 			System.err.println("Erro ao Gravar Registro de " + entidade.getClass().toString()
@@ -91,10 +92,11 @@ public abstract class DAO<E, ID extends Serializable> implements GenericDAO<E, I
 		try {
 			conexaoInicial();
 			//Pega o nome de forma recursiva o nome da Classe
-			//resultado = sessao.createCriteria(entidade).list();
-			resultado = sessao.createQuery("FROM " + entidade.getClass().toString()).list();
+			consulta = sessao.createQuery("FROM "
+					+ entidade.getName());
+			resultado = consulta.list();
 		} catch (HibernateException ex) {
-			System.err.println("Erro ao Listar todos os registro de " + entidade.getClass().toString()
+			System.err.println("Erro ao Listar todos os registro de " + entidade.getSimpleName()
 					+ "efetuando o Rollback!!" 
 					+ "\nErro reportado: " + ex.getMessage() );
 				ex.printStackTrace();
@@ -117,7 +119,7 @@ public abstract class DAO<E, ID extends Serializable> implements GenericDAO<E, I
 		} catch (HibernateException ex) {
 			System.err.println("Erro ao buscar o id " + key +" todos os registro de " + entidade.getClass().toString()
 					+ "efetuando o Rollback!!" 
-					+ "\nErro reportado: " + ex.getMessage() );
+					+ "\nErro reportado: " + ex.getMessage());
 				ex.printStackTrace();
 			transacao.rollback();
 		}/* finally { //Comentei porque as pesquisas não precisam fechar a sessão no BD
@@ -129,7 +131,19 @@ public abstract class DAO<E, ID extends Serializable> implements GenericDAO<E, I
 	
 	public void conexaoInicial() throws HibernateException{
 		sessao = HibernateUtil.getSessionFactory().openSession();
-		transacao = sessao.beginTransaction();
+		
+		//if (sessao.isOpen()){
+		//	System.out.println("[DAO] - Sessao Aberta!");
+		//	if (sessao.isConnected()){
+		//		System.out.println("[DAO] - Sessao Esta conectada!");
+		//		sessao.getTransaction();
+		//		System.out.println("Pegando a transação já aberta!!");
+		//	}
+		//} else {
+		//	System.out.println("[DAO] Iniciando transação - nenhuma existente");
+			transacao = sessao.beginTransaction();
+		//}
+		
 	}
 	
 	public void manusearExcecao(HibernateException e) throws RuntimeException{

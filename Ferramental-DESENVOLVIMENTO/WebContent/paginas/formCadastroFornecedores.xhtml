@@ -2,121 +2,94 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
      xmlns:h="http://java.sun.com/jsf/html" 
-     xmlns:p="http://primefaces.prime.com.tr/ui" 
+     xmlns:p="http://primefaces.org/ui" 
      xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:f="http://java.sun.com/jsf/core">  
    
     <h:head>
-       <title>:.Medral Tecnologia Penha.:</title>
+    	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
+       <title>Cadastro de Fornecedores</title>
     </h:head>
     
-    <h:body style="background-color: paleturquoise"> 
+    <f:view contentType="text/html" />
     
-    <ui:include src="/paginas/menu.xhtml"/>   
-        
-    <p:growl id="avisos" showDetail="true" life="3000" />  
+    <h:body style="background-color: paleturquoise">
 
-    <p:fieldset legend="CADASTRO DE FORNECEDORES:" toggleable="true">  
-    <h:form> 
-        
-        <h:panelGrid columns="6">
-            <h:outputText value="ID:" />  
-            <p:inputText id="idforn" value="#{FornecedorBean.fornecedor.idforn}" maxlength="4" size="6"/>
-            
-            <h:outputText value="RAZÃO SOCIAL:" />  
-            <p:inputText id="razaosocial" value="#{FornecedorBean.fornecedor.razaosocial}" maxlength="90" size="70"/>
-        
-            <h:outputText value="CNPJ:"/>
-            <p:inputMask mask="99.999.999/9999-99" value="#{FornecedorBean.fornecedor.cnpj}" maxlength="12" size="22"/>
-        </h:panelGrid>
-        
-        <h:panelGrid columns="6">
-            <h:outputText value="EMAIL:" />  
-            <p:inputText id="email" value="#{FornecedorBean.fornecedor.email}" maxlength="40" size="35"/>
-       
-            <h:outputText value="TELEFONE:"/>
-            <p:inputMask mask="(99)9999-9999" value="#{FornecedorBean.fornecedor.telefone}" maxlength="12" size="12"/>
-        
-            <h:outputText value="ENDEREÇO:" />  
-            <p:inputText id="endereco" value="#{FornecedorBean.fornecedor.endereco}" maxlength="58" size="46"/>
-        
-        </h:panelGrid>   
-        
-        <p:separator style="width: 100%; height: 3px" />
-        
-            <p:commandButton value="CADASTRAR" actionListener="#{FornecedorBean.fornecedor.cadastrar}" type="submit" />
-            <p:commandButton value="LIMPAR CAMPOS" actionListener="#{FornecedorBean.fornecedor.limpar}" type="reset" /> 
-      
-        </h:form>  
-        </p:fieldset>  
-    
-    <p:fieldset legend="LISTA GERAL:" toggleable="true">  
-   <h:form id="form">
+	<!-- <ui:include src="menu.xhtml" /> -->
+	
+	<h:form id="frmCadastro">
+		<p:panel id="pnlCadastro" header="Cadastro de Fornecedores">
+					
+			<p:messages showDetail="true" autoUpdate="true"/>
+			<p:panelGrid columns="2">
+				<h:outputText value="CNPJ:"/>
+				<p:inputMask mask="999.999.999/9999-99" value="#{fornecedorBean.fornecedor.cnpj}" size="50"/>
+				
+				<h:outputText value="Nome:"/>
+				<p:inputText value="#{fornecedorBean.fornecedor.nome}" size="50" />
+				
+				<h:outputText value="Endere&ccedil;o:"/>
+				<p:inputText value="#{fornecedorBean.fornecedor.endereco}" size="50" />
+				
+				<h:outputText value="Telefone:"/>
+				<p:inputMask mask="(99)9999-9999" value="#{fornecedorBean.fornecedor.telefone}" size="50" />
+				
+				<h:outputText value="E-mail"/>
+				<p:inputText value="#{fornecedorBean.fornecedor.email}" size="50" />
+				
+				<p:commandButton value="#{fornecedorBean.textoBotao}" actionListener="#{fornecedorBean.cadastrar}" update=":frmListagem">
+					<f:setPropertyActionListener target="#{fornecedorBean.textoBotao}" value="Cadastrar"/>
+        			<f:setPropertyActionListener target="#{fornecedorBean.atualizacao}" value="true"/>
+				</p:commandButton>
+				
+				<p:commandButton value="Limpar" actionListener="#{fornecedorBean.limpar}" update=":frmCadastro">
+					<f:setPropertyActionListener target="#{fornecedorBean.atualizacao}" value="true"/>
+        			<f:setPropertyActionListener target="#{fornecedorBean.textoBotao}" value="Cadastrar"/>
+				</p:commandButton>
+			</p:panelGrid>
+		</p:panel>
+	</h:form>
+	
+	<!-- Listagem -->
+	<h:form id="frmListagem">
+		<p:panel header="Fornecedores cadastrados">
+			<p:dataTable value="#{fornecedorBean.fornecedores}" var="listaFornecedor" paginator="true" rows="3">
+				<p:column headerText="CNPJ" filterBy="#{listaFornecedor.cnpj}" filterMatchMode="contains">
+					<p:commandLink value="#{listaFornecedor.cnpj}" update=":frmCadastro:pnlCadastro">
+						<f:setPropertyActionListener target="#{fornecedorBean.fornecedor}" value="#{listaFornecedor}" />
+						<f:setPropertyActionListener target="#{fornecedorBean.atualizacao}" value="true"/>
+        				<f:setPropertyActionListener target="#{fornecedorBean.textoBotao}" value="Atualizar"/>
+					</p:commandLink>
+				</p:column>
+				
+				<p:column headerText="Raz&atilde;o Social">
+					<h:outputText value="#{listaFornecedor.nome}"/>
+				</p:column>
+				
+				<p:column headerText="Endere&ccedil;o">
+					<h:outputText value="#{listaFornecedor.endereco}"/>
+				</p:column>
+				
+				<p:column headerText="Telefone">
+					<h:outputText value="#{listaFornecedor.telefone}"/>
+				</p:column>
+				
+				<p:column headerText="Endere&ccedil;o">
+					<h:outputText value="#{listaFornecedor.email}"/>
+				</p:column>
+				
+				<p:column headerText="Opera&ccedil;&atilde;o">
+					<p:commandButton value="Excluir" actionListener="#{fornecedorBean.excluir}" update=":frmListagem,:frmCadastro">
+        					<f:param id="idFornecedor" name="idFornecedor" value="#{listaFornecedor.id}" />
+        					<f:setPropertyActionListener target="#{fornecedorBean.atualizacao}" value="true"/>
+        				</p:commandButton>
+				</p:column>
+				
+			</p:dataTable>
+		</p:panel>
+	</h:form>
 
-                 <p:outputPanel id="books">
-                    <p:dataTable id="booksTable" value="#{bookBean.books}" var="book">
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="ID" />
-                            </f:facet>
-                            <h:outputText value="#{book.idforn}" />
-                        </p:column>
-                        
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="RAZÃO SOCIAL" />
-                            </f:facet>
-                            <h:outputText value="#{book.nomeForn}" />
-                        </p:column>
-                        
-                        <p:column>
-                            <f:facet name="header">
-                             <h:outputText value="CNPJ" />
-                            </f:facet>
-                            <h:outputText value="#{book.cnpj}" />
-                        </p:column>
-                        
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="EMAIL" />
-                            </f:facet>
-                            <h:outputText value="#{book.email}" />
-                        </p:column>
-                        
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="TELEFONE" />
-                            </f:facet>
-                            <h:outputText value="#{book.telefone}" />
-                        </p:column>
-                        
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="ENDEREÇO" />
-                            </f:facet>
-                            <h:outputText value="#{book.endereco}" />
-                        </p:column>
-                       
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="OPERAÇÃO" />
-                            </f:facet>
-                            
-                            <p:commandLink value="EXCLUIR" update=":form:books" process=":form:books">
-                                <p:collector value="#{book}"
-                                             removeFrom="#{bookBean.books}" />
-                            </p:commandLink>
-                        </p:column>
-
-                    </p:dataTable>
-                </p:outputPanel>
-
-            </h:form>  
-        </p:fieldset>     
-
-    </h:body>  
+	</h:body>  
 
  </html> 
-
- 
+ 	

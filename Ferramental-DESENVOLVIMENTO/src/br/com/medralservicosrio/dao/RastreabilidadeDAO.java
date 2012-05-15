@@ -13,6 +13,11 @@ import br.com.medralservicosrio.modelo.Rastreabilidade;
  */
 public class RastreabilidadeDAO extends DAO<Rastreabilidade,Integer> {
 
+	public RastreabilidadeDAO(Class<Rastreabilidade> entidade) {
+		super(entidade);
+		// TODO Auto-generated constructor stub
+	}
+
    /* private Connection connection;
     
     public boolean validar(Rastreabilidade rastreabilidade) throws SQLException {

@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-
     <h:head>
 		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
         <link type="text/css" rel="stylesheet" href="../css/theme.css"/>
@@ -13,11 +13,11 @@
     </h:head>
 
     <!-- Corrigindo Facelets -->
-    <!-- <h:body style="background-image:url('../imagem/BemVindo.jpg');
-                   background-position: 50% 0%;background-repeat: no-repeat"> -->
-      <h:body>
+    <h:body style="background-image:url('../imagem/BemVindo.jpg');
+                   background-position: 50% 0%;background-repeat: no-repeat">
+      
             
-        <!--  <img src="../imagem/TopoSCFP.jpg" width="1347" height='155'/> -->
+        <!-- <h:graphicImage url="../imagem/TopoSCFP.jpg" width="1347" height="155"/> -->
 		<ui:insert name="menu">
         	<h:form id="faceletMenu">
             	<p:menubar autoSubmenuDisplay="true" rendered="true"> 
@@ -27,8 +27,8 @@
                 
                 	<p:submenu id="sbmnCadastrar" label="CADASTRAR">
                     	<p:menuitem value="Funcionário"      url="formCadastroFuncionarios.xhtml" disabled="false"/>
-                    	<p:menuitem value="Fornecedor"       url="formCadastroFornecedores.xhtml" disabled="true"/>
-                    	<p:menuitem value="Produto"          url="formCadastroProdutos.xhtml" disabled="true"/>
+                    	<p:menuitem value="Fornecedor"       url="formCadastroFornecedores.xhtml" disabled="false"/>
+                    	<p:menuitem value="Produto"          url="formCadastroProdutos.xhtml" disabled="false"/>
                     	<p:menuitem value="Veículo"          url="formCadastroVeiculos.xhtml" disabled="true"/>
                     	<p:menuitem value="Rastreabilidade"  url="formCadastroRastreabilidade.xhtml" disabled="true"/>
                     	<p:menuitem value="Moto Serra"       url="formCadastroMotoSerra.xhtml" disabled="true"/>
