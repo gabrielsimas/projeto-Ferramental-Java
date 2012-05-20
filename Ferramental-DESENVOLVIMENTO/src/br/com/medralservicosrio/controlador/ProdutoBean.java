@@ -58,6 +58,8 @@ public class ProdutoBean extends GenericBean implements Serializable{
 				fc.addMessage(null, new FacesMessage(getMENSAGEM_INFO(),null,"Produto cadastrado com sucesso!!"));
 			}
 			
+			limpar();
+			
 		} catch (Exception e){
 			fc.addMessage(null, new FacesMessage(this.getMENSAGEM_FATAL(),null,e.getMessage()));
 		}
@@ -124,6 +126,12 @@ public class ProdutoBean extends GenericBean implements Serializable{
 			fc.addMessage(null, new FacesMessage(getMENSAGEM_INFO(),null,"Não há o que limpar!"));
 		}
 		
+	}
+	
+	@Override
+	public String voltar() {
+		
+		return super.voltar();
 	}
 	
 	public boolean isAtualizacao() {

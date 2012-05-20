@@ -65,7 +65,7 @@ public class FuncionarioBean extends GenericBean implements Serializable{
 				
 				if (funcionarioDesconhecido != null){
 					fc.addMessage(null, new FacesMessage(getMENSAGEM_ERRO(),null,"A Chapa informada pertence ao funcionario " +
-							funcionarioDesconhecido.getNome() + ", corrija-a"));
+							funcionarioDesconhecido.getNome() + ", digite outra!"));
 				} else {
 				
 					dao.criar(funcionario);
@@ -75,6 +75,9 @@ public class FuncionarioBean extends GenericBean implements Serializable{
 				}
 				
 			}
+			
+			limpar();
+			
 		} catch (Exception e){
 			fc.addMessage(null, new FacesMessage(this.getMENSAGEM_FATAL(),null,e.getMessage()));
 		}

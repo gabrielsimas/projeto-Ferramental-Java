@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -27,15 +28,13 @@ public class FornecedorBean extends GenericBean implements Serializable{
 	private FornecedorDAO dao;
 	
 	public FornecedorBean() {
-		
 		fornecedor = new Fornecedor();
 		fornecedores = new ArrayList<Fornecedor>();
 		dao = new FornecedorDAO(Fornecedor.class);
 		this.textoBotao = "Cadastrar";
 		this.atualizacao = true;
-		
 	}
-
+	
 	private static final long serialVersionUID = 6298337963317124483L;
 
 	@Override
@@ -130,14 +129,14 @@ public class FornecedorBean extends GenericBean implements Serializable{
 		}
 	}
 	
-	public String voltar(){
+	/*public String voltar(){
 		
 		fornecedor = null;
 		fornecedores = null;
 		dao = null;
 		
 		return "principal?faces-redirect=true";
-	}
+	}*/
 
 	public boolean isAtualizacao() {
 		return atualizacao;
