@@ -46,6 +46,9 @@
 					<f:setPropertyActionListener target="#{fornecedorBean.atualizacao}" value="true"/>
         			<f:setPropertyActionListener target="#{fornecedorBean.textoBotao}" value="Cadastrar"/>
 				</p:commandButton>
+				
+				<!-- Retornar ao Menu Principal -->
+        		<p:commandButton id="btnRetornar" value="Retornar ao Menu Principal" action="#{fornecedorBean.voltar}"/>
 			</p:panelGrid>
 		</p:panel>
 	</h:form>

@@ -31,31 +31,40 @@
         			
         			
         			<h:outputLabel value="Chapa:"/>
-        			<p:inputText value="#{funcionarioBean.funcionario.matricula}" size="10" required="true" requiredMessage="Entre com a matricula"/>        			
+        			<p:inputText value="#{funcionarioBean.funcionario.matricula}" size="10" />        			
         			<h:outputLabel value="Nome completo:"/>
-        			<p:inputText value="#{funcionarioBean.funcionario.nome}" size="50" required="true" requiredMessage="Entre com o Nome completo"/>
+        			<p:inputText value="#{funcionarioBean.funcionario.nome}" size="50" />
         		
         			<h:outputLabel value="Setor: "/>
-        			<p:inputText value="#{funcionarioBean.funcionario.setor}" size="50" required="true" requiredMessage="Entre com o Setor"/>
+        			<p:inputText value="#{funcionarioBean.funcionario.setor}" size="50" />
         		
         			<h:outputLabel value="Função: "/>
-        			<p:inputText value="#{funcionarioBean.funcionario.funcao}" size="50" required="true" requiredMessage="Entre com a Função" />
+        			<p:inputText value="#{funcionarioBean.funcionario.funcao}" size="50" />
         		
         			<h:outputLabel value="Custo: "/>
-        			<p:inputText value="#{funcionarioBean.funcionario.custo}" size="50" required="true" requiredMessage="Entre com o custo"/>
+        			<p:inputText value="#{funcionarioBean.funcionario.custo}" size="50" />
         			
-        			<p:commandButton id="btnCadastrarFuncionario"
-        				value="#{funcionarioBean.textoBotao}" 
-        				actionListener="#{funcionarioBean.cadastrar}"
-        				update=":listagemFuncionarios:pnlListagemFuncionarios,:cadastraFuncionario">
-        					<f:setPropertyActionListener target="#{funcionarioBean.textoBotao}" value="Cadastrar"/>
-        					<f:setPropertyActionListener target="#{funcionarioBean.atualizacao}" value="true"/>
-        			</p:commandButton>
+        			<f:facet name="footer">
+        				<p:panelGrid columns="3">
+        					<p:commandButton id="btnCadastrarFuncionario"
+        						value="#{funcionarioBean.textoBotao}" 
+        						actionListener="#{funcionarioBean.cadastrar}"
+        						update=":listagemFuncionarios:pnlListagemFuncionarios,:cadastraFuncionario">
+        							<f:setPropertyActionListener target="#{funcionarioBean.textoBotao}" value="Cadastrar"/>
+        							<f:setPropertyActionListener target="#{funcionarioBean.atualizacao}" value="true"/>
+        					</p:commandButton>
         			
-        			<p:commandButton />
-        			<!-- <p:commandButton id="btnVoltar" value="Retornar ao Menu Principal" action="#{funcionarioBean.voltar}"/> -->
+        					<!-- Botão Limpar -->
+        					<p:commandButton id="btnLimpar" value="Limpar" actionListener="#{funcionarioBean.limpar}" update=":cadastraFuncionario">
+        						<f:setPropertyActionListener target="#{funcionarioBean.atualizacao}" value="true"/>
+        						<f:setPropertyActionListener target="#{funcionarioBean.textoBotao}" value="Cadastrar"/>
+        					</p:commandButton>
         				
-        			<!-- <p:commandButton value="Refresh na Tabela" id="btnRefreshListaTeste" update=":listagemFuncionarios"/> -->
+        					<!-- Retornar ao Menu Principal -->
+        					<p:commandButton id="btnRetornar" value="Retornar ao Menu Principal" action="#{funcionarioBean.voltar}"/>
+        				</p:panelGrid>
+        			</f:facet>
+        			
         			
             	</h:panelGrid>
         	
