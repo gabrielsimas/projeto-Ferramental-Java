@@ -101,9 +101,9 @@ public abstract class DAO<E, ID extends Serializable> implements GenericDAO<E, I
 					+ "\nErro reportado: " + ex.getMessage() );
 				ex.printStackTrace();
 			transacao.rollback();
-		} /*finally {
+		} finally {
 			sessao.close();
-		}*/
+		}
 		
 		return resultado;
 	}
@@ -122,11 +122,12 @@ public abstract class DAO<E, ID extends Serializable> implements GenericDAO<E, I
 					+ "\nErro reportado: " + ex.getMessage());
 				ex.printStackTrace();
 			transacao.rollback();
-		}/* finally { //Comentei porque as pesquisas não precisam fechar a sessão no BD
-						//Apenas as operações de Entrada/Saida
+		} finally {	
 			sessao.close();
-		}*/
+		}
+		
 		return (E) objeto;
+		
 	}
 	
 	public void conexaoInicial() throws HibernateException{

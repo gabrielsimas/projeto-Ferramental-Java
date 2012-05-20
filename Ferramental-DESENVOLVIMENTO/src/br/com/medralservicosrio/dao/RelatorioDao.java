@@ -10,13 +10,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Hibernate;
-import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.transform.Transformers;
 
 import br.com.medralservicosrio.conexao.ConnectionFactory;
-import br.com.medralservicosrio.generics.DAO;
 import br.com.medralservicosrio.relatorios.RelatorioAdmIndividual;
 import br.com.medralservicosrio.relatorios.RelatorioAdmMovimentacao;
 import br.com.medralservicosrio.relatorios.RelatorioAdmReforma;
@@ -29,10 +27,9 @@ import br.com.medralservicosrio.relatorios.RelatorioGerencialProdutosPorFunciona
 import br.com.medralservicosrio.relatorios.RelatorioGerencialRastreabilidade;
 import br.com.medralservicosrio.relatorios.RelatorioGerencialRastreabilidadeSubReport;
 import br.com.medralservicosrio.relatorios.RelatorioGerencialSucata;
-import br.com.medralservicosrio.relatorios.RelatorioGerencialSucata2;
 
 
-public class RelatorioDao extends DAO{
+public class RelatorioDao extends DAO<>{
 
 	public RelatorioDao() {
 	}
@@ -48,6 +45,7 @@ public class RelatorioDao extends DAO{
 	public List<RelatorioGerencialCompras> gerarRelatorioGerencialDeMateriais(String nomeProduto){
 
 		List<RelatorioGerencialCompras> lista = new ArrayList<RelatorioGerencialCompras>();
+		
 		try {
 
 			StringBuilder sb = new StringBuilder();
