@@ -56,7 +56,7 @@ public class RelatoriosBean{
 	private String setor;
 	
 	public RelatoriosBean() {
-		relatorioDao = new RelatorioDao();
+		relatorioDao = new RelatorioDao(null);
 		listaRelatorio = new ArrayList();
 		calculoTotais = new HashMap();
 		func = new Funcionario();
