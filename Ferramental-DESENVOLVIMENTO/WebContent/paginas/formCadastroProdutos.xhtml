@@ -1,74 +1,76 @@
 <?xml version='1.0' encoding='UTF-8' ?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:h="http://java.sun.com/jsf/html" 
-     xmlns:p="http://primefaces.org/ui" 
-     xmlns:ui="http://java.sun.com/jsf/facelets"
-     xmlns:f="http://java.sun.com/jsf/core">  
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">  
    
     <h:head>
-        <title>Cadastro de Produtos</title>
-       
+    	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
+       <title>:. Novo Ferramental .:</title>
     </h:head>
     
-    <h:body style="background-color: paleturquoise"> 
-        <!-- <ui:include src="/paginas/menu.xhtml"/> -->
-        
-		<!-- Formulário de Cadastro -->        
-        <h:form id="frmCadastraProduto">
-        	<p:panel id="pnlCadastro" header="Cadastro de Produtos">
-        		<p:messages showDetail="true" autoUpdate="true"/>
-        		
-        		<!-- Corpo do Cadastro -->
-        		<p:panelGrid columns="2">
-        		
-        			<h:outputText 	value="Nome:" />
-        			<p:inputText 	value="#{produtoBean.produto.produto}" size="50"/>
-        			
-        			<h:outputText 	value="Valor: "/>
-        			<p:inputText 	value="#{produtoBean.produto.valor}"  size="50"/>
-        			
-        			<h:outputText 	value="Durabilidade: " />
-        			<p:inputText 	value="#{produtoBean.produto.durabilidade}" size="50"/>
-        			
-        		</p:panelGrid>
-        		<!-- Fim Corpo do Cadastro -->
-        		
-        		<f:facet name="footer">
-        			<p:panelGrid columns="3">
-        				<!-- Botões de Controle do Formulário -->
-        				<!-- Botão Cadastrar/Atualizar -->
-						<p:commandButton id="btnOperacao" value="#{produtoBean.textoBotao}"
-						actionListener="#{produtoBean.cadastrar}" update=":frmListaProduto">
-							<f:setPropertyActionListener target="#{produtoBean.textoBotao}" value="Cadastrar"/>
-        					<f:setPropertyActionListener target="#{produtoBean.atualizacao}" value="true"/>
-						</p:commandButton>
+    <f:view contentType="text/html" />
+    
+    <h:body style="background-color: paleturquoise">
 
-						<!-- Botão Limpar -->
-        				<p:commandButton id="btnLimpar" value="Limpar" actionListener="#{produtoBean.limpar}" update=":frmCadastraProduto">
-        					<f:setPropertyActionListener target="#{produtoBean.atualizacao}" value="true"/>
-        					<f:setPropertyActionListener target="#{produtoBean.textoBotao}" value="Cadastrar"/>
-        				</p:commandButton>
+	<!-- <ui:include src="/paginas/menu.xhtml"/> -->
+	
+	 <center>
+    <p:ajaxStatus id="ajaxStatusPanel" >
+			<f:facet name="start">
+				<h:graphicImage value="../imagem/loading2b.gif" />
+			</f:facet>
+	
+			<f:facet name="complete">
+				<h:outputText value="" />
+			</f:facet>
+		</p:ajaxStatus>
+	</center>	   
+	        
+    <h:form id="frmCadastraProduto">
+    <p:panel id="pnlCadastro" header="- CADASTRO DE PRODUTO:">
+        		        		
+        	<h:panelGrid columns="2">
+        			<h:outputText value="Nome:" />
+        			<p:inputText value="#{produtoBean.produto.produto}" size="50"/>
+        			
+        			<h:outputText value="Valor: "/>
+        			<p:inputText value="#{produtoBean.produto.valor}"  size="20"/>
+        			 
+        			<h:outputText value="Durabilidade: " />
+        			<p:inputText value="#{produtoBean.produto.durabilidade}" size="20"/>
+                    		        		
+        	<f:facet name="footer">
+        	<h:panelGrid columns="3">
+        		<p:commandButton id="btnOperacao" value="#{produtoBean.textoBotao}" actionListener="#{produtoBean.cadastrar}" update=":frmListaProduto">
+				<f:setPropertyActionListener target="#{produtoBean.textoBotao}" value="Cadastrar"/>
+        		<f:setPropertyActionListener target="#{produtoBean.atualizacao}" value="true"/>
+				</p:commandButton>
+
+				<p:commandButton id="btnLimpar" value="Limpar" actionListener="#{produtoBean.limpar}" update=":frmCadastraProduto">
+        		<f:setPropertyActionListener target="#{produtoBean.atualizacao}" value="true"/>
+        		<f:setPropertyActionListener target="#{produtoBean.textoBotao}" value="Cadastrar"/>
+        		</p:commandButton>
         				
-        				<!-- Retornar ao Menu Principal -->
-        				<p:commandButton id="btnRetornar" value="Retornar ao Menu Principal" action="#{produtoBean.voltar}"/>
-        			</p:panelGrid>
+        		<p:commandButton id="btnRetornar" value="Retornar Menu" action="#{produtoBean.voltar}"/>
+           </h:panelGrid>
         		</f:facet>
+        		</h:panelGrid>
+        		<p:messages showDetail="true" autoUpdate="true"/>
         	</p:panel>	
         </h:form>
         
         <!-- Formulário de Lista -->
         <h:form id="frmListaProduto" >
-        	<p:panel header="Produtos Cadastrados">
+        	<p:panel header="- PRODUTOS CADASTRADOS:">
         	
-        		<!-- Tabela de Produtos Cadastrados -->
         		<p:dataTable paginator="true" rows="3" value="#{produtoBean.produtos}" var="listaProduto">
-        			<!-- Colunas -->
-        			<p:column headerText="Codigo" filterMatchMode="exact" filterBy="#{listaProduto.idProduto}">
-        				
-        			</p:column>
-        			
-        			<p:column headerText="Produto">
+        			<p:column headerText="Codigo" filterMatchMode="exact" filterBy="#{listaProduto.idProduto}"/>
+        			        			
+        			<p:column headerText="Nome">
         				<h:commandLink id="lnkSelecionaProduto" value="#{listaProduto.produto}" update=":frmCadastrarProduto">
         					<f:setPropertyActionListener target="#{produtoBean.produto}" value="#{listaProduto}"/>
         					<f:setPropertyActionListener target="#{produtoBean.atualizacao}" value="true"/>
@@ -84,7 +86,7 @@
         				<h:outputText value="#{listaProduto.durabilidade}" />
         			</p:column>
         			
-        			<p:column headerText="Opera&atilde;o">
+        			<p:column headerText="Operação">
         				<p:commandButton id="btnExcluir" value="Excluir" actionListener="#{produtoBean.excluir}"
         					update=":frmCadastraProduto,:frmListaProduto">
         					<f:param id="idProduto" name="idProduto" value="#{listaProduto.idProduto}" />

@@ -6,83 +6,84 @@
       xmlns:p="http://primefaces.org/ui" 
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core">
-
  
 	<h:head>
-		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
-        <title>Cadastro de Funcion&aacute;rio</title> 
+    	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
+       <title>:. Novo Ferramental .:</title>
     </h:head>
 
 	<f:view contentType="text/html" />
+	
+	<h:body style="background-color: paleturquoise">
 
-
-<h:body style="background-color: paleturquoise">
-
-        <!-- <ui:include src="/paginas/menu.xhtml"/> -->
-        
-        <h:form id="cadastraFuncionario">
-        
-        	<p:messages id="mensageiroCadastro" showDetail="true" autoUpdate="true"/>
-        	
-        	<p:panel id="pnlCadastroFuncionario">
-        	
-        		 
+    <!-- <ui:include src="/paginas/menu.xhtml"/> -->
+    
+     <center>
+    <p:ajaxStatus id="ajaxStatusPanel" >
+			<f:facet name="start">
+				<h:graphicImage value="../imagem/loading2b.gif" />
+			</f:facet>
+	
+			<f:facet name="complete">
+				<h:outputText value="" />
+			</f:facet>
+		</p:ajaxStatus>
+	</center>	   
+    
+    <!-- Formulário de Cadastro -->    
+    <h:form id="cadastraFuncionario">
+    <p:panel id="pnlCadastroFuncionario" header="- CADASTRO DE FUNCIONÁRO:">
+        	       		 
         		<h:panelGrid columns="2" id="pgdCadastraFuncionario">
-        			
-        			
         			<h:outputLabel value="Chapa:"/>
-        			<p:inputText value="#{funcionarioBean.funcionario.matricula}" size="10" />        			
+        			<p:inputText value="#{funcionarioBean.funcionario.matricula}" size="10" /> 
+        			       			
         			<h:outputLabel value="Nome completo:"/>
         			<p:inputText value="#{funcionarioBean.funcionario.nome}" size="50" />
         		
         			<h:outputLabel value="Setor: "/>
-        			<p:inputText value="#{funcionarioBean.funcionario.setor}" size="50" />
+        			<p:inputText value="#{funcionarioBean.funcionario.setor}" size="25" />
         		
         			<h:outputLabel value="Função: "/>
-        			<p:inputText value="#{funcionarioBean.funcionario.funcao}" size="50" />
+        			<p:inputText value="#{funcionarioBean.funcionario.funcao}" size="25" />
         		
-        			<h:outputLabel value="Custo: "/>
-        			<p:inputText value="#{funcionarioBean.funcionario.custo}" size="50" />
+        			<h:outputLabel value="Centro de Custo: "/>
+        			<p:inputText value="#{funcionarioBean.funcionario.custo}" size="25" />
         			
-        			<f:facet name="footer">
-        				<p:panelGrid columns="3">
-        					<p:commandButton id="btnCadastrarFuncionario"
-        						value="#{funcionarioBean.textoBotao}" 
-        						actionListener="#{funcionarioBean.cadastrar}"
+        			<f:facet name="footer">        			
+        			<h:panelGrid columns="3">
+        				<p:commandButton id="btnCadastrarFuncionario" value="#{funcionarioBean.textoBotao}" actionListener="#{funcionarioBean.cadastrar}"
         						update=":listagemFuncionarios:pnlListagemFuncionarios,:cadastraFuncionario">
-        							<f:setPropertyActionListener target="#{funcionarioBean.textoBotao}" value="Cadastrar"/>
-        							<f:setPropertyActionListener target="#{funcionarioBean.atualizacao}" value="true"/>
-        					</p:commandButton>
+        				<f:setPropertyActionListener target="#{funcionarioBean.textoBotao}" value="Cadastrar"/>
+        				<f:setPropertyActionListener target="#{funcionarioBean.atualizacao}" value="true"/>
+        				</p:commandButton>
         			
-        					<!-- Botão Limpar -->
-        					<p:commandButton id="btnLimpar" value="Limpar" actionListener="#{funcionarioBean.limpar}" update=":cadastraFuncionario">
-        						<f:setPropertyActionListener target="#{funcionarioBean.atualizacao}" value="true"/>
-        						<f:setPropertyActionListener target="#{funcionarioBean.textoBotao}" value="Cadastrar"/>
-        					</p:commandButton>
+        				<p:commandButton id="btnLimpar" value="Limpar" actionListener="#{funcionarioBean.limpar}" update=":cadastraFuncionario">
+        				<f:setPropertyActionListener target="#{funcionarioBean.atualizacao}" value="true"/>
+        				<f:setPropertyActionListener target="#{funcionarioBean.textoBotao}" value="Cadastrar"/>
+        				</p:commandButton>
         				
-        					<!-- Retornar ao Menu Principal -->
-        					<p:commandButton id="btnRetornar" value="Retornar ao Menu Principal" action="#{funcionarioBean.voltar}"/>
-        				</p:panelGrid>
+        				<p:commandButton id="btnRetornar" value="Retornar Menu" action="#{funcionarioBean.voltar}"/>
+        			</h:panelGrid>
         			</f:facet>
-        			
-        			
-            	</h:panelGrid>
-        	
-        	</p:panel>
+        	   	</h:panelGrid>
+        	   	<p:messages id="mensageiroCadastro" showDetail="true" autoUpdate="true"/>
+           	</p:panel>
         </h:form>
         
         <!-- Data Table -->
         <h:form id="listagemFuncionarios">
         	<p:panel id="pnlListagemFuncionarios">
         		<f:facet name="header">
-        			<h:outputText value="Listagem de Funcionarios"/>
+        			<h:outputText value=" - LISTA DE FUNCIONÁRIOS:"/>
         		</f:facet>
         		<p:dataTable paginator="true" rows="3" value="#{funcionarioBean.funcionarios}" var="listaFuncionarios">
+        		
         			<p:column headerText="Chapa" filterBy="#{listaFuncionarios.matricula}" filterMatchMode="exact">
         				<h:outputText value="#{listaFuncionarios.matricula}"/>
         			</p:column>
         			
-        			<p:column headerText="Nome Completo">
+        			<p:column headerText="Nome Completo" >
         				<p:commandLink value="#{listaFuncionarios.nome}" update=":cadastraFuncionario">
         					<f:setPropertyActionListener target="#{funcionarioBean.funcionario}" value="#{listaFuncionarios}"/>
         					<f:setPropertyActionListener target="#{funcionarioBean.atualizacao}" value="true"/>
@@ -91,12 +92,12 @@
         				
         			</p:column>
         			
-        			<p:column headerText="Fun&ccedil;&atilde;o">
-        				<h:outputText value="#{listaFuncionarios.funcao}"/>
-        			</p:column>
-        			
         			<p:column headerText="Setor">
         				<h:outputText value="#{listaFuncionarios.setor}"/>
+        			</p:column>
+        			
+        			<p:column headerText="Fun&ccedil;&atilde;o">
+        				<h:outputText value="#{listaFuncionarios.funcao}"/>
         			</p:column>
         			
         			<p:column headerText="Centro de Custo">
