@@ -2,116 +2,155 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html" 
-      xmlns:p="http://primefaces.org/ui" 
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core">  
-   
-    <h:head>
-    	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
-       <title>:. Novo Ferramental .:</title>
-    </h:head>
-    
-    <f:view contentType="text/html" />
-    
-    <h:body style="background-color: paleturquoise">
-    
-    <h:graphicImage url="../imagem/TopoSCFP2.jpg" width="1330" height="130"/>
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+	<title>:. Novo Ferramental .:</title>
+</h:head>
+
+<f:view contentType="text/html" />
+
+<h:body style="background-color: paleturquoise">
+
+	<h:graphicImage url="../imagem/TopoSCFP2.jpg" width="1330" height="130" />
 
 	<!-- <ui:include src="/paginas/menu.xhtml"/> -->
-	
-	 <center>
-    <p:ajaxStatus id="ajaxStatusPanel" >
+
+	<center>
+		<p:ajaxStatus id="ajaxStatusPanel">
 			<f:facet name="start">
 				<h:graphicImage value="../imagem/loading2b.gif" />
 			</f:facet>
-	
+
 			<f:facet name="complete">
 				<h:outputText value="" />
 			</f:facet>
 		</p:ajaxStatus>
-	</center>	   
-	
-	<!-- Formulário de Cadastro --> 
+	</center>
+
+
+	<!-- Formulário de Cadastro -->
 	<h:form id="frmCadastro">
-    <p:panel id="pnlCadastro" header="- CADASTRO DE FORNECEDOR:">
-			
-			<h:panelGrid columns="2" id="frmCadastro">
-				<h:outputText value="CNPJ:"/>
-				<p:inputMask mask="999.999.999/9999-99" value="#{fornecedorBean.fornecedor.cnpj}" size="25"/>
-				
-				<h:outputText value="Razão Social:"/>
-				<p:inputText value="#{fornecedorBean.fornecedor.nome}" size="40" />
-								
-				<h:outputText value="Endere&ccedil;o:"/>
-				<p:inputText value="#{fornecedorBean.fornecedor.endereco}" size="40" />
-				
-				<h:outputText value="Telefone:"/>
-				<p:inputMask mask="(99)9999-9999" value="#{fornecedorBean.fornecedor.telefone}" size="12" />
-				
-				<h:outputText value="E-mail"/>
-				<p:inputText value="#{fornecedorBean.fornecedor.email}" size="28" />
-								
-				<f:facet name="footer"> 
-				<h:panelGrid columns="3">				
-					<p:commandButton value="#{fornecedorBean.textoBotao}" actionListener="#{fornecedorBean.cadastrar}" update=":frmListagem">
-					<f:setPropertyActionListener target="#{fornecedorBean.textoBotao}" value="Cadastrar"/>
-        			<f:setPropertyActionListener target="#{fornecedorBean.atualizacao}" value="true"/>
-					</p:commandButton>
-				
-					<p:commandButton value="Limpar" actionListener="#{fornecedorBean.limpar}" update=":frmCadastro">
-					<f:setPropertyActionListener target="#{fornecedorBean.atualizacao}" value="true"/>
-        			<f:setPropertyActionListener target="#{fornecedorBean.textoBotao}" value="Cadastrar"/>
-					</p:commandButton>
-				
-					<p:commandButton id="btnRetornar" value="Retornar Menu" action="#{fornecedorBean.voltar}"/>
-			  </h:panelGrid>
-			  </f:facet>
-			  </h:panelGrid>
-			<p:messages showDetail="true" autoUpdate="true"/>
-		</p:panel>
-	</h:form>	
-	
-	<!-- Listagem -->
-	<h:form id="frmListagem">
-		<p:panel header=" - FORNECEDOR CADASTRADO:">
-			<p:dataTable value="#{fornecedorBean.fornecedores}" var="listaFornecedor" paginator="true" rows="3">
-				<p:column headerText="CNPJ" filterBy="#{listaFornecedor.cnpj}" filterMatchMode="contains">
-					<p:commandLink value="#{listaFornecedor.cnpj}" update=":frmCadastro:pnlCadastro">
-						<f:setPropertyActionListener target="#{fornecedorBean.fornecedor}" value="#{listaFornecedor}" />
-						<f:setPropertyActionListener target="#{fornecedorBean.atualizacao}" value="true"/>
-        				<f:setPropertyActionListener target="#{fornecedorBean.textoBotao}" value="Atualizar"/>
-					</p:commandLink>
-				</p:column>
-				
-				<p:column headerText="Raz&atilde;o Social">
-					<h:outputText value="#{listaFornecedor.nome}"/>
-				</p:column>
-				
-				<p:column headerText="Endere&ccedil;o">
-					<h:outputText value="#{listaFornecedor.endereco}"/>
-				</p:column>
-				
-				<p:column headerText="Telefone">
-					<h:outputText value="#{listaFornecedor.telefone}"/>
-				</p:column>
-				
-				<p:column headerText="Endere&ccedil;o">
-					<h:outputText value="#{listaFornecedor.email}"/>
-				</p:column>
-				
-				<p:column headerText="Opera&ccedil;&atilde;o">
-					<p:commandButton value="Excluir" actionListener="#{fornecedorBean.excluir}" update=":frmListagem,:frmCadastro">
-        					<f:param id="idFornecedor" name="idFornecedor" value="#{listaFornecedor.id}" />
-        					<f:setPropertyActionListener target="#{fornecedorBean.atualizacao}" value="true"/>
-        				</p:commandButton>
-				</p:column>
-				
-			</p:dataTable>
-		</p:panel>
+
+		<p:fieldset legend="CADASTRO DE FORNECEDOR:" toggleable="true"
+			id="buscarDados">
+			<p:panel id="pnlCadastro">
+
+				<h:panelGrid columns="2" id="frmCadastro">
+					<h:outputText value="CNPJ:" />
+					<p:inputMask mask="999.999.999/9999-99"
+						value="#{fornecedorBean.fornecedor.cnpj}" size="25" />
+
+					<h:outputText value="Razão Social:" />
+					<p:inputText value="#{fornecedorBean.fornecedor.nome}" size="50" />
+
+					<h:outputText value="Endere&ccedil;o:" />
+					<p:inputText value="#{fornecedorBean.fornecedor.endereco}"
+						size="50" />
+
+					<h:outputText value="Telefone:" />
+					<p:inputMask mask="(99)9999-9999"
+						value="#{fornecedorBean.fornecedor.telefone}" size="12" />
+
+					<h:outputText value="E-mail" />
+					<p:inputText value="#{fornecedorBean.fornecedor.email}" size="28" />
+
+					<f:facet name="footer">
+						<h:panelGrid columns="3">
+							<p:commandButton value="#{fornecedorBean.textoBotao}"
+								actionListener="#{fornecedorBean.cadastrar}"
+								update=":frmListagem">
+								<f:setPropertyActionListener
+									target="#{fornecedorBean.textoBotao}" value="Cadastrar" />
+								<f:setPropertyActionListener
+									target="#{fornecedorBean.atualizacao}" value="true" />
+							</p:commandButton>
+
+							<p:commandButton value="Limpar"
+								actionListener="#{fornecedorBean.limpar}" update=":frmCadastro">
+								<f:setPropertyActionListener
+									target="#{fornecedorBean.atualizacao}" value="true" />
+								<f:setPropertyActionListener
+									target="#{fornecedorBean.textoBotao}" value="Cadastrar" />
+							</p:commandButton>
+
+							</h:panelGrid>
+					</f:facet>
+				</h:panelGrid>
+				<p:messages showDetail="true" autoUpdate="true" />
+			</p:panel>
+		</p:fieldset>
 	</h:form>
 
-	</h:body>  
+	<!-- Listagem -->
+	<h:form id="frmListagem">
 
- </html> 
- 	
+		<p:fieldset legend="FORNECEDOR CADASTRADO:" toggleable="true"
+			id="mostrarDados">
+
+			<p:panel>
+				<p:dataTable value="#{fornecedorBean.fornecedores}"
+					var="listaFornecedor" paginator="true" rows="3">
+					<p:column headerText="CNPJ" filterBy="#{listaFornecedor.cnpj}"
+						filterMatchMode="contains">
+						<p:commandLink value="#{listaFornecedor.cnpj}"
+							update=":frmCadastro:pnlCadastro">
+							<f:setPropertyActionListener
+								target="#{fornecedorBean.fornecedor}" value="#{listaFornecedor}" />
+							<f:setPropertyActionListener
+								target="#{fornecedorBean.atualizacao}" value="true" />
+							<f:setPropertyActionListener
+								target="#{fornecedorBean.textoBotao}" value="Atualizar" />
+						</p:commandLink>
+					</p:column>
+
+					<p:column headerText="Raz&atilde;o Social">
+						<h:outputText value="#{listaFornecedor.nome}" />
+					</p:column>
+
+					<p:column headerText="Endere&ccedil;o">
+						<h:outputText value="#{listaFornecedor.endereco}" />
+					</p:column>
+
+					<p:column headerText="Telefone">
+						<h:outputText value="#{listaFornecedor.telefone}" />
+					</p:column>
+
+					<p:column headerText="Endere&ccedil;o">
+						<h:outputText value="#{listaFornecedor.email}" />
+					</p:column>
+
+					<p:column headerText="Opera&ccedil;&atilde;o">
+						<p:commandButton value="Excluir"
+							actionListener="#{fornecedorBean.excluir}"
+							update=":frmListagem,:frmCadastro">
+							<f:param id="idFornecedor" name="idFornecedor"
+								value="#{listaFornecedor.id}" />
+							<f:setPropertyActionListener
+								target="#{fornecedorBean.atualizacao}" value="true" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+		</p:fieldset>
+	</h:form>
+
+	<h:form>
+		<center>
+			<p:panel>
+				<h:panelGrid>
+					<p:commandButton value="Retornar a Tela Principal"
+						action="#{veiculoBean.voltar}" />
+				</h:panelGrid>
+			</p:panel>
+		</center>
+	</h:form>
+
+</h:body>
+
+</html>

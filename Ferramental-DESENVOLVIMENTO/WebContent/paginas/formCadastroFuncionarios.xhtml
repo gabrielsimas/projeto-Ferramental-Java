@@ -34,7 +34,9 @@
     
     <!-- Formulário de Cadastro -->    
     <h:form id="cadastraFuncionario">
-    <p:panel id="pnlCadastroFuncionario" header="- CADASTRO DE FUNCIONÁRO:">
+    
+    <p:fieldset legend="CADASTRO DE FUNCIONÁRIOS:" toggleable="true" id="BuscarDados">
+    <p:panel id="pnlCadastroFuncionario">
         	       		 
         		<h:panelGrid columns="2" id="pgdCadastraFuncionario">
         			<h:outputLabel value="Chapa:"/>
@@ -60,25 +62,24 @@
         				<f:setPropertyActionListener target="#{funcionarioBean.atualizacao}" value="true"/>
         				</p:commandButton>
         			
-        				<p:commandButton id="btnLimpar" value="Limpar" actionListener="#{funcionarioBean.limpar}" update=":cadastraFuncionario">
+        				<p:commandButton id="btnLimpar" value="Limpar" actionListener="#{funcionarioBean.limpar}" update=":cadastraFuncionario" >
         				<f:setPropertyActionListener target="#{funcionarioBean.atualizacao}" value="true"/>
         				<f:setPropertyActionListener target="#{funcionarioBean.textoBotao}" value="Cadastrar"/>
         				</p:commandButton>
         				
-        				<p:commandButton id="btnRetornar" value="Retornar Menu" action="#{funcionarioBean.voltar}"/>
-        			</h:panelGrid>
+        				</h:panelGrid>
         			</f:facet>
         	   	</h:panelGrid>
         	   	<p:messages id="mensageiroCadastro" showDetail="true" autoUpdate="true"/>
            	</p:panel>
+           	</p:fieldset>
         </h:form>
         
         <!-- Data Table -->
         <h:form id="listagemFuncionarios">
+        <p:fieldset legend="LISTA DE FUNCIONÁRIOS:" toggleable="true" id="mostrarDados">
+        
         	<p:panel id="pnlListagemFuncionarios">
-        		<f:facet name="header">
-        			<h:outputText value=" - LISTA DE FUNCIONÁRIOS:"/>
-        		</f:facet>
         		<p:dataTable paginator="true" rows="3" value="#{funcionarioBean.funcionarios}" var="listaFuncionarios">
         		
         			<p:column headerText="Chapa" filterBy="#{listaFuncionarios.matricula}" filterMatchMode="exact">
@@ -115,8 +116,20 @@
         			</p:column>
         		</p:dataTable>	
         	</p:panel>
+        	</p:fieldset>
         	
         </h:form>  
+        
+         <h:form>
+		<center>
+			<p:panel>
+				<h:panelGrid>
+					<p:commandButton value="Retornar a Tela Principal"
+						action="#{veiculoBean.voltar}" />
+				</h:panelGrid>
+			</p:panel>
+		</center>
+	</h:form>
          
 	</h:body>  
 

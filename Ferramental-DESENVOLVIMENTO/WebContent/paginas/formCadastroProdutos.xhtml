@@ -33,7 +33,8 @@
 	</center>	   
 	        
     <h:form id="frmCadastraProduto">
-    <p:panel id="pnlCadastro" header="- CADASTRO DE PRODUTO:">
+    <p:fieldset legend="CADASTRO DE PRODUTO:" toggleable="true" id="buscarDados">
+    <p:panel id="pnlCadastro">
         		        		
         	<h:panelGrid columns="2">
         			<h:outputText value="Nome:" />
@@ -57,17 +58,19 @@
         		<f:setPropertyActionListener target="#{produtoBean.textoBotao}" value="Cadastrar"/>
         		</p:commandButton>
         				
-        		<p:commandButton id="btnRetornar" value="Retornar Menu" action="#{produtoBean.voltar}"/>
-           </h:panelGrid>
+        		</h:panelGrid>
         		</f:facet>
         		</h:panelGrid>
         		<p:messages showDetail="true" autoUpdate="true"/>
         	</p:panel>	
+        	</p:fieldset>
         </h:form>
+        
         
         <!-- Formulário de Lista -->
         <h:form id="frmListaProduto" >
-        	<p:panel header="- PRODUTOS CADASTRADOS:">
+        <p:fieldset legend="PRODUTOS CADASTRADOS:" toggleable="true" id="mostrarDados">
+        	<p:panel>
         	
         		<p:dataTable paginator="true" rows="3" value="#{produtoBean.produtos}" var="listaProduto">
         			<p:column headerText="Codigo" filterMatchMode="exact" filterBy="#{listaProduto.idProduto}"/>
@@ -101,7 +104,19 @@
         		<!-- Fim Tabela -->
         		        		
         	</p:panel>
+        	</p:fieldset>
         </h:form>
+        
+        <h:form>
+		<center>
+			<p:panel>
+				<h:panelGrid>
+					<p:commandButton value="Retornar a Tela Principal"
+						action="#{veiculoBean.voltar}" />
+				</h:panelGrid>
+			</p:panel>
+		</center>
+	</h:form>
     </h:body>  
 
  </html> 

@@ -1,143 +1,183 @@
 <?xml version='1.0' encoding='UTF-8' ?>
- 
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html" 
-      xmlns:p="http://primefaces.org/ui" 
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core">
- 
-	<h:head>
-    	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
-       <title>:. Novo Ferramental .:</title>
-    </h:head>
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
 
-	<f:view contentType="text/html" />
-	
-	<h:body style="background-color: paleturquoise">
-	
-	<h:graphicImage url="../imagem/TopoSCFP2.jpg" width="1330" height="130"/>
+<h:head>
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+	<title>:. Novo Ferramental .:</title>
+</h:head>
 
-    <!-- <ui:include src="/paginas/menu.xhtml"/> -->
-    
-    <center>
-    <p:ajaxStatus id="ajaxStatusPanel" >
+<f:view contentType="text/html" />
+
+<h:body style="background-color: paleturquoise">
+
+	<h:graphicImage url="../imagem/TopoSCFP2.jpg" width="1333" height="130" />
+
+	<!-- <ui:include src="/paginas/menu.xhtml"/> -->
+
+	<center>
+		<p:ajaxStatus id="ajaxStatusPanel">
 			<f:facet name="start">
 				<h:graphicImage value="../imagem/loading2b.gif" />
 			</f:facet>
-	
+
 			<f:facet name="complete">
 				<h:outputText value="" />
 			</f:facet>
 		</p:ajaxStatus>
-	</center>	   
-   
-    <p:panel header="- CADASTRO DE VEÍCULO:">
-    <h:form id="frmLocalizaFuncionario">
-       		       		
-   			<h:panelGrid columns="5" id="pnlgrdBuscaFuncionario">
-   				<h:outputText value="Entre com a Chapa: "/>
-   				<p:inputText value="#{veiculoBean.veiculo.matriculaFuncionario}"/>
-   				<p:commandButton value="Localizar" actionListener="#{veiculoBean.localizaFuncionario}" update=":frmLocalizaFuncionario, :frmCadastraVeiculo">
-   					<f:param id="chapa" value="#{veiculoBean.veiculo.matriculaFuncionario}"/>
-   				</p:commandButton>
-   				<p:inputText value="#{veiculoBean.funcionario.nome}" size="50" readonly="true"/>
-   				<p:commandButton value="Confirmar" update=":frmCadastraVeiculo" disabled="#{veiculoBean.botaoConfirmar}"/>
-   											 
-   			</h:panelGrid>
-       	</h:form>
-       
-       	<h:form id="frmCadastraVeiculo">
-       		<p:panel>
-       			<h:panelGrid columns="6">
-       				<h:outputText value="Chapa:"/>
-       				<p:inputText value="#{veiculoBean.veiculo.matriculaFuncionario}" readonly="true"/>
-       				
-       				<h:outputText value="Placa: " />
-       				<p:inputMask mask="aaa-9999" value="#{veiculoBean.veiculo.placa}"/>
-       				
-       				<h:outputText value="Marca: "/>
-       				<p:inputText value="#{veiculoBean.veiculo.marca}"/>
-       				
-       				<h:outputText value="Modelo: "/>
-       				<p:inputText value="#{veiculoBean.veiculo.modelo}"/>
-       				
-       				<h:outputText value="Setor: "/>
-       				<p:inputText value="#{veiculoBean.veiculo.setor}"/>
-       				
-       				<h:outputText value="Status"/>
-       				<p:selectOneMenu value="#{veiculoBean.veiculo.status}">
-       					<f:selectItem itemLabel="Selecione um Status" itemValue=""/>
-       					<f:selectItem itemLabel="ATIVO" itemValue="on"/>
-       					<f:selectItem itemLabel="INATIVO" itemValue="off"/>
-       				</p:selectOneMenu>
-       				
-       				<f:facet name="footer">         				
-       				<h:panelGrid columns="3">
-       				<p:commandButton value="#{veiculoBean.textoBotao}" actionListener="#{veiculoBean.cadastrar}" update=":frmListagemVeiculo">
-					<f:setPropertyActionListener target="#{veiculoBean.textoBotao}" value="Cadastrar"/>
-        			<f:setPropertyActionListener target="#{veiculoBean.atualizacao}" value="true"/>
-					</p:commandButton>
+	</center>
 
-					<p:commandButton value="Limpar" actionListener="#{veiculoBean.limpar}" update=":frmCadastraVeiculo">
-        			<f:setPropertyActionListener target="#{veiculoBean.atualizacao}" value="true"/>
-        			<f:setPropertyActionListener target="#{veiculoBean.textoBotao}" value="Cadastrar"/>
-        			</p:commandButton>
-        				
-        			<p:commandButton value="Retornar Menu" action="#{veiculoBean.voltar}"/>
-       				</h:panelGrid>
-       				</f:facet>
-       			</h:panelGrid>
-       			<p:messages showDetail="true" globalOnly="true" autoUpdate="true"/>       			
-       		</p:panel>
-       	      			
-       	</h:form>
-       </p:panel>
-       
-       <h:form id="frmListagemVeiculo">
-       		<p:panel header="- LISTA DE VEÍCULOS:">
-       			<p:dataTable paginator="true" rows="3" value="#{veiculoBean.veiculos}" var="listaVeiculo">
-       			
-       				<p:column headerText="Placa" filterMatchMode="contains" filterBy="#{listaVeiculo.placa}">
-       					<h:commandLink id="lnkSelecionaVeiculo" value="#{listaVeiculo.placa}" update=":frmCadastraVeiculo">
-        					<f:setPropertyActionListener target="#{veiculoBean.veiculo}" value="#{listaVeiculo}"/>
-        					<f:setPropertyActionListener target="#{veiculoBean.atualizacao}" value="true"/>
-        					<f:setPropertyActionListener target="#{veiculoBean.textoBotao}" value="Atualizar"/>
-        				</h:commandLink>
-       				</p:column>
-       				
-       				<p:column headerText="Marca">
-       					<h:outputText value="#{listaVeiculo.marca}"/>
-       				</p:column>
-       				
-       				<p:column headerText="Modelo">
-       					<h:outputText value="#{listaVeiculo.modelo}"/>
-       				</p:column>
-       				
-       				<p:column headerText="Setor">
-       					<h:outputText value="#{listaVeiculo.setor}"/>
-       				</p:column>
-       				
-       				<p:column headerText="Matricula Encarregado">
-       					<h:outputText value="#{listaVeiculo.matriculaFuncionario}"/>
-       				</p:column>
-       				
-       				<p:column headerText="Status">
-       					<h:outputText value="#{listaVeiculo.status}"/>
-       				</p:column>
-       				
-       				<p:column headerText="Operação">
-       					<p:commandButton id="btnExcluir" value="Excluir" actionListener="#{veiculoBean.excluir}"
-        					update=":frmCadastraVeiculo,:frmListagemVeiculo">
-        					<f:param id="idVeiculo" name="idVeiculo" value="#{listaVeiculo.id}" />
-        					<f:setPropertyActionListener target="#{veiculoBean.atualizacao}" value="true" />
-        				</p:commandButton>
-       				</p:column>
-       				
-       			</p:dataTable>
-       		</p:panel>
-       </h:form>
-           
-    </h:body>  
- </html> 
- 
+	<h:form id="frmLocalizaFuncionario">
+
+		<p:fieldset legend="PESQUISAR VEÍCULO:" toggleable="true" id="buscarDados">
+			<p:panel>
+
+				<h:panelGrid columns="5" id="pnlgrdBuscaFuncionario">
+					<h:outputText value="Insira Matrícula: " />
+					<p:inputText value="#{veiculoBean.veiculo.matriculaFuncionario}" />
+					<p:commandButton value="Localizar Funcionário"
+						actionListener="#{veiculoBean.localizaFuncionario}"
+						update=":frmLocalizaFuncionario, :frmCadastraVeiculo">
+						<f:param id="chapa"
+							value="#{veiculoBean.veiculo.matriculaFuncionario}" />
+					</p:commandButton>
+					<p:inputText value="#{veiculoBean.funcionario.nome}" size="50"
+						readonly="true" />
+					<p:commandButton value="Confirmar" update=":frmCadastraVeiculo"
+						disabled="#{veiculoBean.botaoConfirmar}" />
+
+				</h:panelGrid>
+			</p:panel>
+		</p:fieldset>
+	</h:form>
+
+
+	<h:form id="frmCadastraVeiculo">
+		<p:fieldset legend="CADASTRAR VEÍCULO:" toggleable="true"
+			id="buscarDados">
+			<p:panel>
+				<h:panelGrid columns="2">
+					<h:outputText value="Matrícula:" />
+					<p:inputText value="#{veiculoBean.veiculo.matriculaFuncionario}"
+						readonly="true" />
+
+					<h:outputText value="Placa: " />
+					<p:inputMask mask="aaa-9999" value="#{veiculoBean.veiculo.placa}" />
+
+					<h:outputText value="Marca: " />
+					<p:inputText value="#{veiculoBean.veiculo.marca}" />
+
+					<h:outputText value="Modelo: " />
+					<p:inputText value="#{veiculoBean.veiculo.modelo}" />
+
+					<h:outputText value="Setor: " />
+					<p:inputText value="#{veiculoBean.veiculo.setor}" />
+
+					<h:outputText value="Status" />
+					<p:selectOneMenu value="#{veiculoBean.veiculo.status}">
+						<f:selectItem itemLabel="Selecione um Status" itemValue="" />
+						<f:selectItem itemLabel="ATIVO" itemValue="on" />
+						<f:selectItem itemLabel="INATIVO" itemValue="off" />
+					</p:selectOneMenu>
+
+					<f:facet name="footer">
+						<h:panelGrid columns="3">
+							<p:commandButton value="#{veiculoBean.textoBotao}"
+								actionListener="#{veiculoBean.cadastrar}"
+								update=":frmListagemVeiculo">
+								<f:setPropertyActionListener target="#{veiculoBean.textoBotao}"
+									value="Cadastrar" />
+								<f:setPropertyActionListener target="#{veiculoBean.atualizacao}"
+									value="true" />
+							</p:commandButton>
+
+							<p:commandButton value="Limpar"
+								actionListener="#{veiculoBean.limpar}"
+								update=":frmCadastraVeiculo">
+								<f:setPropertyActionListener target="#{veiculoBean.atualizacao}"
+									value="true" />
+								<f:setPropertyActionListener target="#{veiculoBean.textoBotao}"
+									value="Cadastrar" />
+							</p:commandButton>
+
+						</h:panelGrid>
+					</f:facet>
+				</h:panelGrid>
+				<p:messages showDetail="true" globalOnly="true" autoUpdate="true" />
+			</p:panel>
+		</p:fieldset>
+	</h:form>
+
+
+	<h:form id="frmListagemVeiculo">
+		<p:fieldset legend="LISTA DE VEÍCULOS:" toggleable="true" id="mostrarDados">
+			<p:panel>
+				<p:dataTable paginator="true" rows="3"
+					value="#{veiculoBean.veiculos}" var="listaVeiculo">
+
+					<p:column headerText="Placa" filterMatchMode="contains"
+						filterBy="#{listaVeiculo.placa}">
+						<h:commandLink id="lnkSelecionaVeiculo"
+							value="#{listaVeiculo.placa}" update=":frmCadastraVeiculo">
+							<f:setPropertyActionListener target="#{veiculoBean.veiculo}"
+								value="#{listaVeiculo}" />
+							<f:setPropertyActionListener target="#{veiculoBean.atualizacao}"
+								value="true" />
+							<f:setPropertyActionListener target="#{veiculoBean.textoBotao}"
+								value="Atualizar" />
+						</h:commandLink>
+					</p:column>
+
+					<p:column headerText="Marca">
+						<h:outputText value="#{listaVeiculo.marca}" />
+					</p:column>
+
+					<p:column headerText="Modelo">
+						<h:outputText value="#{listaVeiculo.modelo}" />
+					</p:column>
+
+					<p:column headerText="Setor">
+						<h:outputText value="#{listaVeiculo.setor}" />
+					</p:column>
+
+					<p:column headerText="Matricula Encarregado">
+						<h:outputText value="#{listaVeiculo.matriculaFuncionario}" />
+					</p:column>
+
+					<p:column headerText="Status">
+						<h:outputText value="#{listaVeiculo.status}" />
+					</p:column>
+
+					<p:column headerText="Operação">
+						<p:commandButton id="btnExcluir" value="Excluir"
+							actionListener="#{veiculoBean.excluir}"
+							update=":frmCadastraVeiculo,:frmListagemVeiculo">
+							<f:param id="idVeiculo" name="idVeiculo"
+								value="#{listaVeiculo.id}" />
+							<f:setPropertyActionListener target="#{veiculoBean.atualizacao}"
+								value="true" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+			</p:panel>
+		</p:fieldset>
+	</h:form>
+
+	<h:form>
+		<center>
+			<p:panel>
+				<h:panelGrid>
+					<p:commandButton value="Retornar a Tela Principal"
+						action="#{veiculoBean.voltar}" />
+				</h:panelGrid>
+			</p:panel>
+		</center>
+	</h:form>
+</h:body>
+</html>

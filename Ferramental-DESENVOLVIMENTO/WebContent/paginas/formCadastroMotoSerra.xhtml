@@ -16,10 +16,9 @@
     
     <!-- <ui:include src="/paginas/menu.xhtml"/> -->
         
-    <p:growl id="avisos" showDetail="true" life="3000" />  
-
-    <p:fieldset legend="CADASTRO DE MOTO SERRAS:" toggleable="true">  
     <h:form> 
+    
+    <p:fieldset legend="CADASTRO DE MOTO SERRA:" toggleable="true" id="buscarDados">
         
     <h:panelGrid columns="8">    
         <h:outputText value="DATA DA EXPEDIÇÃO:" />  
@@ -51,7 +50,7 @@
         </h:form>  
         </p:fieldset>  
     
-     <p:fieldset legend="LISTA GERAL:" toggleable="true">  
+     <p:fieldset legend="LISTA MOTO SERRA CADASTRADAS:" toggleable="true">  
               <h:form id="form">
                  <p:outputPanel id="books">
                     <p:dataTable id="booksTable" value="#{createBookBean.books}" var="book">
@@ -114,6 +113,18 @@
 
             </h:form>
         </p:fieldset>
+        
+         <h:form>
+		<center>
+			<p:panel>
+				<h:panelGrid>
+					<p:commandButton value="Retornar a Tela Principal"
+						action="#{veiculoBean.voltar}" />
+				</h:panelGrid>
+			</p:panel>
+		</center>
+	</h:form>
+	
    </h:body>  
 
  </html> 

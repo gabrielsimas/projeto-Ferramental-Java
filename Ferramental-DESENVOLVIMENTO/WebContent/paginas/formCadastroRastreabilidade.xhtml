@@ -31,7 +31,8 @@
 		</p:ajaxStatus>
       
       <h:form id="frmCadastrarRastreabilidade">
-      	  	<p:panel header="- CADASTRO DE RASTREABILIDADE:">
+      <p:fieldset legend="CADASTRO DE RASTREABILIDADE:" toggleable="true" id="buscarDados">
+      	  	<p:panel>
      			<p:panelGrid columns="2">
 					<h:outputText value="Rastreabilidade: "/>
 					<p:inputText value="#{rastreabilidadeBean.rastreabilidade.idRastreabilidade}"/>
@@ -44,9 +45,11 @@
 				</p:panelGrid>
 				<p:messages showDetail="true" autoUpdate="true" globalOnly="true"/>
 			</p:panel>
+			</p:fieldset>
 		</h:form>
 		
 	  	<h:form id="frmListaRastreabilidade">
+	  	<p:fieldset legend="PRODUTOS RASTREADOS:" toggleable="true" id="buscarDados">
 	  	<p:dataTable paginator="true" rows="3" value="#{veiculoBean.veiculos}" var="listaVeiculo">
        			
        				<p:column headerText="Placa" filterMatchMode="contains" filterBy="#{listaVeiculo.placa}">
@@ -87,7 +90,19 @@
        				
        			</p:dataTable>
        		</p:panel>
+       		</p:fieldset>
        </h:form>
+       
+        <h:form>
+		<center>
+			<p:panel>
+				<h:panelGrid>
+					<p:commandButton value="Retornar a Tela Principal"
+						action="#{veiculoBean.voltar}" />
+				</h:panelGrid>
+			</p:panel>
+		</center>
+	</h:form>
             	
     </h:body>  
 

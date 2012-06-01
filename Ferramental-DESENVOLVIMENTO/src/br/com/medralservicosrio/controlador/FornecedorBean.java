@@ -77,7 +77,7 @@ public class FornecedorBean extends GenericBean implements Serializable{
 			
 			dao.atualizar(fornecedor);
 			
-			fc.addMessage(null, new FacesMessage(getMENSAGEM_INFO(),null,"Fornecedor cadastrado com sucesso!!"));
+			fc.addMessage(null, new FacesMessage(getMENSAGEM_INFO(),null,"Fornecedor atualizado com sucesso!!"));
 			
 		} catch(Exception ex) {
 			fc.addMessage(null, new FacesMessage(getMENSAGEM_FATAL(),null,ex.getMessage()));

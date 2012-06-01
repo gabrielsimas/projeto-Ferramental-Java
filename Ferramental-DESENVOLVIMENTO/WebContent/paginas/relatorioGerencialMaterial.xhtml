@@ -1,24 +1,37 @@
 <?xml version='1.0' encoding='UTF-8' ?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:h="http://java.sun.com/jsf/html" 
-     xmlns:p="http://primefaces.org/ui"
-     xmlns:ui="http://java.sun.com/jsf/facelets"
-     xmlns:f="http://java.sun.com/jsf/core"
-     xmlns:c="http://java.sun.com/jstl/core"
-     >
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">  
+   
     <h:head>
-        <title>:.Medral Tecnologia Penha.:</title>
-        <script type="text/javascript" language="javascript">
-		function multiplicarValores(valor, qtd, id){
-			var resultado = valor * qtd;
-			document.getElementById(id).innerText = resultado.toFixed(2).toLocaleString();
-		}
-        </script>
+    	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
+       <title>:. Novo Ferramental .:</title>
     </h:head>
     
+    <f:view contentType="text/html" />
+    
     <h:body style="background-color: paleturquoise">
-         <ui:include src="/paginas/menu.xhtml"/>
+    
+    <h:graphicImage url="../imagem/TopoSCFP2.jpg" width="1330" height="130"/>
+
+	<!-- <ui:include src="/paginas/menu.xhtml"/> -->
+	
+	 <center>
+    <p:ajaxStatus id="ajaxStatusPanel" >
+			<f:facet name="start">
+				<h:graphicImage value="../imagem/loading2b.gif" />
+			</f:facet>
+	
+			<f:facet name="complete">
+				<h:outputText value="" />
+			</f:facet>
+		</p:ajaxStatus>
+	</center>	   
+	
     <h:form id="formRelGerencialMaterial" prependId="false">
     	<p:growl id="avisos" showDetail="true" sticky="true" autoUpdate="true"  />  
 

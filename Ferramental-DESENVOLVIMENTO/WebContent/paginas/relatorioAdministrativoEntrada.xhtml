@@ -1,20 +1,39 @@
 <?xml version='1.0' encoding='UTF-8' ?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:h="http://java.sun.com/jsf/html" 
-     xmlns:p="http://primefaces.org/ui"
-     xmlns:ui="http://java.sun.com/jsf/facelets"
-     xmlns:f="http://java.sun.com/jsf/core">  
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">  
    
     <h:head>
-        <title>:.Medral Tecnologia Penha.:</title>
-        <h:outputScript name="../include/funcoes.js"></h:outputScript>
+    	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
+       <title>:. Novo Ferramental .:</title>
     </h:head>
     
-     <h:body style="background-color: paleturquoise">
-         <ui:include src="/paginas/menu.xhtml"/>
+    <f:view contentType="text/html" />
+    
+    <h:body style="background-color: paleturquoise">
+    
+    <h:graphicImage url="../imagem/TopoSCFP2.jpg" width="1330" height="130"/>
+
+	<!-- <ui:include src="/paginas/menu.xhtml"/> -->
+	
+	 <center>
+    <p:ajaxStatus id="ajaxStatusPanel" >
+			<f:facet name="start">
+				<h:graphicImage value="../imagem/loading2b.gif" />
+			</f:facet>
+	
+			<f:facet name="complete">
+				<h:outputText value="" />
+			</f:facet>
+		</p:ajaxStatus>
+	</center>	   
+	
      <h:form id="form" prependId="false">
-        <p:growl id="avisos" showDetail="true" life="3000" autoUpdate="true" />
+                
 	    <p:fieldset legend="RELATÓRIO DE ENTRADA DE PRODUTOS:" toggleable="true" id="buscarDados"> 
 	       <h:panelGrid columns="2">
 		        <h:outputText value="NOTA FISCAL:"/>
@@ -26,10 +45,7 @@
 	            
 	            <p:commandButton value="CONSULTAR" actionListener="#{relatoriosBean.gerarRelatorioAdministrativoEntrada}" type="submit" update="buscarDados, mostrarDados" title="Para Imprimir o Número da Nota é Obrigatório"/>
 	            <p:commandButton value="IMPRIMIR" rendered="#{not empty relatoriosBean.listaRelatorio and not empty relatoriosBean.numNota }" type="submit"  actionListener="#{relatoriosBean.imprimirRelatorioAdministrativoEntrada}" ajax="false" />
-	            
-	            
-	            
-	        </h:panelGrid>
+	       </h:panelGrid>
 	  	</p:fieldset> 
     
    		<p:fieldset legend="LISTA GERAL:" toggleable="true" id="mostrarDados" >  

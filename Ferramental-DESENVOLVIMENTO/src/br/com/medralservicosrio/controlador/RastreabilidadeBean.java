@@ -94,7 +94,7 @@ public class RastreabilidadeBean extends GenericBean implements Serializable{
 			
 			dao.atualizar(rastreabilidade);
 			
-			fc.addMessage(null, new FacesMessage(getMENSAGEM_INFO(),null,"Rastreabilidade cadastrada com sucesso!!"));
+			fc.addMessage(null, new FacesMessage(getMENSAGEM_INFO(),null,"Rastreabilidade atualizada com sucesso!!"));
 			
 		} catch(Exception ex) {
 			fc.addMessage(null, new FacesMessage(getMENSAGEM_FATAL(),null,ex.getMessage()));
