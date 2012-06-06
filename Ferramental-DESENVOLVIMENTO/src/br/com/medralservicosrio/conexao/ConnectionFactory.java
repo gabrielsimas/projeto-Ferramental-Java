@@ -15,10 +15,10 @@ import java.sql.SQLException;
 
 public class ConnectionFactory {
     
-    private static final String URL     = "jdbc:mysql://mysql.medralservicosrio.com.br:3306/medralservicosrio_com_br_10";
+    private static final String URL     = "jdbc:mysql://mysql.medralservicosrio.com.br:3306/medralservicosrio_com_br_9";
     private static final String DRIVER  = "org.gjt.mm.mysql.Driver";
-    private static final String USUARIO = "medralservic10";
-    private static final String SENHA   = "medral@2012fera";
+    private static final String USUARIO = "medralservic9";
+    private static final String SENHA   = "fera2012medr@l";
     
     public static Connection getConnection() throws SQLException {
     	

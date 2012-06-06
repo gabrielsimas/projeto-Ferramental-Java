@@ -33,7 +33,7 @@
 	</center>	   
 	        
     <h:form id="frmCadastraProduto">
-    <p:fieldset legend="CADASTRO DE PRODUTO:" toggleable="true" id="buscarDados">
+    <p:fieldset legend="CADASTRO DE PRODUTO:" toggleable="true">
     <p:panel id="pnlCadastro">
         		        		
         	<h:panelGrid columns="2">
@@ -69,7 +69,7 @@
         
         <!-- Formulário de Lista -->
         <h:form id="frmListaProduto" >
-        <p:fieldset legend="PRODUTOS CADASTRADOS:" toggleable="true" id="mostrarDados">
+        <p:fieldset legend="PRODUTOS CADASTRADOS:" toggleable="true">
         	<p:panel>
         	
         		<p:dataTable paginator="true" rows="3" value="#{produtoBean.produtos}" var="listaProduto">

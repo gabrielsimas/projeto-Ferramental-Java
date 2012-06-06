@@ -47,8 +47,7 @@ public class ProdutoBean extends GenericBean implements Serializable{
 				atualizacao = false;
 				textoBotao = "Cadastrar";
 				produto = new Produto();
-				fc.addMessage(null, new FacesMessage(getMENSAGEM_INFO(),null,"Produto atualizado com sucesso!!"));
-
+				
 			} else {
 
 				dao.criar(produto);

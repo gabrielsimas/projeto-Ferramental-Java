@@ -17,7 +17,6 @@
 <h:body style="background-color: paleturquoise">
 
 	<h:graphicImage url="../imagem/TopoSCFP2.jpg" width="1330" height="130" />
-
 	<!-- <ui:include src="/paginas/menu.xhtml"/> -->
 
 	<center>
@@ -32,56 +31,42 @@
 		</p:ajaxStatus>
 	</center>
 
-
-	<!-- Formulário de Cadastro -->
 	<h:form id="frmCadastro">
-
-		<p:fieldset legend="CADASTRO DE FORNECEDOR:" toggleable="true"
-			id="buscarDados">
-			<p:panel id="pnlCadastro">
-
-				<h:panelGrid columns="2" id="frmCadastro">
+	<p:fieldset legend="CADASTRO DE FORNECEDOR:" toggleable="true">
+		<p:panel id="pnlCadastro">
+		<h:panelGrid columns="2" id="frmCadastro">
 					<h:outputText value="CNPJ:" />
-					<p:inputMask mask="999.999.999/9999-99"
-						value="#{fornecedorBean.fornecedor.cnpj}" size="25" />
+					<p:inputMask mask="999.999.999/9999-99"	value="#{fornecedorBean.fornecedor.cnpj}" size="25" />
 
 					<h:outputText value="Razão Social:" />
 					<p:inputText value="#{fornecedorBean.fornecedor.nome}" size="50" />
 
 					<h:outputText value="Endere&ccedil;o:" />
-					<p:inputText value="#{fornecedorBean.fornecedor.endereco}"
-						size="50" />
+					<p:inputText value="#{fornecedorBean.fornecedor.endereco}"	size="50" />
 
 					<h:outputText value="Telefone:" />
-					<p:inputMask mask="(99)9999-9999"
-						value="#{fornecedorBean.fornecedor.telefone}" size="12" />
+					<p:inputMask mask="(99)9999-9999"	value="#{fornecedorBean.fornecedor.telefone}" size="12" />
 
 					<h:outputText value="E-mail" />
 					<p:inputText value="#{fornecedorBean.fornecedor.email}" size="28" />
 
 					<f:facet name="footer">
 						<h:panelGrid columns="3">
-							<p:commandButton value="#{fornecedorBean.textoBotao}"
-								actionListener="#{fornecedorBean.cadastrar}"
-								update=":frmListagem">
-								<f:setPropertyActionListener
-									target="#{fornecedorBean.textoBotao}" value="Cadastrar" />
-								<f:setPropertyActionListener
-									target="#{fornecedorBean.atualizacao}" value="true" />
+							<p:commandButton value="#{fornecedorBean.textoBotao}" 	actionListener="#{fornecedorBean.cadastrar}"	update=":frmListagem">
+								<f:setPropertyActionListener  target="#{fornecedorBean.textoBotao}" value="Cadastrar" />
+								<f:setPropertyActionListener  target="#{fornecedorBean.atualizacao}" value="true" />
 							</p:commandButton>
 
 							<p:commandButton value="Limpar"
 								actionListener="#{fornecedorBean.limpar}" update=":frmCadastro">
-								<f:setPropertyActionListener
-									target="#{fornecedorBean.atualizacao}" value="true" />
-								<f:setPropertyActionListener
-									target="#{fornecedorBean.textoBotao}" value="Cadastrar" />
+								<f:setPropertyActionListener 	target="#{fornecedorBean.atualizacao}" value="true" />
+								<f:setPropertyActionListener 	target="#{fornecedorBean.textoBotao}" value="Cadastrar" />
 							</p:commandButton>
-
-							</h:panelGrid>
-					</f:facet>
-				</h:panelGrid>
-				<p:messages showDetail="true" autoUpdate="true" />
+		</h:panelGrid>
+	</f:facet>
+</h:panelGrid>
+				
+<p:messages showDetail="true" autoUpdate="true" />
 			</p:panel>
 		</p:fieldset>
 	</h:form>
@@ -89,8 +74,7 @@
 	<!-- Listagem -->
 	<h:form id="frmListagem">
 
-		<p:fieldset legend="FORNECEDOR CADASTRADO:" toggleable="true"
-			id="mostrarDados">
+		<p:fieldset legend="FORNECEDOR CADASTRADO:" toggleable="true">
 
 			<p:panel>
 				<p:dataTable value="#{fornecedorBean.fornecedores}"
@@ -144,8 +128,7 @@
 		<center>
 			<p:panel>
 				<h:panelGrid>
-					<p:commandButton value="Retornar a Tela Principal"
-						action="#{veiculoBean.voltar}" />
+					<p:commandButton value="Retornar a Tela Principal" action="#{fornecedorBean.voltar}" />
 				</h:panelGrid>
 			</p:panel>
 		</center>

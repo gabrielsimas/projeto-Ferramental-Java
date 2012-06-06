@@ -14,7 +14,7 @@ import javax.faces.event.ActionEvent;
 import org.hibernate.QueryException;
 
 import br.com.medralservicosrio.dao.FuncionarioDAO;
-import br.com.medralservicosrio.dao.MovimentacaoDAO;
+import br.com.medralservicosrio.dao.MovimentacaoDAO; 
 import br.com.medralservicosrio.dao.MovimentacaoIndividualDAO;
 import br.com.medralservicosrio.generics.GenericBean;
 import br.com.medralservicosrio.modelo.Funcionario;
@@ -37,13 +37,14 @@ public class FuncionarioBean extends GenericBean implements Serializable{
 		dao = new FuncionarioDAO(Funcionario.class);
 		funcionario = new Funcionario();
 		funcionarios = new ArrayList<Funcionario>();
+		
 		mdao = new MovimentacaoIndividualDAO(MovimentacaoIndividual.class);
 	}
 	
+	@Override
 	public void cadastrar(){
 		
 		FacesContext fc = FacesContext.getCurrentInstance();
-		
 		try {
 			System.out.println(funcionario.getMatricula()+ "\n" +funcionario.getNome()+ "\n" + funcionario.getSetor()+ "\n" + funcionario.getCusto());
 			
@@ -59,7 +60,6 @@ public class FuncionarioBean extends GenericBean implements Serializable{
 				this.getFuncionarios();
 				
 			} else {
-				
 				//Verifica se a matricula já não existe
 				Funcionario funcionarioDesconhecido = (Funcionario) dao.listarPorId(Funcionario.class, funcionario.getMatricula());
 				
@@ -82,7 +82,7 @@ public class FuncionarioBean extends GenericBean implements Serializable{
 			fc.addMessage(null, new FacesMessage(this.getMENSAGEM_FATAL(),null,e.getMessage()));
 		}
 	}
-	
+	@Override
 	public void atualizar(ActionEvent evento){
 		
 		FacesContext fc = FacesContext.getCurrentInstance();
@@ -92,40 +92,28 @@ public class FuncionarioBean extends GenericBean implements Serializable{
 			//UIParameter f = (UIParameter) evento.getComponent().findComponent("funcionario");
 			//Funcionario funcionarioAlvo = (Funcionario) f.getValue();
 			
-			//Atualiza o registro
 			dao.atualizar(funcionario);
-			
-			//Infoma que houve sucesso
 			fc.addMessage(null, new FacesMessage(getMENSAGEM_INFO(),null,"Funcion&aacute;rio atualizado com sucesso!"));
-			
-			//Inicia um novo objeto
-			funcionario = new Funcionario();
-			
+			funcionario = new Funcionario();			
 			
 		} catch (Exception e){
 			fc.addMessage(null, new FacesMessage(this.getMENSAGEM_FATAL(),null,"Erro: " + e.getMessage()));
 		}
 	}
-		
+	@Override	
 	public void excluir(ActionEvent evento) {
 		
 		FacesContext fc = FacesContext.getCurrentInstance();
-		
 		try{
-		
 			UIParameter f = (UIParameter) evento.getComponent().findComponent("idFuncionario");
 			Integer matriculaFuncionario = (Integer) f.getValue();
 			
 			//Obtendo a Loja para ser excluída
 			Funcionario funcionarioExcluir = (Funcionario) dao.listarPorId(Funcionario.class, matriculaFuncionario);
-									
-			//Verifica se ele tem algum registro na Tabela de Movimentação
-			//Se tiver, não faz a exclusao
-			Integer m = mdao.localizaPorChapa(matriculaFuncionario).size();
+			Integer m = mdao.localizaPorChapa(matriculaFuncionario).size();   			//Verifica se ele tem algum registro na Tabela de Movimentação Se tiver, não faz a exclusao
 			
 			if (m > 0){
-				fc.addMessage(null, new FacesMessage(getMENSAGEM_ERRO(),null,"Não é possível excluir " +
-						funcionarioExcluir.getNome() + " pois existem movimentacoes em seu nome"));
+				fc.addMessage(null, new FacesMessage(getMENSAGEM_ERRO(),null,"Não é possível excluir " + funcionarioExcluir.getNome() + " pois existem movimentacoes em seu nome"));
 				funcionarioExcluir = null;
 				
 			} else {

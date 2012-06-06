@@ -39,47 +39,40 @@
 
 				<h:panelGrid columns="5" id="pnlgrdBuscaFuncionario">
 					<h:outputText value="Insira Matrícula: " />
+					
 					<p:inputText value="#{veiculoBean.veiculo.matriculaFuncionario}" />
-					<p:commandButton value="Localizar Funcionário"
-						actionListener="#{veiculoBean.localizaFuncionario}"
-						update=":frmLocalizaFuncionario, :frmCadastraVeiculo">
-						<f:param id="chapa"
-							value="#{veiculoBean.veiculo.matriculaFuncionario}" />
+					<p:commandButton value="Localizar Funcionário" 	actionListener="#{veiculoBean.localizaFuncionario}" 	update=":frmLocalizaFuncionario, :frmCadastraVeiculo">
+						<f:param id="chapa" 	value="#{veiculoBean.veiculo.matriculaFuncionario}" />
 					</p:commandButton>
-					<p:inputText value="#{veiculoBean.funcionario.nome}" size="50"
-						readonly="true" />
-					<p:commandButton value="Confirmar" update=":frmCadastraVeiculo"
-						disabled="#{veiculoBean.botaoConfirmar}" />
+					<p:inputText value="#{veiculoBean.funcionario.nome}" size="50" 	readonly="true" />
+					<p:commandButton value="Confirmar" update=":frmCadastraVeiculo" disabled="#{veiculoBean.botaoConfirmar}" />
 
 				</h:panelGrid>
 			</p:panel>
 		</p:fieldset>
 	</h:form>
 
-
 	<h:form id="frmCadastraVeiculo">
-		<p:fieldset legend="CADASTRAR VEÍCULO:" toggleable="true"
-			id="buscarDados">
+		<p:fieldset legend="CADASTRAR VEÍCULO:" toggleable="true">
 			<p:panel>
 				<h:panelGrid columns="2">
 					<h:outputText value="Matrícula:" />
-					<p:inputText value="#{veiculoBean.veiculo.matriculaFuncionario}"
-						readonly="true" />
+					<p:inputText   mask="999.999" value="#{veiculoBean.veiculo.matriculaFuncionario}"  size="10"/>
 
 					<h:outputText value="Placa: " />
-					<p:inputMask mask="aaa-9999" value="#{veiculoBean.veiculo.placa}" />
+					<p:inputMask  mask="aaa-9999"  value="#{veiculoBean.veiculo.placa}"  size="10"/>
 
 					<h:outputText value="Marca: " />
-					<p:inputText value="#{veiculoBean.veiculo.marca}" />
+					<p:inputText value="#{veiculoBean.veiculo.marca}"  size="10" />
 
 					<h:outputText value="Modelo: " />
-					<p:inputText value="#{veiculoBean.veiculo.modelo}" />
+					<p:inputText value="#{veiculoBean.veiculo.modelo}"  size="10" />
 
 					<h:outputText value="Setor: " />
-					<p:inputText value="#{veiculoBean.veiculo.setor}" />
+					<p:inputText value="#{veiculoBean.veiculo.setor}"  size="10" />
 
 					<h:outputText value="Status" />
-					<p:selectOneMenu value="#{veiculoBean.veiculo.status}">
+					<p:selectOneMenu value="#{veiculoBean.veiculo.status}" >
 						<f:selectItem itemLabel="Selecione um Status" itemValue="" />
 						<f:selectItem itemLabel="ATIVO" itemValue="on" />
 						<f:selectItem itemLabel="INATIVO" itemValue="off" />
@@ -87,22 +80,16 @@
 
 					<f:facet name="footer">
 						<h:panelGrid columns="3">
-							<p:commandButton value="#{veiculoBean.textoBotao}"
-								actionListener="#{veiculoBean.cadastrar}"
-								update=":frmListagemVeiculo">
-								<f:setPropertyActionListener target="#{veiculoBean.textoBotao}"
-									value="Cadastrar" />
-								<f:setPropertyActionListener target="#{veiculoBean.atualizacao}"
-									value="true" />
+							<p:commandButton value="#{veiculoBean.textoBotao}" actionListener="#{veiculoBean.cadastrar}" update=":frmListagemVeiculo">
+								<f:setPropertyActionListener target="#{veiculoBean.textoBotao}" 	value="Cadastrar" />
+								<f:setPropertyActionListener target="#{veiculoBean.atualizacao}" 	value="true" />
 							</p:commandButton>
 
 							<p:commandButton value="Limpar"
 								actionListener="#{veiculoBean.limpar}"
 								update=":frmCadastraVeiculo">
-								<f:setPropertyActionListener target="#{veiculoBean.atualizacao}"
-									value="true" />
-								<f:setPropertyActionListener target="#{veiculoBean.textoBotao}"
-									value="Cadastrar" />
+								<f:setPropertyActionListener target="#{veiculoBean.atualizacao}" value="true" />
+								<f:setPropertyActionListener target="#{veiculoBean.textoBotao}" value="Cadastrar" />
 							</p:commandButton>
 
 						</h:panelGrid>
@@ -117,19 +104,14 @@
 	<h:form id="frmListagemVeiculo">
 		<p:fieldset legend="LISTA DE VEÍCULOS:" toggleable="true" id="mostrarDados">
 			<p:panel>
-				<p:dataTable paginator="true" rows="3"
-					value="#{veiculoBean.veiculos}" var="listaVeiculo">
+				<p:dataTable paginator="true" rows="3" value="#{veiculoBean.veiculos}" var="listaVeiculo">
 
-					<p:column headerText="Placa" filterMatchMode="contains"
-						filterBy="#{listaVeiculo.placa}">
+					<p:column headerText="Placa" filterMatchMode="contains"	filterBy="#{listaVeiculo.placa}">
 						<h:commandLink id="lnkSelecionaVeiculo"
 							value="#{listaVeiculo.placa}" update=":frmCadastraVeiculo">
-							<f:setPropertyActionListener target="#{veiculoBean.veiculo}"
-								value="#{listaVeiculo}" />
-							<f:setPropertyActionListener target="#{veiculoBean.atualizacao}"
-								value="true" />
-							<f:setPropertyActionListener target="#{veiculoBean.textoBotao}"
-								value="Atualizar" />
+							<f:setPropertyActionListener target="#{veiculoBean.veiculo}" value="#{listaVeiculo}" />
+							<f:setPropertyActionListener target="#{veiculoBean.atualizacao}" value="true" />
+							<f:setPropertyActionListener target="#{veiculoBean.textoBotao}"  value="Atualizar" />
 						</h:commandLink>
 					</p:column>
 
@@ -181,3 +163,4 @@
 	</h:form>
 </h:body>
 </html>
+

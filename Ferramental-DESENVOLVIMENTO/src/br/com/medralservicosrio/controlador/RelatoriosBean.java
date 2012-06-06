@@ -16,8 +16,11 @@ import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.ImageIcon;
-
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import br.com.medralservicosrio.conexao.ConnectionFactory;
 import br.com.medralservicosrio.dao.RelatorioDao;
 import br.com.medralservicosrio.modelo.Funcionario;
 import br.com.medralservicosrio.relatorios.RelatorioAdmReforma;
@@ -78,6 +81,7 @@ public class RelatoriosBean{
 	 */
 	public void gerarRelatorioGerencialDeMateriais(ActionEvent event) throws IOException{
 		
+		
 		try {
 			listaRelatorio = new ArrayList();
 			listaRelatorio = relatorioDao.gerarRelatorioGerencialDeMateriais(produto);
@@ -85,7 +89,7 @@ public class RelatoriosBean{
 				FacesContext context = FacesContext.getCurrentInstance();  
 		        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção" , "Sua Busca não retornou nenhum resultado"));
 			}else{
-				
+						
 				List<RelatorioGerencialCompras> lista = listaRelatorio;
 				Map<String,Double> calculoTotaisTemp = new HashMap<String,Double>();
 				
@@ -139,8 +143,9 @@ public class RelatoriosBean{
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest request   = (HttpServletRequest) context.getExternalContext().getRequest();		
 		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
-
+	
 		try {
+			
 			
 			Map<String, Object> params = new HashMap<String,Object>();
 			params.put("produto", produto);
@@ -365,11 +370,28 @@ public class RelatoriosBean{
 			String fileName = "relRastreabilidadeDeProdutos"; 
 			ReportUtils.gerarPdf("/reports/relRastreabilidadeDeProdutos.jasper", fileName, listaRelatorio, params, context);
 
+			try {
+				JasperPrint impressao = JasperFillManager.fillReport("/reports/relRastreabilidadeDeProdutos.jasper", params, ConnectionFactory.getConnection());
+			
+
+			//Grava o relatório em disco em pdf
+			JasperExportManager.exportReportToPdfFile(impressao,"/reports/relRastreabilidadeDeProdutos.jasper" + "relReciboSolicitacaoEpi.pdf");
+			
+			
+			//Redireciona para o pdf gerado
+			response.sendRedirect("relReciboSolicitacaoEpi.pdf");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
 		} catch (JRException e) {
 			
 			e.printStackTrace();
 
-		} catch (IOException e) {
+		}
+		
+		catch (IOException e) {
 
 			e.printStackTrace();
 		} finally{
@@ -860,6 +882,7 @@ public class RelatoriosBean{
 			
 			String fileName = "relAdmistrativoProdutosAguadandoRefoma";
 			ReportUtils.gerarPdf("/report/relAdmReforma.jasper", fileName, listaRelatorio, params, context);
+		
 		
 		} catch (JRException e) {
 

@@ -31,7 +31,7 @@
 		</p:ajaxStatus>
       
       <h:form id="frmCadastrarRastreabilidade">
-      <p:fieldset legend="CADASTRO DE RASTREABILIDADE:" toggleable="true" id="buscarDados">
+      <p:fieldset legend="CADASTRO DE RASTREABILIDADE:" toggleable="true">
       	  	<p:panel>
      			<p:panelGrid columns="2">
 					<h:outputText value="Rastreabilidade: "/>
@@ -49,7 +49,7 @@
 		</h:form>
 		
 	  	<h:form id="frmListaRastreabilidade">
-	  	<p:fieldset legend="PRODUTOS RASTREADOS:" toggleable="true" id="buscarDados">
+	  	<p:fieldset legend="PRODUTOS RASTREADOS:" toggleable="true">
 	  	<p:dataTable paginator="true" rows="3" value="#{veiculoBean.veiculos}" var="listaVeiculo">
        			
        				<p:column headerText="Placa" filterMatchMode="contains" filterBy="#{listaVeiculo.placa}">

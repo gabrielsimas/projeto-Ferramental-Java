@@ -19,20 +19,18 @@ import br.com.medralservicosrio.generics.GenericBean;
 import br.com.medralservicosrio.modelo.Funcionario;
 import br.com.medralservicosrio.modelo.Veiculo;
 
-
 @ManagedBean
 @SessionScoped
 public class VeiculoBean extends GenericBean implements Serializable{
 
 	private static final long serialVersionUID = -976678547432366788L;
-	
 	private boolean atualizacao;
 	private String textoBotao = "Cadastrar";
-	private boolean botaoConfirmar = true;
-	
 	private Veiculo veiculo;
 	private List<Veiculo> veiculos;
 	private VeiculoDAO dao;
+	
+	private boolean botaoConfirmar = true;
 	private FuncionarioDAO funcionarioDAO;
 	private List<Funcionario> funcionarios;
 	private Funcionario funcionario;
@@ -40,9 +38,10 @@ public class VeiculoBean extends GenericBean implements Serializable{
 	
 	
 	public VeiculoBean() {
+		dao = new VeiculoDAO(Veiculo.class);
 		veiculo = new Veiculo();
 		veiculos = new ArrayList<Veiculo>();
-		dao = new VeiculoDAO(Veiculo.class);
+		
 		funcionarioDAO = new FuncionarioDAO(Funcionario.class);
 		funcionario = new Funcionario();
 		
@@ -54,20 +53,21 @@ public class VeiculoBean extends GenericBean implements Serializable{
 	public void cadastrar() {
 	
 		FacesContext fc = FacesContext.getCurrentInstance();
-
 		try {
-
+			
+			System.out.println(veiculo.getPlaca()+ "\n" +veiculo.getMarca()+ "\n" + veiculo.getModelo()+ "\n" + veiculo.getSetor());
+			
+			//Verifica se a placa cadastrada já existe
+			
 			//Salva o registro
 			//Verifica se é alteração ou cadastro
 			if (atualizacao){
-				//Adiciona a matricula do funcionario ao Veiculo
-				veiculo.setMatriculaFuncionario(funcionario.getMatricula());
 				dao.atualizar(veiculo);
 				atualizacao = false;
 				textoBotao = "Cadastrar";
 				veiculo = new Veiculo();
-				fc.addMessage(null, new FacesMessage(getMENSAGEM_INFO(),null,"Veiculo atualizado com sucesso!!"));
-
+				veiculo.setMatriculaFuncionario(funcionario.getMatricula());				
+				
 			} else {
 				//Adiciona a matricula do funcionario ao Veiculo
 				veiculo.setMatriculaFuncionario(funcionario.getMatricula());

@@ -64,8 +64,7 @@ public class RastreabilidadeBean extends GenericBean implements Serializable{
 				atualizacao = false;
 				textoBotao = "Cadastrar";
 				rastreabilidade = new Rastreabilidade();
-				fc.addMessage(null, new FacesMessage(getMENSAGEM_INFO(),null,"Rastreabilidade atualizada com sucesso!!"));
-
+				
 			} else {
 				//Adiciona a matricula do funcionario ao Rastreabilidade
 				dao.criar(rastreabilidade);

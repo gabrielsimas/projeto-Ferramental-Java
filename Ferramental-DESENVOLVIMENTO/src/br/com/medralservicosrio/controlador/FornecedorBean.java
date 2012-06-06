@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -12,15 +11,22 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import org.hibernate.QueryException;
+
 import br.com.medralservicosrio.dao.FornecedorDAO;
+import br.com.medralservicosrio.dao.MovimentacaoDAO;
+import br.com.medralservicosrio.dao.MovimentacaoIndividualDAO;
 import br.com.medralservicosrio.generics.GenericBean;
 import br.com.medralservicosrio.modelo.Fornecedor;
+import br.com.medralservicosrio.modelo.Funcionario;
+import br.com.medralservicosrio.modelo.MovimentacaoIndividual;
+import br.com.medralservicosrio.modelo.Produto;
 
-
-@ManagedBean
+@ManagedBean(name="fornecedorBean")
 @SessionScoped
 public class FornecedorBean extends GenericBean implements Serializable{
 	
+	private static final long serialVersionUID = 6298337963317124483L;
 	private boolean atualizacao;
 	private String textoBotao = "Cadastrar";
 	private Fornecedor fornecedor;
@@ -28,14 +34,13 @@ public class FornecedorBean extends GenericBean implements Serializable{
 	private FornecedorDAO dao;
 	
 	public FornecedorBean() {
+		dao = new FornecedorDAO(Fornecedor.class);
 		fornecedor = new Fornecedor();
 		fornecedores = new ArrayList<Fornecedor>();
-		dao = new FornecedorDAO(Fornecedor.class);
 		this.textoBotao = "Cadastrar";
 		this.atualizacao = true;
 	}
-	
-	private static final long serialVersionUID = 6298337963317124483L;
+		
 
 	@Override
 	public void cadastrar() {
@@ -76,20 +81,18 @@ public class FornecedorBean extends GenericBean implements Serializable{
 		try{
 			
 			dao.atualizar(fornecedor);
-			
 			fc.addMessage(null, new FacesMessage(getMENSAGEM_INFO(),null,"Fornecedor atualizado com sucesso!!"));
+			fornecedor = new Fornecedor();
 			
-		} catch(Exception ex) {
-			fc.addMessage(null, new FacesMessage(getMENSAGEM_FATAL(),null,ex.getMessage()));
+		} catch (Exception e){
+			fc.addMessage(null, new FacesMessage(this.getMENSAGEM_FATAL(),null,"Erro: " + e.getMessage()));
 		}
-				
 	}
-
+	
 	@Override
 	public void excluir(ActionEvent evento) {
 		
 		FacesContext fc = FacesContext.getCurrentInstance();
-
 		try{
 
 			UIParameter f = (UIParameter) evento.getComponent().findComponent("idFornecedor");
@@ -97,13 +100,10 @@ public class FornecedorBean extends GenericBean implements Serializable{
 
 			//Obtendo a Loja para ser excluída
 			Fornecedor fornecedorExcluir = (Fornecedor) dao.listarPorId(Fornecedor.class, idFornecedor);
-
-			//Fornecedor fornecedorExcluir = (Fornecedor) dao.listarPorId(Fornecedor.class,matriculaFuncionario);
-			//Apaga o Funcionário
-			dao.apagar(fornecedorExcluir);
+			dao.apagar(fornecedorExcluir);     //Fornecedor fornecedorExcluir = (Fornecedor) dao.listarPorId(Fornecedor.class,matriculaFuncionario);  Apaga o Funcionário
 
 			//Imprime a mensagem
-			fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,null,"Funcionário " + fornecedorExcluir.getNome() + " excluido com sucesso!"));
+			fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,null,"Fornecedor " + fornecedorExcluir.getNome() + " excluido com sucesso!"));
 
 			//Zera os objetos utilizados
 			fornecedorExcluir = null;
@@ -129,14 +129,11 @@ public class FornecedorBean extends GenericBean implements Serializable{
 		}
 	}
 	
-	/*public String voltar(){
+   public String voltar(){
 		
-		fornecedor = null;
-		fornecedores = null;
-		dao = null;
-		
+		/*FacesContext.getCurrentInstance().getExternalContext().invalidateSession();*/
 		return "principal?faces-redirect=true";
-	}*/
+	}
 
 	public boolean isAtualizacao() {
 		return atualizacao;

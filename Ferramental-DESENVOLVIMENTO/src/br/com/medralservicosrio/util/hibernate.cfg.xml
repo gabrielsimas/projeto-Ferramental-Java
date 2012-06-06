@@ -7,7 +7,7 @@
 		<!-- Banco remoto --> 
 		<property name="hibernate.connection.url">jdbc:mysql://mysql.medralservicosrio.com.br:3306/medralservicosrio_com_br_9</property>
 		<property name="hibernate.connection.username">medralservic9</property>
-		<property name="hibernate.connection.password">medral@2012fera</property>
+		<property name="hibernate.connection.password">fera2012medr@l</property>
 		
 		
 		<!--  Banco Local -->

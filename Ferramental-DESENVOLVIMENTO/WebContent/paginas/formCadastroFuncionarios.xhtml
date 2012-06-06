@@ -35,7 +35,7 @@
     <!-- Formulário de Cadastro -->    
     <h:form id="cadastraFuncionario">
     
-    <p:fieldset legend="CADASTRO DE FUNCIONÁRIOS:" toggleable="true" id="BuscarDados">
+    <p:fieldset legend="CADASTRO DE FUNCIONÁRIOS:" toggleable="true">
     <p:panel id="pnlCadastroFuncionario">
         	       		 
         		<h:panelGrid columns="2" id="pgdCadastraFuncionario">
@@ -77,7 +77,7 @@
         
         <!-- Data Table -->
         <h:form id="listagemFuncionarios">
-        <p:fieldset legend="LISTA DE FUNCIONÁRIOS:" toggleable="true" id="mostrarDados">
+        <p:fieldset legend="LISTA DE FUNCIONÁRIOS:" toggleable="true">
         
         	<p:panel id="pnlListagemFuncionarios">
         		<p:dataTable paginator="true" rows="3" value="#{funcionarioBean.funcionarios}" var="listaFuncionarios">
@@ -124,8 +124,7 @@
 		<center>
 			<p:panel>
 				<h:panelGrid>
-					<p:commandButton value="Retornar a Tela Principal"
-						action="#{veiculoBean.voltar}" />
+					<p:commandButton value="Retornar a Tela Principal" action="#{veiculoBean.voltar}" />
 				</h:panelGrid>
 			</p:panel>
 		</center>
