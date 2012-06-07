@@ -14,11 +14,6 @@ import br.com.medralservicosrio.modelo.Veiculo;
 
 public class VeiculoDAO extends DAO<Veiculo,Integer>{
 
-	public VeiculoDAO(Class<Veiculo> entidade) {
-		super(entidade);
-		// TODO Auto-generated constructor stub
-	}
-
 	//TODO: Adicionar outros métodos de tratamento, adequando as NamedQueries existentes na Classe
 	//TODO: Método Listar por Placa
 	//TODO: Método Itens de Movimentação

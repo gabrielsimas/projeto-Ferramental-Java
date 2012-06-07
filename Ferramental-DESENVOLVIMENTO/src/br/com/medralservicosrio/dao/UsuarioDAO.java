@@ -16,11 +16,6 @@ import br.com.medralservicosrio.modelo.Usuario;
 
 public class UsuarioDAO extends DAO<Usuario,Integer> {
 
-		
-	public UsuarioDAO(Class<Usuario> entidade) {
-		super(entidade);
-	
-	}
 	//*TODO: Adicionar Métodos de autenticação para o Usuário - DONE
 
 public boolean autenticar(String usuario, String senha){
@@ -48,6 +43,7 @@ public boolean autenticar(String usuario, String senha){
 		   
 		   
 	   } catch (Exception ex){
+		   ex.printStackTrace();
 		   System.out.println(ex.getMessage());
 	   }
 	   

@@ -13,11 +13,6 @@ import br.com.medralservicosrio.modelo.Funcionario;
  */
 public class FuncionarioDAO extends DAO<Funcionario,Integer> {
 
-	public FuncionarioDAO(Class<Funcionario> entidade) {
-		super(entidade);
-		// TODO Auto-generated constructor stub
-	}
-
     /*private Connection connection;
     
     public boolean validar(Funcionario funcionario) throws SQLException {

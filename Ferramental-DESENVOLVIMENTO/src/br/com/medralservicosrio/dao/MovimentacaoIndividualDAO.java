@@ -10,10 +10,6 @@ import br.com.medralservicosrio.modelo.MovimentacaoIndividual;
 
 public class MovimentacaoIndividualDAO extends DAO<MovimentacaoIndividual, Integer> {
 
-	public MovimentacaoIndividualDAO(Class<MovimentacaoIndividual> entidade) {
-		super(entidade);
-	}
-	
 	//Localiza por Chapa
 	public List<MovimentacaoIndividual> localizaPorChapa(Integer chapa){
 		

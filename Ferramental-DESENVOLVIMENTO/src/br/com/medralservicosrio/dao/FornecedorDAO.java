@@ -15,11 +15,6 @@ import br.com.medralservicosrio.modelo.Fornecedor;
  */
 public class FornecedorDAO extends DAO<Fornecedor, Integer>{
 
-	public FornecedorDAO(Class<Fornecedor> entidade) {
-		super(entidade);
-		
-	}
-	
 	//Localiza o Fornecedor pelo CNPJ
 	public Fornecedor localizaPorCNPJ(String cnpj){
 		
