@@ -18,23 +18,16 @@ import br.com.medralservicosrio.util.HibernateUtil;
  * @param <ID>
  */
 //public interface LivroDAO extends GenericDAO<Livro, Integer> {
-public abstract class DAO<E, ID extends Serializable> implements GenericDAO<E, ID> {
+public abstract class DAO<E, ID extends Serializable>{
 	
-	private Class<E> entidade;
 	Session sessao;
 	Transaction transacao;
 	Query consulta;
 	
-	/**
-	 * 
-	 */
-	public DAO(Class<E> entidade) {
-		this.entidade = entidade;
+	public DAO() {
 		conexaoInicial();
 	}
-		
-		
-	@Override
+
 	public void criar(E entidade)  {
 		
 		try {
@@ -47,10 +40,11 @@ public abstract class DAO<E, ID extends Serializable> implements GenericDAO<E, I
 					+ "\nErro reportado: " + ex.getMessage() );
 				ex.printStackTrace();
 			transacao.rollback();
+		} finally {
+			
 		}
 	}
 
-	@Override
 	public void atualizar(E entidade)  {
 		try {
 			conexaoInicial();
@@ -67,7 +61,6 @@ public abstract class DAO<E, ID extends Serializable> implements GenericDAO<E, I
 		}
 	}
 
-	@Override
 	public void apagar(E entidade)  {
 		try {
 			conexaoInicial();
@@ -84,7 +77,6 @@ public abstract class DAO<E, ID extends Serializable> implements GenericDAO<E, I
 		}
 	}
 
-	@Override
 	public List listarTudo(Class<E> entidade)  {
 		//Inicia uma Lista para os resultados
 		List resultado = null;
@@ -92,8 +84,7 @@ public abstract class DAO<E, ID extends Serializable> implements GenericDAO<E, I
 		try {
 			conexaoInicial();
 			//Pega o nome de forma recursiva o nome da Classe
-			consulta = sessao.createQuery("FROM "
-					+ entidade.getName());
+			consulta = sessao.createQuery("FROM " + entidade.getName());
 			resultado = consulta.list();
 		} catch (HibernateException ex) {
 			System.err.println("Erro ao Listar todos os registro de " + entidade.getSimpleName()
@@ -108,8 +99,6 @@ public abstract class DAO<E, ID extends Serializable> implements GenericDAO<E, I
 		return resultado;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
 	public E listarPorId(Class<E> entidade, ID key)  {
 		Object objeto = null;
 		
@@ -131,20 +120,32 @@ public abstract class DAO<E, ID extends Serializable> implements GenericDAO<E, I
 	}
 	
 	public void conexaoInicial() throws HibernateException{
-		sessao = HibernateUtil.getSessionFactory().openSession();
+		//
+		//
 		
-		//if (sessao.isOpen()){
-		//	System.out.println("[DAO] - Sessao Aberta!");
-		//	if (sessao.isConnected()){
-		//		System.out.println("[DAO] - Sessao Esta conectada!");
-		//		sessao.getTransaction();
-		//		System.out.println("Pegando a transação já aberta!!");
-		//	}
-		//} else {
-		//	System.out.println("[DAO] Iniciando transação - nenhuma existente");
+		if (sessao == null && transacao == null){
+			System.out.println("[DAO] Iniciando transação - nenhuma existente");
+			sessao = HibernateUtil.getSessionFactory().openSession();
 			transacao = sessao.beginTransaction();
-		//}
-		
+		} else {
+			if (sessao.isOpen()){
+				System.out.println("[DAO] - Sessao ja aberta!");
+				
+				sessao = HibernateUtil.getSessionFactory().getCurrentSession();
+				
+				if (transacao.isActive()){
+					transacao = HibernateUtil.getSessionFactory().getCurrentSession().getTransaction();	
+				}/* else {
+					transacao = sessao.beginTransaction();
+				}*/
+				
+			//	if (sessao.isConnected()){
+			//		System.out.println("[DAO] - Sessao Esta conectada!");
+			//		sessao.getTransaction();
+			//		System.out.println("Pegando a transação já aberta!!");
+			//	}
+			}
+		}		
 	}
 	
 	public void manusearExcecao(HibernateException e) throws RuntimeException{
@@ -175,22 +176,4 @@ public abstract class DAO<E, ID extends Serializable> implements GenericDAO<E, I
 	public void setConsulta(Query consulta) {
 		this.consulta = consulta;
 	}
-
-
-	public Class<E> getEntidade() {
-		return entidade;
-	}
-
-
-	public void setEntidade(Class<E> entidade) {
-		this.entidade = entidade;
-	}
-	
-	/*Valores antigos porque era interface
-	public void save(Livro livro);
-	public Livro getLivro(Integer id);
-	public List<Livro> list();
-	public void remove(Livro livro);
-	public void update(Livro livro);
-	*/
 }
