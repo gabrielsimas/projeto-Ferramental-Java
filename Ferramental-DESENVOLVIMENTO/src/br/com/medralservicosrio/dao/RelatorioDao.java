@@ -16,6 +16,7 @@ import org.hibernate.transform.Transformers;
 
 import br.com.medralservicosrio.conexao.ConnectionFactory;
 import br.com.medralservicosrio.generics.DAO;
+import br.com.medralservicosrio.modelo.Relatorio;
 import br.com.medralservicosrio.relatorios.RelatorioAdmIndividual;
 import br.com.medralservicosrio.relatorios.RelatorioAdmMovimentacao;
 import br.com.medralservicosrio.relatorios.RelatorioAdmReforma;
@@ -30,15 +31,7 @@ import br.com.medralservicosrio.relatorios.RelatorioGerencialRastreabilidadeSubR
 import br.com.medralservicosrio.relatorios.RelatorioGerencialSucata;
 
 
-public class RelatorioDao extends DAO{
-
-	public RelatorioDao(Class entidade) {
-		super(entidade);
-		// TODO Auto-generated constructor stub
-	}
-
-	//public RelatorioDao() {
-	//}
+public class RelatorioDao extends DAO<Relatorio,Integer>{
 	
 	private SQLQuery query;
 	private Connection connection;
