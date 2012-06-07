@@ -24,7 +24,7 @@ public class UsuarioBean implements Serializable{
 	
 	public UsuarioBean() {
 		usuario = new Usuario();
-		dao = new UsuarioDAO(Usuario.class);
+		//dao = new UsuarioDAO();
 		usuarios = new ArrayList<Usuario>();
 		
 	}
@@ -35,7 +35,7 @@ public class UsuarioBean implements Serializable{
 		
 				
 		fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,null, "Usuário ou senha inválidos!"));
-		return dao.autenticar(usuario.getLogin(), usuario.getSenha()) ? "principal?faces-redirect=true" :"";
+		return new UsuarioDAO().autenticar(usuario.getLogin(), usuario.getSenha()) ? "principal?faces-redirect=true" :"";
 	}
 	
 	public Usuario getUsuario() {
