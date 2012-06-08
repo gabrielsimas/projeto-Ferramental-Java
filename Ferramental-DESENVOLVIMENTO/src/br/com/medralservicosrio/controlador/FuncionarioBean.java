@@ -34,11 +34,13 @@ public class FuncionarioBean extends GenericBean implements Serializable{
 	private MovimentacaoIndividualDAO mdao;
 	
 	public FuncionarioBean() {
-		dao = new FuncionarioDAO(Funcionario.class);
+		//dao = new FuncionarioDAO(Funcionario.class);
+		dao = new FuncionarioDAO();
 		funcionario = new Funcionario();
 		funcionarios = new ArrayList<Funcionario>();
-		
-		mdao = new MovimentacaoIndividualDAO(MovimentacaoIndividual.class);
+	
+		mdao = new MovimentacaoIndividualDAO();
+		//mdao = new MovimentacaoIndividualDAO(MovimentacaoIndividual.class);
 	}
 	
 	@Override

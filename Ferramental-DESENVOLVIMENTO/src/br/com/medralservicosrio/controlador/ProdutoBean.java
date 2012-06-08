@@ -30,7 +30,8 @@ public class ProdutoBean extends GenericBean implements Serializable{
 	public ProdutoBean() {
 		produto = new Produto();
 		produtos = new ArrayList<Produto>();
-		dao = new ProdutoDAO(Produto.class);
+		//dao = new ProdutoDAO(Produto.class);
+		dao = new ProdutoDAO();
 	}
 
 	@Override

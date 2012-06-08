@@ -38,11 +38,13 @@ public class VeiculoBean extends GenericBean implements Serializable{
 	
 	
 	public VeiculoBean() {
-		dao = new VeiculoDAO(Veiculo.class);
+		//dao = new VeiculoDAO(Veiculo.class);
+		dao = new VeiculoDAO();
 		veiculo = new Veiculo();
 		veiculos = new ArrayList<Veiculo>();
 		
-		funcionarioDAO = new FuncionarioDAO(Funcionario.class);
+		//funcionarioDAO = new FuncionarioDAO(Funcionario.class);
+		funcionarioDAO = new FuncionarioDAO();
 		funcionario = new Funcionario();
 		
 		/*funcionarios = new ArrayList<Funcionario>();*/

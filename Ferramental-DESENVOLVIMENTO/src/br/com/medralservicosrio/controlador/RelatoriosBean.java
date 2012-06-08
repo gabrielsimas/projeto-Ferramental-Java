@@ -1,5 +1,15 @@
 package br.com.medralservicosrio.controlador;
 
+/*
+ * Esta classe está comentada para ajustes
+ * 
+ * 
+ * 
+ * 
+ */
+
+
+/*
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,7 +31,6 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import br.com.medralservicosrio.conexao.ConnectionFactory;
-import br.com.medralservicosrio.dao.RelatorioDao;
 import br.com.medralservicosrio.modelo.Funcionario;
 import br.com.medralservicosrio.relatorios.RelatorioAdmReforma;
 import br.com.medralservicosrio.relatorios.RelatorioAdmTesteEletrico;
@@ -37,6 +46,8 @@ import br.com.medralservicosrio.util.ReportUtils;
  * @author Felipe Tavares
  *
  */
+
+/*
 @ManagedBean
 @ViewScoped
 @SuppressWarnings("rawtypes")
@@ -79,6 +90,8 @@ public class RelatoriosBean{
 	 * @param event
 	 * @throws IOException 
 	 */
+
+/*
 	public void gerarRelatorioGerencialDeMateriais(ActionEvent event) throws IOException{
 		
 		
@@ -138,6 +151,7 @@ public class RelatoriosBean{
 	 * Imprime o relatorio em PDF / XLS 
 	 * @param event
 	 */
+/*
 	public void imprimirRelatorioGerencialDeMateriais(ActionEvent event){
 		
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -172,6 +186,7 @@ public class RelatoriosBean{
 	 * Gera a tela de relatorio gerencial de compras
 	 * @param event
 	 */
+/*
 	public void gerarRelatorioGerencialDeCompras(ActionEvent event){
 		
 		try {
@@ -210,6 +225,7 @@ public class RelatoriosBean{
 	 * Imprime o relatorio gerencial de compras.
 	 * @param event
 	 */
+/*
 	public void imprimirRelatorioGerencialDeCompras(ActionEvent event){
 
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -246,6 +262,7 @@ public class RelatoriosBean{
 	 * @param event
 	 * TODO funcionando na tela, mas busca somente pelo funcionario, adicionar busca pelo carro
 	 */
+/*
 	public void gerarRelatorioGerencialDeSucata(ActionEvent event){
 		
 		try {
@@ -283,6 +300,7 @@ public class RelatoriosBean{
 	 * Imprimir relatorio de sucatas.
 	 * @param event
 	 */
+/*
 	public void imprimirRelatorioGerencialDeSucata(ActionEvent event){
 		
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -321,6 +339,7 @@ public class RelatoriosBean{
 	 * @param event
 	 * TODO gera a primeira parte da tela, tem que colocar uma linha expansivel para mostrar a lista de detalhes.
 	 */
+/*
 	public void gerarRelatorioGerencialRastreabilidade(ActionEvent event){
 
 		try {
@@ -354,6 +373,7 @@ public class RelatoriosBean{
 	 * Imprimir relatorio Gerencial Rastreabilidde
 	 * @param event
 	 */
+/*
 	public void imprimirRelatorioGerencialRastreabilidade(ActionEvent event){
 		
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -407,6 +427,7 @@ public class RelatoriosBean{
 	 * @param event
 	 * TODO BUSCAS SIMPLES;
 	 */
+/*
 	public void gerarRelatorioGerencialProdutosPorFuncionarios(ActionEvent event){
 
 
@@ -453,6 +474,7 @@ public class RelatoriosBean{
 	 * Imprimir relarorio de produtos por funcionarios.
 	 * @param event
 	 */
+/*
 	public void imprimirRelatorioGerencialProdutosPorFuncionarios(ActionEvent event){
 		
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -484,6 +506,7 @@ public class RelatoriosBean{
 	 * @param event
 	 * 
 	 */
+/*
 	public void gerarRelatorioAdministrativoEntrada(ActionEvent event)  {
 		
 		try {
@@ -527,6 +550,7 @@ public class RelatoriosBean{
 	 * TODO buscar o fornecedor pelo id para imprimir no relatorio.
 	 * @param event
 	 */
+/*
 	public void imprimirRelatorioAdministrativoEntrada(ActionEvent event)  {
 		
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -561,6 +585,7 @@ public class RelatoriosBean{
 	 * @param event
 	 * 
 	 */
+/*
 	public void gerarRelatorioAdministrativoIndividual(ActionEvent event) {
 
 		try {
@@ -585,6 +610,7 @@ public class RelatoriosBean{
 	 * Imprime o relatorio administrativo individual
 	 * @param event
 	 */
+/*
 	public void imprimirRelatorioAdministrativoIndividual(ActionEvent event) {
 		
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -613,6 +639,7 @@ public class RelatoriosBean{
 	 * Gera a tela de relatorio administrativo de veiculos
 	 * @param event
 	 */
+/*
 	public void gerarRelatorioAdministrativoVeiculos(ActionEvent event) {
 
 		try {
@@ -635,6 +662,7 @@ public class RelatoriosBean{
 	 * Imprime relatorio de veiculos
 	 * @param event
 	 */
+/*
 	public void imprimirRelatorioAdministrativoVeiculos(ActionEvent event) {
 		
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -665,6 +693,7 @@ public class RelatoriosBean{
 	 * @param event
 	 * @throws SQLException
 	 */
+/*
 	public void gerarRelatorioAdministrativoMovimentacao(ActionEvent event) throws SQLException {
 
 		listaRelatorio = new ArrayList();
@@ -685,6 +714,7 @@ public class RelatoriosBean{
 	 * @param event
 	 * @throws SQLException
 	 */
+/*
 	public void imprimirRelatorioAdministrativoMovimentacao(ActionEvent event)  {
 		
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -712,6 +742,7 @@ public class RelatoriosBean{
 	 * Gera a tela para o relatorio de Teste Eletrico
 	 * @param event
 	 */
+/*
 	public void gerarRelatorioAdministrativoTesteEletrico(ActionEvent event) {
 		
 		try {
@@ -747,6 +778,7 @@ public class RelatoriosBean{
 	 * Imprime o relatorio administrativo Teste Eletrico
 	 * @param event
 	 */
+/*
 	public void imprimirRelatorioAdministrativoTesteEletrico(ActionEvent event) {
 		
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -774,6 +806,7 @@ public class RelatoriosBean{
 	 * Gera a tela para o relatorio de Vales
 	 * @param event
 	 */
+/*
 	public void gerarRelatorioAdministrativoVales(ActionEvent event) {
 		
 		try {
@@ -810,6 +843,8 @@ public class RelatoriosBean{
 	 * Imprime o relatorio administrativo de vales
 	 * @param event
 	 */
+
+/*
 	public void imprimirRelatorioAdministrativoVales(ActionEvent event) {
 		
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -836,6 +871,7 @@ public class RelatoriosBean{
 	 * Gera a tela para o relatorio de Reforma
 	 * @param event
 	 */
+/*
 	public void gerarRelatorioAdministrativoReforma(ActionEvent event) {
 		
 		try {
@@ -871,6 +907,7 @@ public class RelatoriosBean{
 	 * Imprime o relatorio de Reforma
 	 * @param event
 	 */
+/*
 	public void imprimirRelatorioAdministrativoReforma(ActionEvent event) {
 		
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -898,6 +935,8 @@ public class RelatoriosBean{
 	/**
 	 * @return the relatorioDao
 	 */
+
+/*
 	public RelatorioDao getRelatorioDao() {
 		return relatorioDao;
 	}
@@ -906,6 +945,7 @@ public class RelatoriosBean{
 	/**
 	 * @param relatorioDao the relatorioDao to set
 	 */
+/*
 	public void setRelatorioDao(RelatorioDao relatorioDao) {
 		this.relatorioDao = relatorioDao;
 	}
@@ -913,6 +953,7 @@ public class RelatoriosBean{
 	/**
 	 * @return the produto
 	 */
+/*
 	public String getProduto() {
 		return produto;
 	}
@@ -921,6 +962,7 @@ public class RelatoriosBean{
 	/**
 	 * @param produto the produto to set
 	 */
+/*
 	public void setProduto(String produto) {
 		this.produto = produto;
 	}
@@ -929,6 +971,7 @@ public class RelatoriosBean{
 	/**
 	 * @return the funcionario
 	 */
+/*
 	public String getFuncionario() {
 		return funcionario;
 	}
@@ -937,6 +980,7 @@ public class RelatoriosBean{
 	/**
 	 * @param funcionario the funcionario to set
 	 */
+/*
 	public void setFuncionario(String funcionario) {
 		this.funcionario = funcionario;
 	}
@@ -945,6 +989,7 @@ public class RelatoriosBean{
 	/**
 	 * @return the rastreabilidade
 	 */
+/*
 	public String getRastreabilidade() {
 		return rastreabilidade;
 	}
@@ -953,6 +998,7 @@ public class RelatoriosBean{
 	/**
 	 * @param rastreabilidade the rastreabilidade to set
 	 */
+/*
 	public void setRastreabilidade(String rastreabilidade) {
 		this.rastreabilidade = rastreabilidade;
 	}
@@ -961,6 +1007,7 @@ public class RelatoriosBean{
 	/**
 	 * @return the placa
 	 */
+/*
 	public String getPlaca() {
 		return placa;
 	}
@@ -969,6 +1016,7 @@ public class RelatoriosBean{
 	/**
 	 * @param placa the placa to set
 	 */
+/*
 	public void setPlaca(String placa) {
 		this.placa = placa;
 	}
@@ -977,6 +1025,7 @@ public class RelatoriosBean{
 	/**
 	 * @return the dataInicial
 	 */
+/*
 	public Date getDataInicial() {
 		return dataInicial;
 	}
@@ -985,6 +1034,7 @@ public class RelatoriosBean{
 	/**
 	 * @param dataInicial the dataInicial to set
 	 */
+/*
 	public void setDataInicial(Date dataInicial) {
 		this.dataInicial = dataInicial;
 	}
@@ -993,6 +1043,7 @@ public class RelatoriosBean{
 	/**
 	 * @return the dataFinal
 	 */
+/*
 	public Date getDataFinal() {
 		return dataFinal;
 	}
@@ -1001,6 +1052,7 @@ public class RelatoriosBean{
 	/**
 	 * @param dataFinal the dataFinal to set
 	 */
+/*
 	public void setDataFinal(Date dataFinal) {
 		this.dataFinal = dataFinal;
 	}
@@ -1009,6 +1061,7 @@ public class RelatoriosBean{
 	/**
 	 * @return the matricula
 	 */
+/*
 	public String getMatricula() {
 		return matricula;
 	}
@@ -1017,6 +1070,7 @@ public class RelatoriosBean{
 	/**
 	 * @param matricula the matricula to set
 	 */
+/*
 	public void setMatricula(String matricula) {
 		this.matricula = matricula;
 	}
@@ -1026,6 +1080,7 @@ public class RelatoriosBean{
 	 * @return the listaRelatorio
 	 * @throws SQLException 
 	 */
+/*
 	public List getListaRelatorio() throws SQLException {
 		return listaRelatorio;
 	}
@@ -1034,6 +1089,7 @@ public class RelatoriosBean{
 	/**
 	 * @param listaRelatorio the listaRelatorio to set
 	 */
+/*
 	public void setListaRelatorio(List listaRelatorio) {
 		this.listaRelatorio = listaRelatorio;
 	}
@@ -1051,6 +1107,7 @@ public class RelatoriosBean{
 	/**
 	 * @return the calculoTotais
 	 */
+/*
 	public Map getCalculoTotais() {
 		return calculoTotais;
 	}
@@ -1059,6 +1116,7 @@ public class RelatoriosBean{
 	/**
 	 * @param calculoTotais the calculoTotais to set
 	 */
+/*
 	public void setCalculoTotais(Map calculoTotais) {
 		this.calculoTotais = calculoTotais;
 	}
@@ -1067,6 +1125,7 @@ public class RelatoriosBean{
 	/**
 	 * @return the func
 	 */
+/*
 	public Funcionario getFunc() {
 		return func;
 	}
@@ -1074,6 +1133,7 @@ public class RelatoriosBean{
 	/**
 	 * @param func the func to set
 	 */
+/*
 	public void setFunc(Funcionario func) {
 		this.func = func;
 	}
@@ -1082,6 +1142,7 @@ public class RelatoriosBean{
 	/**
 	 * @return the setor
 	 */
+/*
 	public String getSetor() {
 		return setor;
 	}
@@ -1090,7 +1151,12 @@ public class RelatoriosBean{
 	/**
 	 * @param setor the setor to set
 	 */
+/*
 	public void setSetor(String setor) {
 		this.setor = setor;
 	}
-}
+	
+*/
+
+	
+//}

@@ -41,7 +41,8 @@ public class RastreabilidadeBean extends GenericBean implements Serializable{
 	private ProdutoDAO produtoDAO;
 	
 	public RastreabilidadeBean() {
-		dao = new RastreabilidadeDAO(Rastreabilidade.class);
+		//dao = new RastreabilidadeDAO(Rastreabilidade.class);
+		dao = new RastreabilidadeDAO();
 		rastreabilidade = new Rastreabilidade();
 		rastreabilidades = new ArrayList<Rastreabilidade>();
 		

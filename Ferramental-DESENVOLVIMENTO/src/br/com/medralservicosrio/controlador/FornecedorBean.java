@@ -34,7 +34,8 @@ public class FornecedorBean extends GenericBean implements Serializable{
 	private FornecedorDAO dao;
 	
 	public FornecedorBean() {
-		dao = new FornecedorDAO(Fornecedor.class);
+		//dao = new FornecedorDAO(Fornecedor.class);
+		dao = new FornecedorDAO();
 		fornecedor = new Fornecedor();
 		fornecedores = new ArrayList<Fornecedor>();
 		this.textoBotao = "Cadastrar";
