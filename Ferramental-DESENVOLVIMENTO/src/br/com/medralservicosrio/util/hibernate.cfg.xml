@@ -23,6 +23,11 @@
   		<property name="hibernate.c3p0.timeout">300</property>
   		<property name="hibernate.c3p0.max_statements">50</property>
   		<property name="hibernate.c3p0.idle_test_period">3000</property>
+  		
+  		<!-- Performance do Hibernate
+  		<property name="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
+  		<property name="current_session_context_class">thread</property>
+  		-->
 		
 		
 		<!-- Classes Mapeadas -->
