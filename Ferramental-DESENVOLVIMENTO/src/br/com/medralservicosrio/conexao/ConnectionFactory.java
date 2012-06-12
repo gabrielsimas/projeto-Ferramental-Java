@@ -19,6 +19,8 @@ public class ConnectionFactory {
     private static final String DRIVER  = "org.gjt.mm.mysql.Driver";
     private static final String USUARIO = "medralservic9";
     private static final String SENHA   = "fera2012medr@l";
+	public static Object res;
+	public static Object ps;
     
     public static Connection getConnection() throws SQLException {
     	
@@ -34,4 +36,9 @@ public class ConnectionFactory {
             throw new SQLException(e.getMessage());
         }
     }
+
+	public static Connection getAbrirConexao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
