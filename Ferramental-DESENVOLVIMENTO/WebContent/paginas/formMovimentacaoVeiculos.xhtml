@@ -39,30 +39,30 @@
         
         <h:panelGrid columns="2">
             <h:outputText value="NOME DO ENCARREGADO:" />  
-            <p:inputText id="nomeEnc" value="#{testeBean.nomeEnc}" maxlength="27" size="30"/>
+            <p:inputText id="nomeEnc" value="provisorio" maxlength="27" size="30"/>
         </h:panelGrid>
         
         <h:panelGrid columns="10">        
             <h:outputText value="PLACA:"/>
-            <p:inputMask mask="aaa-9999" value="#{testeBean.placa}" maxlength="7" size="8"/>
+            <p:inputMask mask="aaa-9999" value="#{movimentacaoBean.movimentacao.placa}" maxlength="7" size="8"/>
         
             <h:outputText value="PRODUTO:" />
-            <p:inputText id="produto" value="#{testeBean.produto}" maxlength="35" size="45"/>
+            <p:inputText id="produto" value="#{movimentacaoBean.movimentacao.idProduto}" maxlength="35" size="45"/>
             
             <h:outputText value="QUANTIDADE:" />  
-            <p:inputText id="quantidade" value="#{testeBean.quantidade}" maxlength="5" size="7"/>
-            <p:commandButton value="INSERIR" actionListener="#{testeBean.enviar}" type="submit" />
+            <p:inputText id="quantidade" value="#{movimentacaoBean.movimentacao.quantidade}" maxlength="5" size="7"/>
+            <p:commandButton value="INSERIR" actionListener="#{movimentacaoBean.movimentacao.verirficar}" type="submit" />
                     
             <h:outputText value="RASTREAR PRODUTO:"/>
-            <p:inputText id="rastrear" value="#{testeBean.rastrear}" maxlength="5" size="7"/>
-            <p:commandButton value="PROCURAR" actionListener="#{testeBean.enviar2}" type="submit" />
+            <p:inputText id="rastrear" value="#{movimentacaoBean.movimentacao.idProduto}" maxlength="5" size="7"/>
+            <p:commandButton value="PROCURAR" actionListener="#{movimentacaoBean.movimentacao.rastrear}" type="submit" />
         </h:panelGrid>
                    
         <p:separator style="width: 100%; height: 3px" /> 
         
         <h:panelGrid columns="2">
-            <p:commandButton value="ENVIAR DADOS" actionListener="#{testeBean.enviar}" type="submit" />
-            <p:commandButton value="LIMPAR CAMPOS" actionListener="#{testeBean.limpar}" type="reset" />
+            <p:commandButton value="ENVIAR DADOS" actionListener="#{movimentacaoBean.movimentacao.gravar}" type="submit" />
+            <p:commandButton value="LIMPAR CAMPOS" actionListener="provisorio" type="reset" />
         </h:panelGrid>
         
         </h:form>  
@@ -70,6 +70,7 @@
     
         <p:fieldset legend="LISTA GERAL:" toggleable="true">  
         <h:form id="form">
+        <!--
              <p:outputPanel id="books">
                     <p:dataTable id="booksTable" value="#{bookBean.books}" var="book">
 
@@ -142,7 +143,7 @@
 
                     </p:dataTable>
                 </p:outputPanel>
-
+-->
             </h:form>  
         </p:fieldset>    
     </h:body>  

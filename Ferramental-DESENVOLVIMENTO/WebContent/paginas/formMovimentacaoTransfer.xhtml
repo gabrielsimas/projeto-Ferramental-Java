@@ -39,16 +39,16 @@
     <h:form> 
         <h:panelGrid columns="6"> 
             <h:outputText value="PLACA:"/>
-            <p:inputMask mask="aaa-9999" value="#{testeBean.placa}" maxlength="5" size="8"/>
+            <p:inputMask mask="aaa-9999" value="#{movimentacaoBean.placa}" maxlength="5" size="8"/>
             
             <h:outputText value="NOME DO ENCARREGADO:" />  
-            <p:inputText id="nome" value="#{testeBean.nome}" maxlength="30" size="35"/>
-            <p:commandButton value="LISTAR" actionListener="#{testeBean.listar}" type="submit" />
-            <p:commandButton value="LIMPAR CAMPOS" actionListener="#{testeBean.limpar}" type="reset" />
+            <p:inputText id="nome" value="#{movimentacaoBean.usuario}" maxlength="30" size="35"/>
+            <p:commandButton value="LISTAR" actionListener="#{movimentacaoBean.listarVeiculos}" type="submit" />
+            <p:commandButton value="LIMPAR CAMPOS" actionListener="provisorio" type="reset" />
         </h:panelGrid>
     </h:form>  
     </p:fieldset>
-    
+    <!--
     <p:fieldset legend="LISTA DE MATERIAIS VEÍCULO C/DEFEITO:" toggleable="true">  
         <h:form id="form">
            <p:growl id="msgs" />
@@ -90,21 +90,21 @@
                 </p:outputPanel>
             </h:form>  
         </p:fieldset>  
-     
+     -->
      <p:fieldset legend="VEÍCULOS NOVO:" toggleable="true">
      <h:form> 
          <h:panelGrid columns="6">
             <h:outputText value="PLACA:"/>
-            <p:inputMask mask="aaa-9999" value="#{testeBean.placa2}" maxlength="5" size="8"/>
+            <p:inputMask mask="aaa-9999" value="#{movimentacaoBean.placa}" maxlength="5" size="8"/>
             
             <h:outputText value="NOME DO ENCARREGADO:" />  
-            <p:inputText id="nome2" value="#{testeBean.nome2}" maxlength="30" size="35"/>
-            <p:commandButton value="LISTAR" actionListener="#{testeBean.listar2}" type="submit" />
-            <p:commandButton value="LIMPAR CAMPOS" actionListener="#{testeBean.limpar2}" type="reset" />
+            <p:inputText id="nome2" value="#{movimentacaoBean.usuario}" maxlength="30" size="35"/>
+            <p:commandButton value="LISTAR" actionListener="#{movimentacaoBean.listarVeiculos}" type="submit" />
+            <p:commandButton value="LIMPAR CAMPOS" actionListener="#{provisorio}" type="reset" />
        </h:panelGrid>
       </h:form>  
       </p:fieldset> 
-    
+    <!-- 
     <p:fieldset legend="LISTA DE MATERIAIS VEÍCULO NOVO:" toggleable="true">  
         <h:form id="form2">
            <p:growl id="msgs2" />
@@ -146,7 +146,7 @@
                 </p:outputPanel>
             </h:form>  
         </p:fieldset>   
-  
+   -->
     </h:body>  
 
  </html> 

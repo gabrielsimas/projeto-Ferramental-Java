@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui" 
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core">  
-   
+ 
     <h:head>
     	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
        <title>:. Novo Ferramental .:</title>
@@ -15,15 +15,15 @@
     <f:view contentType="text/html" />
     
     <h:body style="background-color: paleturquoise">
-    
+     
     <h:graphicImage url="../imagem/TopoSCFP2.jpg" width="1330" height="130"/>
 
-	<!-- <ui:include src="/paginas/menu.xhtml"/> -->
+	<!-- <ui:include src="/paginas/menu.xhtml"/>-->
 	
 	 <center>
     <p:ajaxStatus id="ajaxStatusPanel" >
 			<f:facet name="start">
-				<h:graphicImage value="../imagem/loading2b.gif" />
+				<h:graphicImage value="../imagem/loading2b.gif" /> 
 			</f:facet>
 	
 			<f:facet name="complete">
@@ -31,103 +31,103 @@
 			</f:facet>
 		</p:ajaxStatus>
 	</center>	   
-        
+      
     <p:growl id="avisos" showDetail="true" life="3000" />  
 
     <p:fieldset legend="MOVIMENTAÇÃO INDIVIDUAL:" toggleable="true">  
     <h:form> 
        <h:panelGrid columns="4"> 
             <h:outputText value="MATRÍCULA:"/>
-            <p:inputMask mask="99.999" value="#{testeBean.matricula}" maxlength="5" size="8"/>
+            <p:inputMask mask="99.999" value="#{movimentacaoIndividualBean.movimentacaoIndividual.id}" maxlength="5" size="8"/>
             
             <h:outputText value="NOME DO FUNCIONÁRIO:" />  
-            <p:inputText id="encarregado" value="#{testeBean.nomeFunc}" maxlength="25" size="28"/>
+            <p:inputText id="encarregado" value="teste provisorio" maxlength="25" size="28"/>
         </h:panelGrid>
         
         <h:panelGrid columns="8">
             <h:outputText value="PRODUTO:" />
-            <p:inputText id="produto" value="#{testeBean.produto}" maxlength="35" size="40"/>
+            <p:inputText id="produto" value="#{movimentacaoIndividualBean.movimentacaoIndividual.idProduto}" maxlength="35" size="40"/>
             
             <h:outputText value="RASTREAR PRODUTO:"/>
-            <p:inputMask mask="99.999" value="#{testeBean.rastrear}" maxlength="5" size="7" />
-            <p:commandButton value="PROCURAR" actionListener="#{testeBean.enviar2}" type="submit" />
+            <p:inputMask mask="99.999" value="#{movimentacaoIndividualBean.movimentacaoIndividual.idRastreabilidade}" maxlength="5" size="7" />
+            <p:commandButton value="PROCURAR" actionListener="#{movimentacaoIndividualBean.movimentacaoIndividual.rastrear}" type="submit" />
                     
             <h:outputText value="QUANTIDADE:" />  
-            <p:inputMask mask="99.999" value="#{testeBean.quantidade}" maxlength="5" size="7"/>
-            <p:commandButton value="INSERIR" actionListener="#{testeBean.enviar}" type="submit" />
+            <p:inputMask mask="99.999" value="#{movimentacaoIndividualBean.movimentacaoIndividual.quantidade}" maxlength="5" size="7"/>
+            <p:commandButton value="INSERIR" actionListener="#{movimentacaoIndividualBean.movimentacaoIndividual.inserirQuantidade}" type="submit" />
        </h:panelGrid>              
         
         <p:separator style="width: 100%; height: 3px" /> 
           
         <h:panelGrid columns="2">             
-            <p:commandButton value="ENVIAR DADOS" actionListener="#{testeBean.enviar}" type="submit" />
-            <p:commandButton value="LIMPAR CAMPOS" actionListener="#{testeBean.limpar}" type="reset" />
+            <p:commandButton value="ENVIAR DADOS" actionListener="#{movimentacaoIndividualBean.movimentacaoIndividual.create}" type="submit" />
+            <p:commandButton value="LIMPAR CAMPOS" actionListener="#{movimentacaoIndividualBean.movimentacaoIndividual}" type="reset" />
         </h:panelGrid>
         
         </h:form>  
         </p:fieldset> 
-    
+      
         <p:fieldset legend="LISTA GERAL:" toggleable="true">  
         <h:form id="form">
            <p:growl id="msgs" />
-
-                 <p:outputPanel id="books">
-                    <p:dataTable id="booksTable" value="#{bookBean.books}" var="book">
+           <!--
+                 <p:outputPanel id="produtos">
+                    <p:dataTable id="booksTable" value="#{movimentacaoIndividualBean.getListaProduto}" var="produtos">
 
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="MATRÍCULA" />
                             </f:facet>
-                            <h:outputText value="#{book.matricula}" />
+                            <h:outputText value="provisorio" />
                         </p:column>
                         
                         <p:column>
                             <f:facet name="header">
                              <h:outputText value="NOME" />
                             </f:facet>
-                            <h:outputText value="#{book.nome}"/>
+                            <h:outputText value="provisorio"/>
                         </p:column>
                         
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="PRODUTO" />
                             </f:facet>
-                            <h:outputText value="#{book.produto}" />
+                            <h:outputText value="provisorio" />
                         </p:column>
                         
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="QUANTIDADE" />
                             </f:facet>
-                            <h:outputText value="#{book.quantidade}" />
+                            <h:outputText value="provisorio" />
                         </p:column>
                         
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="DESCRIÇÃO" />
                             </f:facet>
-                            <h:outputText value="#{book.descricao}" />
+                            <h:outputText value="provisorio" />
                         </p:column>
                         
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="SALDO" />
                             </f:facet>
-                            <h:outputText value="#{book.saldo}" />
+                            <h:outputText value="provisorio" />
                         </p:column>
                         
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="1ª ENTREGA" />
                             </f:facet>
-                            <h:outputText value="#{book.priEntrega}" />
+                            <h:outputText value="provisorio" />
                         </p:column>
                         
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="RE-UTILIZAR" />
                             </f:facet>
-                            <h:outputText value="#{book.reUtilizar}" />
+                            <h:outputText value="provisorio" />
                         </p:column>
                     
                         <p:column>
@@ -137,15 +137,17 @@
                             
                             <p:commandLink value="EXCLUIR" update=":form:books" process=":form:books">
                                 <p:collector value="#{book}"
-                                             removeFrom="#{bookBean.books}" />
+                                             removeFrom="#{movimentacaoIndividualBean.listaProduto}" />
                             </p:commandLink>
                         </p:column>
 
                     </p:dataTable>
                 </p:outputPanel>
-
+ -->
             </h:form>  
+           
         </p:fieldset>    
+
 
     </h:body>  
 
